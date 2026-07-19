@@ -1,10 +1,8 @@
 %{
 This script configures various settings and file paths to make sure all the
 features of this codebase work correctly.
-
-See the "SimulinkPlant User/Editor Guide" on Notion for a detailed tutorial
-on how to use this codebase.
 %}
+
 clc
 close all
 clear all %#ok<CLALL>

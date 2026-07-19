@@ -40,3 +40,5 @@ codegen/
 *.sbproj.bak
 
 /src/utils/lookups/prj_path_list.mat
+
+/examples/SIM Example/SIM_example_data/

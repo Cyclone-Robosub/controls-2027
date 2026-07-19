@@ -1,17 +1,62 @@
-close all %closes any open figures
-clc %clears the command window
-clear results %clear the variable `results`
+close all 
+clc 
+clear results
 
-%set the model name and open it
+% Initial Conditions
+x0 = [0;0];
+
+% Target
+x_u = 1;
+
+% Constants
+b = 1;
+k = 1;
+m = 1;
+B = [0;1];
+A = [0 1;-k/m -b/m];
+
+% PID
+PID.P = 2;
+PID.I = 1;
+PID.D = 0.5;
+PID.N = 100;
+PID.output_sat = 5;
+
+% Settings
+tspan = 10;
+dt_sim = 0.001;
+dt_control = roundToSimTimestep(0.01,dt_sim);
+dt_data = roundToSimTimestep(1/30,dt_sim);
+delete_data_flag = true; %if false, data is deleted from file system but saved in the workspace for post processing
+
 model_name = "SIM_example.slx";
 open_system(model_name);
 
-%choose your data saving preferences (change the fcn arg to true/false)
-%do not change the order of these function calls to avoid errors
-saveDataToWorkspace(true);
-saveDataToFile(true);
+%configure the to-file blocks for data saving
+example_SIM_data_path = fullfile(prj_path_list.examples_path,'SIM Example','SIM_example_data');
+prj_path_list.prior_run_path = configureToFileBlocks(model_name, example_SIM_data_path); 
 
 %run the model `SIM_example.slx` and store the output in `results`
 results = sim("SIM_example.slx");
 
-%
+%% Post Processing
+results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
+
+%plots
+figure()
+subplot(2,1,1)
+hold on
+plot(results.X_x.Time, results.X_x.Data)
+plot(results.x_u.Time, results.x_u.Data)
+xlabel("Time (s)")
+ylabel("Position (m)")
+title("Mass-Spring Damper Position vs Time")
+legend(["x", "x_u"],'Interpreter','none');
+subplot(2,1,2)
+hold on
+plot(results.F.Time, results.F.Data);
+xlabel("Time (s)")
+ylabel("Force (N)")
+title("Force")
+ylim([-PID.output_sat,PID.output_sat])
+legend("F")
