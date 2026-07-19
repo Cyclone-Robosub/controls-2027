@@ -62,7 +62,9 @@ prj_path_list.cpp_codegen_path = cpp_codegen_path;
 prj_path_list.asv_path = asv_path;
 
 %clear individual paths to avoid workplace clutter
-clear archive_path asv_path cache_pate codegen_path cpp_codegen_path data_path examples_path inits_path lookups_path root_path src_path temp_path tests_path utils_path cache_path drafts_path prj
+clear archive_path asv_path cache_pate codegen_path cpp_codegen_path data_path ...
+    examples_path inits_path lookups_path root_path src_path temp_path tests_path ...
+    utils_path cache_path drafts_path prj
 
 %% 2 - Check for and/or create missing folders
 field_names = fields(prj_path_list);
@@ -76,7 +78,6 @@ for k = 1:length(field_names)
     addpath(genpath(prj_path_list.(field_names{k})));
 end
 
-%clear unused variables to avoid workplace clutter
 clear k field_names
 
 %save to file system (used by getProjectPaths in case of clear all)
