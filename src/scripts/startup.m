@@ -31,7 +31,7 @@ tests_path = fullfile(root_path, 'tests');
 %useful sub-paths in src
 inits_path = fullfile(src_path,'inits');
 utils_path = fullfile(src_path,'utils');
-lookup_path = fullfile(utils_path,'lookups');
+lookups_path = fullfile(utils_path,'lookups');
 
 %useful codegen subpaths
 cache_path = fullfile(codegen_path, 'simulink_cache_files');
@@ -56,10 +56,13 @@ prj_path_list.temp_path = temp_path;
 prj_path_list.tests_path = tests_path;
 prj_path_list.inits_path = inits_path;
 prj_path_list.utils_path = utils_path;
-prj_path_list.lookup_path = lookup_path;
+prj_path_list.lookups_path = lookups_path;
 prj_path_list.cache_path = cache_path;
 prj_path_list.cpp_codegen_path = cpp_codegen_path;
 prj_path_list.asv_path = asv_path;
+
+%clear individual paths to avoid workplace clutter
+clear archive_path asv_path cache_pate codegen_path cpp_codegen_path data_path examples_path inits_path lookups_path root_path src_path temp_path tests_path utils_path cache_path drafts_path prj
 
 %% 2 - Check for and/or create missing folders
 field_names = fields(prj_path_list);
@@ -73,14 +76,17 @@ for k = 1:length(field_names)
     addpath(genpath(prj_path_list.(field_names{k})));
 end
 
+%clear unused variables to avoid workplace clutter
+clear k field_names
+
 %save to file system (used by getProjectPaths in case of clear all)
-save(fullfile(lookup_path,"prj_path_list.mat"),"prj_path_list",'-mat');
+save(fullfile(prj_path_list.lookups_path,"prj_path_list.mat"),"prj_path_list",'-mat');
 
 
 %% 3 - Configures file path for automatically generated temporary files
 Simulink.fileGenControl('set',...
-    'CacheFolder',cache_path,...
-    'CodeGenFolder',codegen_path);
+    'CacheFolder',prj_path_list.cache_path,...
+    'CodeGenFolder',prj_path_list.codegen_path);
 
 fprintf("Cache and CodeGen file paths are setup.\n");
 
