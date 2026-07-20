@@ -13,6 +13,6 @@ There are several example models in the `controls-2027/Examples` folder. These e
 
 Start by running `init_SIM_example.m`. When you do so, a Simulink model called `SIM_example.slx` will open, along with a plot showing the response of an example system. 
 
-Next, run `init_ROS_example.m`. The first time you do so you will receive outputs directly you to install CMake
+Next, call `checkRos2Requirements;` in the terminal and follow any TODO instructions. After resolving each issue, rerun the function until no issues remain. Once complete, run `init_ROS_example.m`. If this model runs, you have successfully setup the required components to use ROS blocks.
 ## Adding Code to the Project
 New files you create in the project are not automatically added to the project search path and contained under source control. This is intentional to prevent drafts, temporary scripts for testing code snippets, and data files from bloating the project. When you add a file that you intend to place in the project, you need to right click on the file (or containing folder) in the `Project` panel and select `Add to Project` or `Add to Folder to Project (Including Contents)`. 

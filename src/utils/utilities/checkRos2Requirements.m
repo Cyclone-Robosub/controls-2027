@@ -17,7 +17,7 @@ status = true;
 
 toolbox_info = ver();
 toolbox_names = {toolbox_info.Name};
-fprintf("===== Checking requirements to run ROS2 code. =====\n")
+fprintf("\n===== Checking requirements to run ROS2 code. =====\n")
 %Toolboxes
 if(any(contains(toolbox_names,'GPU Coder')))
     fprintf("GPU Coder toolbox found.\n")
