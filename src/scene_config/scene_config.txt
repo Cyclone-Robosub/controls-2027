@@ -1,0 +1,7 @@
+Contains information for Unreal Engine including
+    - Actor locations and orientations
+    - Camera information
+    - Unreal Executable paths
+
+Used by the configure_scene function that sets various block parameters in Simulink blocks. 
+

@@ -27,7 +27,7 @@ tspan = 10;
 dt_sim = 0.001;
 dt_control = roundToSimTimestep(0.01,dt_sim);
 dt_data = roundToSimTimestep(1/30,dt_sim);
-delete_data_flag = true; %if false, data is deleted from file system but saved in the workspace for post processing
+delete_data_flag = false; %if false, data is deleted from file system but saved in the workspace for post processing
 
 model_name = "ROS_example.slx";
 open_system(model_name);

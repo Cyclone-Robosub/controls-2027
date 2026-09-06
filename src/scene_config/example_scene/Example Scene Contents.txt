@@ -1,0 +1,6 @@
+Each scene configuration contains
+    - camera information
+    - object locations and orientations
+    - path to the unreal executable
+    - any other scene metadata useful for reproducability
+    
