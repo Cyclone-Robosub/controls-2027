@@ -1,90 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <struct>
     <propPoses>
+        <!--All prop poses have distance in cm, and orientation in radians.-->
+
         <gate_1>-780</gate_1>
         <gate_1>1490</gate_1>
         <gate_1>0</gate_1>
         <gate_1>0</gate_1>
         <gate_1>0</gate_1>
         <gate_1>0</gate_1>
+
+        <!--gate emoji poses are relative to the gate they are attached-->
         <gate_1_searchRescueEmoji>-3</gate_1_searchRescueEmoji>
         <gate_1_searchRescueEmoji>80</gate_1_searchRescueEmoji>
         <gate_1_searchRescueEmoji>-98</gate_1_searchRescueEmoji>
         <gate_1_searchRescueEmoji>1.5708</gate_1_searchRescueEmoji>
         <gate_1_searchRescueEmoji>0</gate_1_searchRescueEmoji>
         <gate_1_searchRescueEmoji>1.5708</gate_1_searchRescueEmoji>
+
         <gate_1_surveyRepairEmoji>-3</gate_1_surveyRepairEmoji>
         <gate_1_surveyRepairEmoji>250</gate_1_surveyRepairEmoji>
         <gate_1_surveyRepairEmoji>-98</gate_1_surveyRepairEmoji>
         <gate_1_surveyRepairEmoji>1.570796</gate_1_surveyRepairEmoji>
         <gate_1_surveyRepairEmoji>0</gate_1_surveyRepairEmoji>
         <gate_1_surveyRepairEmoji>1.570796</gate_1_surveyRepairEmoji>
+
         <path_1>-553</path_1>
         <path_1>1640</path_1>
         <path_1>78.5</path_1>
         <path_1>0</path_1>
         <path_1>0</path_1>
         <path_1>0</path_1>
+
         <path_2>337</path_2>
         <path_2>1650</path_2>
         <path_2>78.5</path_2>
         <path_2>0</path_2>
         <path_2>0</path_2>
         <path_2>0</path_2>
+
         <dropper_1>644.0</dropper_1>
         <dropper_1>1653.0</dropper_1>
         <dropper_1>100</dropper_1>
         <dropper_1>0</dropper_1>
         <dropper_1>0</dropper_1>
         <dropper_1>0</dropper_1>
+
         <whiteSlalom_1>-90</whiteSlalom_1>
         <whiteSlalom_1>1810</whiteSlalom_1>
         <whiteSlalom_1>-40</whiteSlalom_1>
         <whiteSlalom_1>0</whiteSlalom_1>
         <whiteSlalom_1>0</whiteSlalom_1>
         <whiteSlalom_1>0</whiteSlalom_1>
+
         <whiteSlalom_2>10</whiteSlalom_2>
         <whiteSlalom_2>1790</whiteSlalom_2>
         <whiteSlalom_2>-40</whiteSlalom_2>
         <whiteSlalom_2>0</whiteSlalom_2>
         <whiteSlalom_2>0</whiteSlalom_2>
         <whiteSlalom_2>0</whiteSlalom_2>
+
         <whiteSlalom_3>120</whiteSlalom_3>
         <whiteSlalom_3>1820</whiteSlalom_3>
         <whiteSlalom_3>-40</whiteSlalom_3>
         <whiteSlalom_3>0</whiteSlalom_3>
         <whiteSlalom_3>0</whiteSlalom_3>
         <whiteSlalom_3>0</whiteSlalom_3>
+
         <whiteSlalom_4>-120</whiteSlalom_4>
         <whiteSlalom_4>1500</whiteSlalom_4>
         <whiteSlalom_4>-40</whiteSlalom_4>
         <whiteSlalom_4>0</whiteSlalom_4>
         <whiteSlalom_4>0</whiteSlalom_4>
         <whiteSlalom_4>0</whiteSlalom_4>
+
         <whiteSlalom_5>-20</whiteSlalom_5>
         <whiteSlalom_5>1490</whiteSlalom_5>
         <whiteSlalom_5>-40</whiteSlalom_5>
         <whiteSlalom_5>0</whiteSlalom_5>
         <whiteSlalom_5>0</whiteSlalom_5>
         <whiteSlalom_5>0</whiteSlalom_5>
+
         <whiteSlalom_6>100</whiteSlalom_6>
         <whiteSlalom_6>1510</whiteSlalom_6>
         <whiteSlalom_6>-40</whiteSlalom_6>
         <whiteSlalom_6>0</whiteSlalom_6>
         <whiteSlalom_6>0</whiteSlalom_6>
         <whiteSlalom_6>0</whiteSlalom_6>
+
         <redSlalom_1>-90</redSlalom_1>
         <redSlalom_1>1650</redSlalom_1>
         <redSlalom_1>-40</redSlalom_1>
         <redSlalom_1>0</redSlalom_1>
         <redSlalom_1>0</redSlalom_1>
         <redSlalom_1>0</redSlalom_1>
+
         <redSlalom_2>0</redSlalom_2>
         <redSlalom_2>1620</redSlalom_2>
         <redSlalom_2>-40</redSlalom_2>
         <redSlalom_2>0</redSlalom_2>
         <redSlalom_2>0</redSlalom_2>
         <redSlalom_2>0</redSlalom_2>
+
         <redSlalom_3>90</redSlalom_3>
         <redSlalom_3>1650</redSlalom_3>
         <redSlalom_3>-40</redSlalom_3>
@@ -93,105 +110,159 @@
         <redSlalom_3>0</redSlalom_3>
     </propPoses>
     <cameras>
+        <!--Left forward facing camera-->
         <leftCamera>
+            <!--Focal Length, Image Size, and optical center are in pixels-->
             <FocalLength>1060.7</FocalLength>
             <FocalLength>1060.7</FocalLength>
             <ImageSize>1080</ImageSize>
             <ImageSize>1920</ImageSize>
             <OpticalCenter>960</OpticalCenter>
             <OpticalCenter>540</OpticalCenter>
+
+            <!--Distortion coefficients-->
             <RadialDistortion>0.33</RadialDistortion>
             <RadialDistortion>0.16</RadialDistortion>
             <RadialDistortion>0</RadialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
+
+            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in degrees left hand rule.-->
             <Position>0.38</Position>
             <Position>-0.024</Position>
             <Position>0.14</Position>
             <Orientation>0</Orientation>
             <Orientation>0</Orientation>
             <Orientation>0</Orientation>
+
+            <!--Condition on whether to open a display window for this camera-->
             <display_flag>1</display_flag>
+
+            <!--Condition on whether to save the camera feed-->
             <save_flag>1</save_flag>
         </leftCamera>
+
+        <!--Right forward facing camera-->
         <rightCamera>
+            <!--Focal Length, Image Size, and optical center are in pixels-->
             <FocalLength>1060.7</FocalLength>
             <FocalLength>1060.7</FocalLength>
             <ImageSize>1080</ImageSize>
             <ImageSize>1920</ImageSize>
             <OpticalCenter>960</OpticalCenter>
             <OpticalCenter>540</OpticalCenter>
+
+            <!--Distortion coefficients-->
             <RadialDistortion>0.33</RadialDistortion>
             <RadialDistortion>0.16</RadialDistortion>
             <RadialDistortion>0</RadialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
+
+            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in degrees left hand rule.-->
             <Position>0.38</Position>
             <Position>0.024</Position>
             <Position>0.14</Position>
             <Orientation>0</Orientation>
             <Orientation>0</Orientation>
             <Orientation>0</Orientation>
+
+            <!--Condition on whether to open a display window for this camera-->
             <display_flag>1</display_flag>
+
+            <!--Condition on whether to save the camera feed-->
             <save_flag>1</save_flag>
         </rightCamera>
+
+        <!--Downward facing camera-->
         <bottomCamera>
+            <!--Focal Length, Image Size, and optical center are in pixels-->
             <FocalLength>1060.7</FocalLength>
             <FocalLength>1060.7</FocalLength>
             <ImageSize>1080</ImageSize>
             <ImageSize>1920</ImageSize>
             <OpticalCenter>960</OpticalCenter>
             <OpticalCenter>540</OpticalCenter>
+
+            <!--Distortion coefficients-->
             <RadialDistortion>0.33</RadialDistortion>
             <RadialDistortion>0.16</RadialDistortion>
             <RadialDistortion>0</RadialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
+
+            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in degrees left hand rule.-->
             <Position>0.23</Position>
             <Position>0</Position>
             <Position>-0.08</Position>
             <Orientation>0</Orientation>
             <Orientation>-90</Orientation>
             <Orientation>0</Orientation>
+
+            <!--Condition on whether to open a display window for this camera-->
             <display_flag>1</display_flag>
+
+            <!--Condition on whether to save the camera feed-->
             <save_flag>1</save_flag>
         </bottomCamera>
+
+        <!--Observer camera-->
         <observerCamera>
+            <!--Focal Length, Image Size, and optical center are in pixels-->
             <FocalLength>1060.7</FocalLength>
             <FocalLength>1060.7</FocalLength>
             <ImageSize>1080</ImageSize>
             <ImageSize>1920</ImageSize>
             <OpticalCenter>960</OpticalCenter>
             <OpticalCenter>540</OpticalCenter>
+
+            <!--Distortion coefficients-->
             <RadialDistortion>0.33</RadialDistortion>
             <RadialDistortion>0.16</RadialDistortion>
             <RadialDistortion>0</RadialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
+
+            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in degrees left hand rule.-->
             <Position>0</Position>
             <Position>0</Position>
             <Position>0</Position>
             <Orientation>0</Orientation>
             <Orientation>0</Orientation>
             <Orientation>0</Orientation>
+
+            <!--Condition on whether to open a display window for this camera-->
             <display_flag>1</display_flag>
+
+            <!--Condition on whether to save the camera feed-->
             <save_flag>1</save_flag>
         </observerCamera>
     </cameras>
     <scene_states>
+        <!--Z values (cm) for the ground and water level inside the simulation these are specific the executable/level and are not adjustable-->
         <ground_Z>100</ground_Z>
         <waterLevel_Z>-180</waterLevel_Z>
+
+        <!--Manatee start position. If controls gives a location of (0 0 0) for manatee, then this is where in the sim Manatee will appear-->
         <manateeOrigin>-1100</manateeOrigin>
         <manateeOrigin>1640</manateeOrigin>
         <manateeOrigin>-20</manateeOrigin>
         <manateeOrigin>0</manateeOrigin>
         <manateeOrigin>0</manateeOrigin>
         <manateeOrigin>0</manateeOrigin>
-        <dt_sample>0.03</dt_sample>
-        <start_delay>0</start_delay>
-        <tspan>10</tspan>
-        <dt_sim>0.001</dt_sim>
+        <!--For origin orientation, always put 0 0 0, this is just here to make the vector a 1x6-->
+        
+        <!--The following are sim time related variables-->
+        <dt_sample>0.03</dt_sample> <!--Sample time step of the unreal sim, one image will be gathered every dt_sample seconds in sim time-->
+        <start_delay>0</start_delay> <!--Use this to specify how long to wait for unreal lighting to settle-->
+        <tspan>10</tspan> <!--Simulation duration-->
+        <dt_sim>0.001</dt_sim> <!--Simulation time step in seconds-->
+
+        <!--Executable version Name-->
         <executable_version>Ellington_Pool_Sim_v2.0</executable_version>
+
+        <!--Level of the world used for this sim, typically Olympic_Pool_Course will be the only used one, though there is a level
+        for keypoint collection and for camera calibration-->
         <scene_level>Olympic_Pool_Course</scene_level>
     </scene_states>
 </struct>

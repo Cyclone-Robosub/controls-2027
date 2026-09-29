@@ -1,6 +1,52 @@
-Each scene configuration contains
+Each scene configuration (.xml) file contains
     - camera information
     - object locations and orientations
     - path to the unreal executable
     - any other scene metadata useful for reproducability
-    
+
+I would recommend editing xml files with a prefferred editor like visual
+studio code and not matlab.
+
+The scene_config structure is organized into 3 fields:
+    - propPoses: All stationary/pseudo-stationary static props have their
+      poses set here. It is a list of all props and their locations.
+    - cameras: All infomration on unreal camera settings are stored here. 
+      Their locations, intrinsics, and relative or actual static positions
+      are all stored in these fields. Note, these are their actual (true)
+      values, not calibration. In the future, calibration data for the
+      cameras will also have their own field in the structure.
+    - scene_states: This field holds miscellaneous state variables and 
+      scene metadata (ie. unreal executable version and level), as well as
+      simulation variables for reproducibility of a particular simulation.
+      This field may ultimately get split into two parts.
+
+Notes about xml format: 
+pose vectors are stored in sequence:
+         <x y z roll pitch yaw>
+In xml this will appear as 6 different lines.
+
+Example:
+        <gate_1>-780</gate_1>  X 
+        <gate_1>1490</gate_1>  Y 
+        <gate_1>0</gate_1>     Z 
+        <gate_1>0</gate_1>     roll
+        <gate_1>0</gate_1>     pitch
+        <gate_1>0</gate_1>     yaw
+
+Note on units: All propPoses are in centimeters, right hand rule, and 
+radians as opposed to unreal coordinate system.
+Unreal coords are in degrees, and z points upwards. Otherwise everything is 
+the same (even orientation is still right hand rule, despite z being 
+flipped, its weird).
+
+Camera information has pose in coordinates designed for matlab, for 
+convenience reasons, as it is only going to be used for setting unreal
+values. I will include comments on the example xml which will be read only.
+The coordinates are in weird units that are a cross between matlab and
+unreal. 
+
+Note on mounted props: Props are function to a drift function if they are
+mounted to the floor and left floating, so things like gates and slaloms
+will have true positions slightly off from the values in the config. These
+values are determined by a deterministic function so the config will still
+be able to recreate the exact same simulation.
