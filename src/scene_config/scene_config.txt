@@ -3,5 +3,36 @@ Contains information for Unreal Engine including
     - Camera information
     - Unreal Executable paths
 
-Used by the configure_scene function that sets various block parameters in Simulink blocks. 
 
+Current status of config variables:
+
+scene_config struct:
+
+    - propPoses:
+        - gate_1
+        - gate_1 emojis
+        - path_1 and path_2
+        - dropper_1
+        - whiteSlaloms 1 through 6
+        - redSlaloms 1 through 3
+    
+    - cameras: each camera field has intrinsic parameters, poses, and 
+    save/display flag. 
+    Cameras in field indlude
+        - rightCamera: right side stereo camera
+        - leftCamera: left side stereo camera.
+        - bottomCamera: downward facing camera.
+        - observerCamera: Camera to observe robot, usually 3rd person.
+    
+    - scene_states: (meta data and unreal level information)
+        - manateeOrigin: Translation information on manatee origin
+        location.
+        - dt_sample: Camera sample time for getting data back from sim.
+        - start_delay: How long to wait before using data from sim. Usually
+        needs to be around a second, so that the lighting can calibrate.
+        - tspan: Time (s) for simulation duration.
+        - dt_sim: control time for timestep duration.
+        - executable_version: name of folder in which packaged build is
+        stored.
+        - scene_level: There are multiple "levels" in the executable. Each
+        level is for a specific use. Olympic_Pool_Course is the default.
