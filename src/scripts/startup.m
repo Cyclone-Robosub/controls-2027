@@ -32,6 +32,7 @@ tests_path = fullfile(root_path, 'tests');
 inits_path = fullfile(src_path,'inits');
 utils_path = fullfile(src_path,'utils');
 lookups_path = fullfile(utils_path,'lookups');
+executables_path = fullfile(src_path,'unreal_executables');
 
 %useful codegen subpaths
 cache_path = fullfile(codegen_path, 'simulink_cache_files');
@@ -41,9 +42,6 @@ asv_path = fullfile(codegen_path,'autosaves');
 % %vision paths (TODO - align the format with the rest of the project)
 % UCS_lookup_path = fullfile(src_path,'utils','UCS Lookups');
 % vision_path = fullfile(src_path,'utils','Vision');
-% UCS_path = fullfile(src_path,'utils','UCS');
-% saved_images_path = fullfile(root_path, "SavedImages");
-% unreal_build_path = fullfile(root_path, "DROP UCS PACKAGED BUILD HERE");
 
 %pack everything into the project path list variable
 prj_path_list.archive_path = archive_path;
@@ -60,11 +58,12 @@ prj_path_list.lookups_path = lookups_path;
 prj_path_list.cache_path = cache_path;
 prj_path_list.cpp_codegen_path = cpp_codegen_path;
 prj_path_list.asv_path = asv_path;
+prj_path_list.executables_path = executables_path;
 
 %clear individual paths to avoid workplace clutter
 clear archive_path asv_path cache_pate codegen_path cpp_codegen_path data_path ...
     examples_path inits_path lookups_path root_path src_path temp_path tests_path ...
-    utils_path cache_path drafts_path prj
+    utils_path cache_path drafts_path prj executables_path
 
 %% 2 - Check for and/or create missing folders
 field_names = fields(prj_path_list);
