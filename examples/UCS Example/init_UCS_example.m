@@ -32,5 +32,8 @@ configure_scene(model_name, scene_config, prj_path_list.executables_path, exampl
 %run the model `UCS_example.slx` and store the output in `results`
 results = sim(model_name);
 
+%reset all values to default
+deconfigure_scene(model_name);
+
 %clear parameters
 clear ground_z waterLevel_z dt_sample dt_sim example_UCS_data_path M_UCSToWorld M_WorldToUCS scene_config tspan model_name;
