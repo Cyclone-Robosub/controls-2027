@@ -27,32 +27,36 @@ function configure_scene(model_name, scene_config, executables_path, data_path)
         open_system(model_name);
     end
     
-
+    %Finds all (hopefully only 1) scene configuration blocks.
     scene_configuration_blocks = find_system(model_name, ...
         'LookUnderMasks', 'all', ...
         'FollowLinks',    'on',  ...
         'MatchFilter', @Simulink.match.allVariants,...
         'MaskType',      'Simulation 3D Scene Configuration');
-
+    
+    %Sets the path to the executable and picks the correct level.
     for i = 1:numel(scene_configuration_blocks)
         set_param(scene_configuration_blocks{i}, "ProjectName", exe_path);
         set_param(scene_configuration_blocks{i}, "ScenePath", "/Game/" + scene_config.scene_states.scene_level);
     end
-
+    
+    %Finds all video saving blocks.
     to_multimedia_blocks = find_system(model_name, ...
         'LookUnderMasks', 'all', ...
         'FollowLinks',    'on',  ...
         'MatchFilter', @Simulink.match.allVariants,...
         'IncludeCommented', 'on',...
         'FunctionName',      'sdspwmmfo2');
-
+    
+    %Finds all video display blocks
     to_video_display_blocks = find_system(model_name, ...
         'LookUnderMasks', 'all', ...
         'FollowLinks',    'on',  ...
         'MatchFilter', @Simulink.match.allVariants,...
         'IncludeCommented', 'on',...
         'FunctionName',      'svipwvo2');
-
+    
+    %Sets the save path or comments out depending on flags in config
     for i = 1:numel(to_multimedia_blocks)
         var_name  = get_param(to_multimedia_blocks{i}, 'Name');
         camera_name = string(extractBefore(var_name, "_save"));
@@ -63,7 +67,8 @@ function configure_scene(model_name, scene_config, executables_path, data_path)
             set_param(to_multimedia_blocks{i}, 'Commented', 'off');
         end
     end
-
+    
+    %Sets the save path or comments out depending on flags in config
     for i = 1:numel(to_video_display_blocks)
         var_name  = get_param(to_video_display_blocks{i}, 'Name');
         camera_name = string(extractBefore(var_name, "_display"));
