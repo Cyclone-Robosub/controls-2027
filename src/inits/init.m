@@ -23,7 +23,7 @@ if(~exist('prj_path_list','var'))
     prj_path_list = getProjectPaths();
 end
 
-%% Parameters
+%% Physical Vehicle Parameters (P)
 %{
 Load an existing parameter structure P or create a new one. To save your
 current configuration for future re-use, run saveParameters() in the
@@ -38,10 +38,10 @@ parameter_set = "test"; %specify the name of the parameter set here
 P = createParameters();
 
 %optionally, save for reuse. Sets with the same name are overwritten.
-saveParameters(parameter_set);
+saveParameters(P, parameter_set);
 
 
-%% Tuning
+%% Tuning Gains and "Magic Numbers" (T)
 %{
 Load an existing tuning structure T or create a new one, similar to the
 parameter structure.
@@ -54,48 +54,42 @@ tuning_set = "test";
 T = createTuning();
 
 %optionally, save for reuse. Sets with the same name are overwritten.
-saveTuning(tuning_set);
+saveTuning(T, tuning_set);
 
-%% Initial Conditions
-fprintf("Defining initial conditions.\n")
-%initial intertial position
-xi_0 = 0; yi_0 = 0; zi_0 = 0;
-Ri_0 = [xi_0; yi_0; zi_0];
+%% Initial Conditions (I)
+%{
+Load an existing initial conditions set I or create a new one, similar to
+parameter & tuning structures.
+%}
+init_set = "test";
 
-%initial intertial velocity
-ui_0 = 0; vi_0 = 0; wi_0 = 0;
-dRi_0 = [ui_0; vi_0; wi_0];
+%uncomment one of these options
+% I = loadInit(init_set);
+I = createInit(init_set);
 
-%initial euler angles
-phi_0 = 0; theta_0 = 0; psi_0 = 0;
-Eul_0 = [phi_0; theta_0; psi_0]; %[roll, pitch, yaw]
-
-%other attitude representations
-Cib_0 = eulToRotm(Eul_0);
-q_0 = eulToQuat(Eul_0); %[vector; scalar]
-
-%initial angular velocity
-wbx_0 = 0; wby_0 = 0; wbz_0 = 0;
-wb_0 = [wbx_0; wby_0; wbz_0];
-
-%pack initial state
-X0 = [Ri_0;q_0;dRi_0;wb_0];
-
-% %initial conditions for the state estimator
-q0_ekf = [0 0 0 1]';
-q0_est = [0 0 0 1]';
-P0_ekf = 0.1*eye(6); 
-B0_ekf = zeros(3,1);
+%optionally, save for reuse. Sets with the same name are overwritten.
+saveInit(I, init_set);
 
 
+%% Simulink Configurations (S)
+%{
+Load an existing test set I or create a new one. You get the
+idea by now. The test set contains simulation debug settings, model
+configurations, injectors, and override flags. Basically everything
+required to define a test that isn't a physical parameter, tuning constant,
+or initial condition.
 
-%% Monte Carlo Setup
-%TBA
+%}
+sim_set = "test";
 
-%% Test Conditions
-% Not all test conditions are needed for every model
-fprintf("Defining test case.\n")
+%uncomment one of these options
+% S = loadSim(init_set);
+S = createSim(sim_test);
 
+%optionally, save for reuse. Sets with the same name are overwritten.
+saveSim(S, sim_set);
+
+%% TODO - move this section into the above 3
 %battery voltage
 const_voltage = 15;
 
@@ -148,7 +142,6 @@ Cbimu_meas = [1 0 0;...
     0 -0.0370 -0.9993;...
     0 0.9993 -0.0370];
 
-%% Simulation Parameters
 fprintf("Setting simulation config.\n")
 
 %simulation duration
@@ -234,7 +227,7 @@ end
 mission_file_path = fullfile(prj_path_list.inits_path,mission_file_name);
 mission = importMission(mission_file_path, max_commands_in_mission);
 
-%% Simulation
+%% Execution
 fprintf("Running the sim.\n");
 
 %setup the sim
