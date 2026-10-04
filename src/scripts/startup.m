@@ -44,6 +44,7 @@ asv_path = fullfile(codegen_path,'autosaves');
 % vision_path = fullfile(src_path,'utils','Vision');
 
 %pack everything into the project path list variable
+prj_path_list.root_path = root_path;
 prj_path_list.archive_path = archive_path;
 prj_path_list.codegen_path = codegen_path;
 prj_path_list.data_path = data_path;
