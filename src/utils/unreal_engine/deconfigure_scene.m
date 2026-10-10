@@ -1,5 +1,4 @@
 function deconfigure_scene(model_name)
-
     
     %strip the .slx from the model name
     if(contains(model_name, ".slx"))
@@ -18,11 +17,13 @@ function deconfigure_scene(model_name)
         'MaskType',      'Simulation 3D Scene Configuration');
     
     %Sets the path to the executable to default.
+    %Code currently doesn't work without error, setting invalid paths causes an inescapable errror to find a way to reset these values.
+    %{
     for i = 1:numel(scene_configuration_blocks)
-        set_param(scene_configuration_blocks{i}, "ProjectName", "default");
-        set_param(scene_configuration_blocks{i}, "ScenePath", "default");
+        set_param(scene_configuration_blocks{i}, "ProjectName", "");
+        set_param(scene_configuration_blocks{i}, "ScenePath", "");
     end
-    
+    %}
     %Finds all video saving blocks.
     to_multimedia_blocks = find_system(model_name, ...
         'LookUnderMasks', 'all', ...

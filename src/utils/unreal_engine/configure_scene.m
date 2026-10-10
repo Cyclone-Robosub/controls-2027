@@ -1,7 +1,7 @@
 function configure_scene(model_name, scene_config, executables_path, data_path)
     
     %create save paths and exe path
-    exe_path = fullfile(executables_path, scene_config.scene_states.executable_version + "\Windows\EllingtonPoolSim.exe");
+    exe_path = fullfile(executables_path, scene_config.scene_states.executable_version + "\Windows\EllingtonPoolSim2.exe");
     
     save_data_path = fullfile(data_path, string(datetime('now','Format','uuuu_MM_dd_HH_mm_ss')));
     if(~isfolder(save_data_path))
@@ -12,7 +12,7 @@ function configure_scene(model_name, scene_config, executables_path, data_path)
     if(~isfolder(save_camera_feeds_path))
         mkdir(save_camera_feeds_path);
     end
-
+    
     save_scripts_path = fullfile(save_data_path, "scripts");
     if(~isfolder(save_scripts_path))
         mkdir(save_scripts_path);
@@ -38,6 +38,7 @@ function configure_scene(model_name, scene_config, executables_path, data_path)
     for i = 1:numel(scene_configuration_blocks)
         set_param(scene_configuration_blocks{i}, "ProjectName", exe_path);
         set_param(scene_configuration_blocks{i}, "ScenePath", "/Game/" + scene_config.scene_states.scene_level);
+        set_param(scene_configuration_blocks{i}, 'Commented', 'off');
     end
     
     %Finds all video saving blocks.
@@ -76,5 +77,7 @@ function configure_scene(model_name, scene_config, executables_path, data_path)
             set_param(to_video_display_blocks{i}, 'Commented', 'off');
         end
     end
-
+    
+    %Saves The scene configuration
+    writestruct(scene_config,fullfile(save_data_path,"scene_config.xml"));
 end

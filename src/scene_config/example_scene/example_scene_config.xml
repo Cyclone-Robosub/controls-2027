@@ -256,10 +256,10 @@
         <dt_sample>0.03</dt_sample> <!--Sample time step of the unreal sim, one image will be gathered every dt_sample seconds in sim time-->
         <start_delay>0</start_delay> <!--Use this to specify how long to wait for unreal lighting to settle-->
         <tspan>10</tspan> <!--Simulation duration-->
-        <dt_sim>0.001</dt_sim> <!--Simulation time step in seconds-->
+        <dt_sim>0.01</dt_sim> <!--Simulation time step in seconds-->
 
         <!--Executable version Name-->
-        <executable_version>Ellington_Pool_Sim_v2.0</executable_version>
+        <executable_version>EllingtonPoolSim_v2_beta</executable_version>
 
         <!--Level of the world used for this sim, typically Olympic_Pool_Course will be the only used one, though there is a level
         for keypoint collection and for camera calibration-->
