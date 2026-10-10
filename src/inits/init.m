@@ -172,12 +172,6 @@ is a limitation from using ros blocks in subsystem references. The fix for
 this is running`bdclose('all')` then resetting your model.
 %}
 
-% Unreal Cosim Toggles
-show_camera_feed_flag = true;
-save_camera_feed_flag = false;
-showCameraFeed(model_select,show_camera_feed_flag);
-setUnrealScenePath(model_select);
-
 %setup for bus objects (necessary to use structures in Simulink)
 max_commands_in_mission = 64; 
 setup_buses_flag = true;
@@ -215,13 +209,6 @@ disableDebugDataStores(model_select);
 %comment or uncomment the to-workspace blocks (for performance reasons)
 enableToWorkspaceBlocks(model_select);
 % disableToWorkspaceBlocks(model_select)
-
-%Override disableToWorkspaceBlocks for saving camera feed
-if save_camera_feed_flag
-    set_param('FB_Controller_UCS/Camera Model/Save Camera Feed/To Workspace Left', 'Commented', 'off');
-    set_param('FB_Controller_UCS/Camera Model/Save Camera Feed/To Workspace Right', 'Commented', 'off');
-    %set_param('FB_Controller_UCS/Camera Model/Save Camera Feed/To Workspace Bottom', 'Commented', 'off');
-end
 
 %import the mission text file as an array of cmd objects
 mission_file_path = fullfile(prj_path_list.inits_path,mission_file_name);
