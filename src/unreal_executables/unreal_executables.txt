@@ -1,2 +1,2 @@
 Drag and drop whole folder from packaged build 
-(ie. unreal_executables/EllingtonPoolSim_v2_beta/Windows/...
+(ie. unreal_executables/EllingtonPoolSim_v2_beta/Windows/...)
