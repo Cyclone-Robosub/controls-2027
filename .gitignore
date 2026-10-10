@@ -40,5 +40,7 @@ codegen/
 *.sbproj.bak
 
 /src/utils/lookups/prj_path_list.mat
-
+/src/unreal_executables
+/examples/UCS Example/UCS_example_data
 /examples/SIM Example/SIM_example_data/
+

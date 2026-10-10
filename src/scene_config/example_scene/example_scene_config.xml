@@ -259,7 +259,7 @@
         <dt_sim>0.01</dt_sim> <!--Simulation time step in seconds-->
 
         <!--Executable version Name-->
-        <executable_version>EllingtonPoolSim_v2_beta</executable_version>
+        <executable_version>EllingtonPoolSim_2_beta</executable_version>
 
         <!--Level of the world used for this sim, typically Olympic_Pool_Course will be the only used one, though there is a level
         for keypoint collection and for camera calibration-->
