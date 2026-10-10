@@ -13,7 +13,7 @@ called to avoid codegen issues.
 
 P.Geometry = defGeometry(); %geometry definitions from Onshape & measurement
 P.Constants = defConstants(); %physical constants
-P.Volume = calcVolumeData(); %center of volume, total volume, etc
+P.Volume = calcVolumeData(P.Geometry); %center of volume, total volume, etc
 P.Mass = calcMassData(); %center of mass, inertia, etc
 P.Wrench = calcWrenchData(P.Mass); %force and moment wrench due to thrusters about CoM
 P.Hydro = calcHydroData(); %added mass and inertia, drag wrench

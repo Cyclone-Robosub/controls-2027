@@ -25,69 +25,42 @@ end
 
 %% Physical Vehicle Parameters (P)
 %{
-Load an existing parameter structure P or create a new one. To save your
-current configuration for future re-use, run saveParameters() in the
-Command Window, optionally specifying a name for the test case. Parameters
-are saved to prj_path_list.lookups_path.
+Load an existing parameter structure P or create a new one. Same pattern is
+also used for tuning structures T, initial condition structures I, and
+simulation settings S.
+
+To save your current configuration for future re-use, run saveParameters() 
+in the Command Window or by uncommenting the call below. 
+Optionally specifying a name for the test case. Parameters are saved to 
+prj_path_list.lookups_path.
+
 %}
 
+%Parameters
 parameter_set = "test"; %specify the name of the parameter set here
-
-% uncomment one of these options
 % P = loadParameters(parameter_set);
 P = createParameters();
+% saveParameters(P, parameter_set);
 
-%optionally, save for reuse. Sets with the same name are overwritten.
-saveParameters(P, parameter_set);
-
-
-%% Tuning Gains and "Magic Numbers" (T)
-%{
-Load an existing tuning structure T or create a new one, similar to the
-parameter structure.
-%}
-
+%Tuning
 tuning_set = "test";
-
-%uncomment one of these options
 % T = loadTuning(tuning_set);
 T = createTuning();
+% saveTuning(T, tuning_set);
 
-%optionally, save for reuse. Sets with the same name are overwritten.
-saveTuning(T, tuning_set);
-
-%% Initial Conditions (I)
-%{
-Load an existing initial conditions set I or create a new one, similar to
-parameter & tuning structures.
-%}
+%Initial Conditions
 init_set = "test";
-
-%uncomment one of these options
 % I = loadInit(init_set);
 I = createInit(init_set);
-
-%optionally, save for reuse. Sets with the same name are overwritten.
 saveInit(I, init_set);
 
-
-%% Simulink Configurations (S)
-%{
-Load an existing test set I or create a new one. You get the
-idea by now. The test set contains simulation debug settings, model
-configurations, injectors, and override flags. Basically everything
-required to define a test that isn't a physical parameter, tuning constant,
-or initial condition.
-
-%}
+%Simulink Settings
 sim_set = "test";
-
-%uncomment one of these options
 % S = loadSim(init_set);
 S = createSim(sim_test);
+% saveSim(S, sim_set);
 
-%optionally, save for reuse. Sets with the same name are overwritten.
-saveSim(S, sim_set);
+
 
 %% TODO - move this section into the above 3
 %battery voltage
