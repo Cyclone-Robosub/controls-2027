@@ -61,13 +61,13 @@ S = createSim();
 % saveSim(S, sim_set);
 
 %% Run the Sim
-%mission file and model %change tag
 mission_file_name = "mission_file.txt"; 
-% model_select = "FB_Controller_SIM";
-% model_select = "Integrated_Joystick_HIL";
-% model_select = "Mission_Manager_SIM";
-model_select = "Mission_Manager_HIL";
-% model_select = "CodeGen_Tester_HIL";
+model_name = "Dynamics";
+
+%if true, data is deleted from file system but saved in the workspace for post processing
+delete_data_flag = true; 
+prj_path_list.prior_run_path = configureToFileBlocks(model_name, prj_path_list.data_path); 
+
 
 %{
 Note, if you receive an error from the ROS blocks saying something about a
@@ -91,51 +91,24 @@ if(setup_buses_flag)
 end
 
 
-%constants file for Unreal Cosim
-run('constants_UCS.m');
-run('constants_Props_UCS.m')
-
-%constant overrides for Unreal. Comment out to use defaults
-%manateeOriginPose = [0 0 0 0 0 0]; %Keep roll pitch yaw 0 0 0 for now.
-
-fprintf("Configuring toWorkspace and toFile Blocks.\n")
-
-%set To-File block names %change tag
-enableToFileBlocks(model_select);
-% disableToFileBlocks(model_select);
-to_file_block_path = setToFileBlockNames(model_select, prj_path_list.user_data_path);
-prj_path_list.prior_run_data_path = to_file_block_path;
-
-%Data stores for debug
-% enableDebugDataStores(model_select); %change tag
-disableDebugDataStores(model_select);
-
-%comment or uncomment the to-workspace blocks (for performance reasons)
-enableToWorkspaceBlocks(model_select);
-% disableToWorkspaceBlocks(model_select)
-
 %import the mission text file as an array of cmd objects
 mission_file_path = fullfile(prj_path_list.inits_path,mission_file_name);
 mission = importMission(mission_file_path, max_commands_in_mission);
 
 %% Execution
-fprintf("Running the sim.\n");
 
 %setup the sim
-simIn = Simulink.SimulationInput(model_select);
-
+simIn = Simulink.SimulationInput(model_name);
 %set the parameter `mission` containing all the cmd structures
 mission = Simulink.Parameter(mission);
 simIn = simIn.setVariable('mission', mission);
-
 %run the sim
 results = sim(simIn);
 
-defaultToFileBlockNames(model_select);
+
 
 %% Post Processing
-close all
-fprintf("Running Post-Processing.\n")
+results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
 
 run('setup_plots.m')
 
