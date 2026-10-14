@@ -8,7 +8,6 @@ w = 0.16;
 b = w/2;
 h = 0.2256;
 c = h/2;
-V = l*w*h;
 
 Cd = 1.1; %assumed for linear
 

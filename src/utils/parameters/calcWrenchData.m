@@ -1,4 +1,14 @@
 function Wrench = calcWrenchData(Geometry, Mass)
+%{
+Calculates various wrenches, which transform the 8 thruster forces to force
+and body frame vectors and back again. 
+
+Populates:
+Wrench.FT_wrench
+Wrench.MT_wrench
+Wrench.invFT_wrench
+Wrench.invMT_wrench
+%}
 
 %matrix of thruster positions
 R_o2tk = [Geometry.Ro_t1 Geometry.Ro_t2 Geometry.Ro_t3...

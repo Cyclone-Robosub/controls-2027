@@ -23,7 +23,7 @@ if(~exist('prj_path_list','var'))
     prj_path_list = getProjectPaths();
 end
 
-%% Physical Vehicle Parameters (P)
+%% Parameters, Tuning, Initial Conditions, Settings
 %{
 Load an existing parameter structure P or create a new one. Same pattern is
 also used for tuning structures T, initial condition structures I, and
@@ -49,87 +49,18 @@ T = createTuning();
 % saveTuning(T, tuning_set);
 
 %Initial Conditions
-init_set = "test";
-% I = loadInit(init_set);
-I = createInit(init_set);
-saveInit(I, init_set);
+inits_set = "test";
+% I = loadInits(init_set);
+I = createInits();
+% saveInits(I, inits_set);
 
 %Simulink Settings
 sim_set = "test";
 % S = loadSim(init_set);
-S = createSim(sim_test);
+S = createSim();
 % saveSim(S, sim_set);
 
-
-
-%% TODO - move this section into the above 3
-%battery voltage
-const_voltage = 15;
-
-%Simple_Joystick_SIM
-const_joy = [0 0 0 0 0 0]'; %[Y, X ,Rise,Sink,Yaw,Pitch]
-FT_list_test = 10*[0 0 0 0 10 -10 10 -10]';
-test_pwm_list = [1500 1500 1500 1500 1500 1500 1500 1500]';
-initial_joystick_mode_enabled_flag = false;
-
-%flags are used to turn parts of the simulation on and off
-do_buoyancy_flag = 1;
-do_gravity_flag = 1;
-do_drag_flag = 1;
-do_thrusters_flag = 1;
-do_time_flag = 1;
-do_torque_flag = 1;
-do_force_flag = 1;
-use_true_state_flag = 0;
-allow_PID_resets_flag = 1;
-
-%controller tuning
-do_force_cmd_flag = true;
-do_moment_cmd_flag = true;
-
-overwrite_FT_list_flag = false;
-FT_list_inject = [0;0;0;0;0;0;0;0];
-
-overwrite_rate_error_flag = false;
-wb_error_inject = [0;0;0]; %[wbx; wby; wbz] rad/s
-dRb_error_inject = [0;0;0]; %[dRbx; dRby; dRbz] m/s
-
-overwrite_rate_setpoint_flag = false;
-wb_sp_inject = [0;0;0]; %[wbx; wby; wbz] rad/s
-dRb_sp_inject = [0;0;0]; %[dRbx; dRby; dRbz] m/s
-
-%if true, ignores guidanceLaw, discountExecutive, and commandExecuter
-overwrite_state_error_flag = false; 
-eul_error_inject = [0;0;0]; %[roll; pitch; yaw] rad
-Rb_error_inject = [0;0;0]; %[Rbx; Rby; Rbz] m
-
-overwrite_state_setpoint_flag = false;
-eul_sp_inject = [0;0;0];
-Rb_sp_inject = [0;0;0];
-
-
-%for running in sim
-% Cbimu_meas = eye(3); %change tag
-
-Cbimu_meas = [1 0 0;...
-    0 -0.0370 -0.9993;...
-    0 0.9993 -0.0370];
-
-fprintf("Setting simulation config.\n")
-
-%simulation duration
-tspan = 360;
-
-%timesteps for various simulation components
-dt_sim = 1/100; %sim timestep %change tag
-dt_data = roundToSimTimestep(1/30, dt_sim); %data saving timestep
-dt_control = roundToSimTimestep(1/100, dt_sim); %controller timestep
-dt_dvl_drr = roundToSimTimestep(1/5, dt_sim);
-dt_dvl_vr = roundToSimTimestep(1/20, dt_sim);
-dt_imu = roundToSimTimestep(1/100, dt_sim);
-dt_debug = roundToSimTimestep(1/10, dt_sim); %for debug publisher
-dt_heartbeat = roundToSimTimestep(1/2, dt_sim);
-
+%% Run the Sim
 %mission file and model %change tag
 mission_file_name = "mission_file.txt"; 
 % model_select = "FB_Controller_SIM";
