@@ -9,13 +9,11 @@ The parameter structure must be constant be fully defined before sim() is
 called to avoid codegen issues.
 %}
 
-
-
 P.Geometry = defGeometry(); %geometry definitions from Onshape & measurement
 P.Constants = defConstants(); %physical constants
 P.Volume = calcVolumeData(P.Geometry); %center of volume, total volume, etc
-P.Mass = calcMassData(); %center of mass, inertia, etc
-P.Wrench = calcWrenchData(P.Mass); %force and moment wrench due to thrusters about CoM
-P.Hydro = calcHydroData(); %added mass and inertia, drag wrench
+P.Mass = calcMassData(P.Geometry); %center of mass, inertia, etc
+P.Wrench = calcWrenchData(P.Geometry, P.Mass); %force and moment wrench due to thrusters about CoM
+P.Hydro = calcHydroData(P.Geometry, P.Constants); %added mass and inertia, drag wrench
 
 end

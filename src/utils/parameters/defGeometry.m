@@ -15,6 +15,7 @@ For simplicity, all objects are modeled as point masses, right circular
 cylinders, or right rectangular prisms. 
 %}
 in2m = 0.0254;
+Geometry.in2m = 0.0254;
 
 %main cylinder (right circular cylinder)
 Geometry.l_cyl_x = 19.295*in2m;
@@ -25,6 +26,7 @@ Geometry.Ro_cyl = [0;0;4.375]*in2m;
 A_plate = 282.296*in2m;
 l_plate_x_max = 24.8*in2m;
 l_plate_y_max = 20.8*in2m;
+
 %model as a rectangular plate with the same aspect ratio as the max dim
 Geometry.l_plate_x = A_plate/l_plate_y_max;
 Geometry.l_plate_y = A_plate/l_plate_x_max;
