@@ -1,9 +1,8 @@
-function configure_scene(model_name, scene_config, executables_path, data_path)
+function configure_scene(model_name, scene_config, executables_path, save_data_path)
     
     %create save paths and exe path
     exe_path = fullfile(executables_path, scene_config.scene_states.executable_version + "\Windows\EllingtonPoolSim2.exe");
     
-    save_data_path = fullfile(data_path, string(datetime('now','Format','uuuu_MM_dd_HH_mm_ss')));
     if(~isfolder(save_data_path))
         mkdir(save_data_path);
     end

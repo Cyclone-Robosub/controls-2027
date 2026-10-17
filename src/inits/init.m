@@ -92,7 +92,7 @@ run('setup_dvl_bus.m');
 
 %overrides for common settings
 S.tspan = 3;
-S.FT_list_test = FF_maneuvers.forward;
+S.FT_list_test = FF_maneuvers.yawRight;
 
 %{
 Note, if you receive an error from the ROS blocks saying something about a
