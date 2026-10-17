@@ -117,3 +117,7 @@ el.Name = "rsff_yawLeft";
 el.DataType = "double";
 el.Dimensions = [6 1];
 RSFF_maneuver_bus.Elements(end+1) = el;
+
+clear el rsff_backward rsff_down rsff_forward rsff_left rsff_pitchDown...
+    rsff_pitchUp rsff_right rsff_rollLeft rsff_rollRight rsff_stop rsff_up...
+    rsff_yawLeft rsff_yawRight RSFF_maneuvers

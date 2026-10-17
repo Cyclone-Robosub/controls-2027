@@ -154,3 +154,4 @@ el.DataType = "double";
 el.Dimensions = [1 1];
 sensor_bus.Elements(end+1) = el;
 
+clear el

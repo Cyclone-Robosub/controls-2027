@@ -1,4 +1,4 @@
-function Mass = calcMassData(Geometry)
+function Mass = calcMassData(Geometry, Hydro)
 %Measurements from Mechanical team
 Mass.m = 15.06; %kg
 m_cyl = 5.5;
@@ -54,8 +54,14 @@ R_cm2o = -R_o2cm;
 Mass.R_cm2o = R_cm2o;
 
 Mass.I = J - Mass.m*((dot(R_cm2o,R_cm2o)*eye(3) - R_cm2o*R_cm2o'));
-Mass.invI = inv(Mass.I);
 
 %mass matrix
-M = diag([Mass.m, Mass.m, Mass.m]);
+Mass.M = diag([Mass.m, Mass.m, Mass.m]);
+
+%add the added mass and inertia from the hydro structure
+Mass.M = Mass.M + Hydro.M_added;
+Mass.invM = inv(Mass.M);
+
+Mass.I = Mass.I + Hydro.I_added;
+Mass.invI = inv(Mass.I);
 end

@@ -94,3 +94,4 @@ X_bus = Simulink.Bus;
 
 X_bus.Elements = [Ri, Rb, Eul, qib, Cib, Cbi, dRi, dRb, wb, wi, ddRi, ddRb];
 
+clear Ri Rb Eul qib Cib Cbi dRi dRb wb wi ddRi ddRb

@@ -23,3 +23,5 @@ el = Simulink.BusElement;
 el.Name = 'new_imu_flag';
 el.Dimensions = [1 1];
 imu_bus.Elements(end+1) = el;
+
+clear el

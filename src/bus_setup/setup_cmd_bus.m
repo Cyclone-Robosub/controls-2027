@@ -55,3 +55,5 @@ cmd_bus = Simulink.Bus;
 cmd_bus.Elements = [cmd_id, wp, wp_mask, wp_tol, hold_time, obj_id,...
     conf, trick_id, exec_timeout];
 
+clear cmd_id wp wp_mask wp_tol hold_time obj_id conf trick_id exec_timeout
+
