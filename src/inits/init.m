@@ -56,27 +56,31 @@ I = createInits();
 S = createSim();
 % saveSim(S);
 
-
-%overrides for common settings
-S.tspan = 10;
-S.FT_list_test = FF_maneuvers.forward;
-%% Run the Sim
-mission_file_name = "mission_file.txt"; 
 model_name = "Dynamics";
 
 %if true, data is deleted from file system but saved in the workspace for post processing
-delete_data_flag = true; 
+delete_data_flag = false; 
 prj_path_list.prior_run_path = configureToFileBlocks(model_name, prj_path_list.data_path); 
 
-%{
-Note, if you receive an error from the ROS blocks saying something about a
-different model that is not the one you have selected not being loaded this
-is a limitation from using ros blocks in subsystem references. The fix for
-this is running`bdclose('all')` then resetting your model.
-%}
+%Unreal setup (handled separately w/ XML format)
+do_unreal_flag = 1; %if false, the unreal_cosim subsystem is commented out
+if(do_unreal_flag)
+    % Load UCS Scene Configuration and Variables
+    scene_config_name = "example_scene_config.xml";
+    scene_config = readstruct(scene_config_name);
+    dt_sample = scene_config.scene_states.dt_sample;
+    
+    %other unreal stuff
+    M_WorldToUCS = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 -1 0 0 0; 0 0 0 (180 / pi) 0 0; 0 0 0 0 (180 / pi) 0; 0 0 0 0 0 (180 / pi)];
+    M_UCSToWorld = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 -1 0 0 0; 0 0 0 (pi / 180) 0 0; 0 0 0 0 (pi / 180) 0; 0 0 0 0 0 (pi / 180)];
+    ground_Z = scene_config.scene_states.ground_Z;
+    waterLevel_Z = scene_config.scene_states.waterLevel_Z;
 
-%setup for bus objects (necessary to use structures in Simulink)
-max_commands_in_mission = 64; 
+    configure_scene(model_name, scene_config, prj_path_list.executables_path, prj_path_list.prior_run_path);
+else
+    disableUnrealCosim(model_name);
+end
+
 
 run('setup_cmd_bus.m');
 run('setup_FF_maneuvers_bus.m');
@@ -86,11 +90,24 @@ run('setup_RSFF_maneuvers_bus.m');
 run('setup_imu_bus.m');
 run('setup_dvl_bus.m');
 
+%overrides for common settings
+S.tspan = 3;
+S.FT_list_test = FF_maneuvers.forward;
+
+%{
+Note, if you receive an error from the ROS blocks saying something about a
+different model that is not the one you have selected not being loaded this
+is a limitation from using ros blocks in subsystem references. The fix for
+this is running`bdclose('all')` then resetting your model.
+%}
+%% Run the Sim
+mission_file_name = "mission_file.txt"; 
+
+%setup for bus objects (necessary to use structures in Simulink)
+max_commands_in_mission = 64; 
 %import the mission text file as an array of cmd objects
 mission_file_path = fullfile(prj_path_list.inits_path,mission_file_name);
 mission = importMission(mission_file_path, max_commands_in_mission);
-
-%% Execution
 
 %setup the sim
 simIn = Simulink.SimulationInput(model_name);
@@ -99,9 +116,12 @@ mission = Simulink.Parameter(mission);
 simIn = simIn.setVariable('mission', mission);
 %run the sim
 results = sim(simIn);
-clear mission_file_path mission_file_name max_commands_in_mission model_name
 
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
+
+%reset all Unreal values to default (TODO - move to model save callback)
+deconfigure_scene(model_name);
+clear mission_file_path mission_file_name max_commands_in_mission scene_config_name
 
 %% Plotting
 close all

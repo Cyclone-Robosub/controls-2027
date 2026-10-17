@@ -11,7 +11,7 @@ manual = manual.setForce([0 0 0 0 0 0]);
 forward = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"forward");
 forward = forward.setID(1);
 forward = forward.setForce(50.*[1 0 0 0 0 0]); 
-forward = forward.addForce(1.*[0 0 0 0 -5 0]);
+forward = forward.addForce(1.*[0 0 0 0 0 0]);
 
 backward = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"backward");
 backward = backward.setID(2);
@@ -139,5 +139,5 @@ FF_maneuvers_bus = Simulink.Bus;
 FF_maneuvers_bus.Elements = [manual, forward, backward, up, down, right,...
     left, pitchUp, pitchDown, yawRight, yawLeft, rollRight, rollLeft];
     
-clear forward backward left right up down pitchUp pichDown yawLeft yawRight...
-    rollLeft rollRight FT_wrench MT_wrench manual max_force_default
+clear forward backward left right up down pitchUp pitchDown yawLeft yawRight...
+    rollLeft rollRight FT_wrench MT_wrench manual max_force_default 
