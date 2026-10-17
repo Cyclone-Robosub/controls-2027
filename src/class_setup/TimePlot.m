@@ -108,7 +108,8 @@ classdef TimePlot
                 end
             catch
                 close(gcf)
-                warning("Plot named %s failed to plot fully. Some signals may be missing.\nDo they all have to-workspace blocks?",obj.name)
+                warning("Plot named %s failed to plot fully. ..." + ...
+                    "Some signals may be missing.\nDo they all have to-workspace blocks?",obj.name)
             end
         end %plot
     end %methods

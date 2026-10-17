@@ -59,7 +59,7 @@ S = createSim();
 
 %overrides for common settings
 S.tspan = 10;
-S.FT_list_test = [0 0 0 0 0 0 0 0];
+S.FT_list_test = FF_maneuvers.forward;
 %% Run the Sim
 mission_file_name = "mission_file.txt"; 
 model_name = "Dynamics";
@@ -109,7 +109,7 @@ run('setup_plots.m')
 
 % Enter the names of all the plots as a comma separated cell array
 % Refer to setup_plots.m to see the valid plot names
-plot_names = {"X", "thrusters"};
+plot_names = {"X","thrusters"};
 plotAllOutputs(plots,results,plot_names);
 % 
 % %Publish Controller Report

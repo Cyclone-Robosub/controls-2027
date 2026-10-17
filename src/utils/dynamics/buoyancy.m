@@ -18,7 +18,6 @@ Mb_buoy = the [3x1] moment (Nm) due to the buoyant force expressed in body
 
 %calculate the gravitation acceleration in the body frame
 gb = Cbi*[0;0;9.81];
-
 if(do_buoyancy_flag)
     %buoyant force
     Fb_buoy = -rho * V * gb;

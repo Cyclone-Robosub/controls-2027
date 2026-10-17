@@ -31,8 +31,8 @@ l_plate_x_max = 24.8*in2m;
 l_plate_y_max = 20.8*in2m;
 
 %model as a rectangular plate with the same aspect ratio as the max dim
-Geometry.l_plate_x = A_plate/l_plate_y_max;
-Geometry.l_plate_y = A_plate/l_plate_x_max;
+Geometry.l_plate_x = A_plate/l_plate_y_max*in2m;
+Geometry.l_plate_y = A_plate/l_plate_x_max*in2m;
 Geometry.l_plate_z = 0.250*in2m;
 Geometry.Ro_plate = [0;0;0.125]*in2m;
 

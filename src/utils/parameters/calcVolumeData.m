@@ -18,11 +18,12 @@ Volume structure containing fields
 %}
 in2m = Geometry.in2m;
 
-%Fictitious volume for tuning, basically air-filled balast
-l_fict = 0.1417;
-w_fict = 0.1417;
-h_fict = 0.1417;
-Ro_fict = [-1.2 0 0]'*in2m;
+%Fictitious volume for tuning to make buoyancy match observations
+%Fg = 147.74 N
+l_fict = -0.2265; %negative because calcs make robot much too buoyant
+w_fict = l_fict;
+h_fict = l_fict;
+Ro_fict = [-0.005 0 0.0432]'*in2m;
 
 %calculate all the volumes
 V_cyl = pi*Geometry.r_cyl^2*Geometry.l_cyl_x; %main cylinder

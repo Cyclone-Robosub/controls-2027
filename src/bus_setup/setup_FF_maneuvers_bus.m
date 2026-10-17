@@ -11,7 +11,7 @@ manual = manual.setForce([0 0 0 0 0 0]);
 forward = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"forward");
 forward = forward.setID(1);
 forward = forward.setForce(50.*[1 0 0 0 0 0]); 
-forward = forward.addForce(5.*[0 0 0 0 1 0]);
+forward = forward.addForce(1.*[0 0 0 0 -5 0]);
 
 backward = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"backward");
 backward = backward.setID(2);
