@@ -16,7 +16,6 @@ the Project tab is visible at the top of the screen).
 
 %% Housekeeping and Path Management
 clc
-close all
 clear results 
 
 %refreshes the file path in case clear all was called
@@ -60,7 +59,7 @@ S = createSim();
 
 %overrides for common settings
 S.tspan = 10;
-
+S.FT_list_test = [0 0 0 0 0 0 0 0];
 %% Run the Sim
 mission_file_name = "mission_file.txt"; 
 model_name = "Dynamics";
@@ -90,6 +89,7 @@ run('setup_dvl_bus.m');
 %import the mission text file as an array of cmd objects
 mission_file_path = fullfile(prj_path_list.inits_path,mission_file_name);
 mission = importMission(mission_file_path, max_commands_in_mission);
+
 %% Execution
 
 %setup the sim
@@ -101,14 +101,15 @@ simIn = simIn.setVariable('mission', mission);
 results = sim(simIn);
 clear mission_file_path mission_file_name max_commands_in_mission model_name
 
-%% Post Processing
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
 
+%% Plotting
+close all
 run('setup_plots.m')
 
 % Enter the names of all the plots as a comma separated cell array
 % Refer to setup_plots.m to see the valid plot names
-plot_names = {"X", "X_est", "pwm_cmd", "cmd_status", "dvl", "est_vs_true", "est_vs_true_imu", "est_vs_true_body_vel"};
+plot_names = {"X", "thrusters"};
 plotAllOutputs(plots,results,plot_names);
 % 
 % %Publish Controller Report

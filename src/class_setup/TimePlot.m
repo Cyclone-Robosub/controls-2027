@@ -55,12 +55,14 @@ classdef TimePlot
                     end
                 end
             catch
-                %stop plotting in any error occurs in data loading
-                obj.is_plottable = false;
+                % warning("Plot named %s failed to load data. Some signals may be missing.\nDo they all have to-workspace blocks?",obj.name)
+                % %stop plotting in any error occurs in data loading
+                % obj.is_plottable = false;
             end %try
         end %loadData
     
         function plot(obj, results)
+
             obj = obj.loadData(results); %start by loading in the data
             %{
             This function overloads the "plot" method to allow the

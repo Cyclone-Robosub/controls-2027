@@ -4,6 +4,7 @@
 *.autosave
 *.slx.r*
 *.mdl.r*
+*slx.original
 
 # Derived content-obscured files
 *.p
