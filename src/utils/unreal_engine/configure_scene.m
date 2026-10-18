@@ -1,12 +1,22 @@
-function configure_scene(model_name, scene_config, executables_path, save_data_path)
+function configure_scene(model_name, scene_config, delete_data_flag, executables_path, save_data_path)
     
+    %uncomment the unreal_cosim subystem (in case of disableUnrealCosim)
+    %Finds the unreal_cosim subsystem reference
+    blocks = find_system('Dynamics', 'RegExp','on', ...
+        'BlockType','SubSystem', ...
+        'ReferencedSubsystem','^unreal_cosim');  % prefix match, so extension doesn't matter
+
+    for k = 1:numel(blocks)
+        set_param(blocks{k}, 'Commented', 'off');
+    end
+
     %create save paths and exe path
     exe_path = fullfile(executables_path, scene_config.scene_states.executable_version + "\Windows\EllingtonPoolSim2.exe");
     
     if(~isfolder(save_data_path))
         mkdir(save_data_path);
     end
-
+    
     save_camera_feeds_path = fullfile(save_data_path, "camera_feeds");
     if(~isfolder(save_camera_feeds_path))
         mkdir(save_camera_feeds_path);
@@ -60,11 +70,16 @@ function configure_scene(model_name, scene_config, executables_path, save_data_p
     for i = 1:numel(to_multimedia_blocks)
         var_name  = get_param(to_multimedia_blocks{i}, 'Name');
         camera_name = string(extractBefore(var_name, "_save"));
-
-        if (scene_config.cameras.(camera_name).save_flag)
+        if(~delete_data_flag) 
+            if (scene_config.cameras.(camera_name).save_flag)
+                file_name = fullfile(save_camera_feeds_path, camera_name + ".mp4");
+                set_param(to_multimedia_blocks{i}, 'outputFilename', file_name);
+                set_param(to_multimedia_blocks{i}, 'Commented', 'off');
+            end
+        else
             file_name = fullfile(save_camera_feeds_path, camera_name + ".mp4");
             set_param(to_multimedia_blocks{i}, 'outputFilename', file_name);
-            set_param(to_multimedia_blocks{i}, 'Commented', 'off');
+            set_param(to_multimedia_blocks{i}, 'Commented', 'on');
         end
     end
     

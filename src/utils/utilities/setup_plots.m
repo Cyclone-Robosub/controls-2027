@@ -1,4 +1,14 @@
+%{
+Creates many custom plot class instances with polymorphic plot methods to
+be used by plotAllOutputs. This script only needs to be run once per
+session, when clear all is called, or when you add or modify this file.
+%}
+
+plots_setup_flag = true; %clear all watchdog
+
 clear plots %need to clear here to prevent end+1 from causing problems
+
+
 
 %Plot details defined here.
 plots{1} = TimePlot("pwm_cmd","pwm_cmd",[4,2],{1,2,3,4,5,6,7,8},["pwm (us)","pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)"],"Time (s)", ["Thruster 0","Thruster 1", "Thruster 2", "Thruster 3", "Thruster 4", "Thruster 5", "Thruster 6", "Thruster 7"],"Commanded Thruster PWM",{"","","","","","","",""});

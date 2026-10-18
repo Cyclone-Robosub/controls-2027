@@ -15,8 +15,11 @@ the Project tab is visible at the top of the screen).
 
 
 %% Housekeeping and Path Management
+tic
 clc
 clear results 
+
+
 
 %refreshes the file path in case clear all was called
 if(~exist('prj_path_list','var')) 
@@ -56,6 +59,7 @@ I = createInits();
 S = createSim();
 % saveSim(S);
 
+
 model_name = "Dynamics";
 
 %if true, data is deleted from file system but saved in the workspace for post processing
@@ -63,8 +67,10 @@ delete_data_flag = false;
 prj_path_list.prior_run_path = configureToFileBlocks(model_name, prj_path_list.data_path); 
 
 %Unreal setup (handled separately w/ XML format)
-do_unreal_flag = 1; %if false, the unreal_cosim subsystem is commented out
-if(do_unreal_flag)
+do_unreal_flag = false; %if false, the unreal_cosim subsystem is commented out
+if(~do_unreal_flag)
+    disableUnrealCosim(model_name); %comment out the whole unreal subsystem to prevent compilation errors
+else
     % Load UCS Scene Configuration and Variables
     scene_config_name = "example_scene_config.xml";
     scene_config = readstruct(scene_config_name);
@@ -76,9 +82,7 @@ if(do_unreal_flag)
     ground_Z = scene_config.scene_states.ground_Z;
     waterLevel_Z = scene_config.scene_states.waterLevel_Z;
 
-    configure_scene(model_name, scene_config, prj_path_list.executables_path, prj_path_list.prior_run_path);
-else
-    disableUnrealCosim(model_name);
+    configure_scene(model_name, scene_config, delete_data_flag, prj_path_list.executables_path, prj_path_list.prior_run_path);
 end
 
 
@@ -91,7 +95,7 @@ run('setup_imu_bus.m');
 run('setup_dvl_bus.m');
 
 %overrides for common settings
-S.tspan = 3;
+S.tspan = 6;
 S.FT_list_test = FF_maneuvers.yawRight;
 
 %{
@@ -116,29 +120,28 @@ mission = Simulink.Parameter(mission);
 simIn = simIn.setVariable('mission', mission);
 %run the sim
 results = sim(simIn);
-
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
 
 %reset all Unreal values to default (TODO - move to model save callback)
 deconfigure_scene(model_name);
+
 clear mission_file_path mission_file_name max_commands_in_mission scene_config_name
 
 %% Plotting
 close all
-run('setup_plots.m')
+
+if(~exist('plots_setup_flag','var')) 
+    "here"
+    run('setup_plots.m')
+end
 
 % Enter the names of all the plots as a comma separated cell array
 % Refer to setup_plots.m to see the valid plot names
-plot_names = {"X","thrusters"};
+plot_names = {"X"};
 plotAllOutputs(plots,results,plot_names);
 % 
-% %Publish Controller Report
-% % run('controller_report.m');
-% % publish('controller_report.m','format','pdf','outputDir',prj_path_list.prior_run_data_path,'evalCode',true,'showCode',false);
-% % saveCalibrationData(results, prj_path_list.prior_run_data_path);
 % % saveStateGif(results,prj_path_list.prior_run_data_path,'test')
 % 
-% %Save to file Camera Stream
-% % saveUCSCameraStream(save_camera_feed_flag, saved_images_path, results, tspan, dt_sample);
 % 
 % fprintf("\nDone.\n\n")
+toc
