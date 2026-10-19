@@ -19,6 +19,9 @@ if(~exist('prj_path_list','var'))
     prj_path_list = getProjectPaths();
 end
 
+%Run this once on a new computer, if if the message definitions change
+% ros2genmsg("<path to software repo>\Software-Cyclone-Core\core\src");
+
 %% Parameters, Tuning, Initial Conditions, Settings
 
 %Parameters
@@ -60,7 +63,7 @@ this is running`bdclose('all')` then resetting your model.
 %overrides for common settings
 S.tspan = 6;
 
-model_name = "Dynamics_SIM";
+model_name = "Full_Controller_SIM";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
