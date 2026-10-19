@@ -4,6 +4,7 @@
 *.autosave
 *.slx.r*
 *.mdl.r*
+*slx.original
 
 # Derived content-obscured files
 *.p
@@ -44,3 +45,5 @@ codegen/
 /examples/UCS Example/UCS_example_data
 /examples/SIM Example/SIM_example_data/
 
+
+/EllingtonPoolSim_2_beta/Windows/EllingtonPoolSim2.exe

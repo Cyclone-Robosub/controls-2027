@@ -36,7 +36,6 @@ else
     save(fullfile(path, "results.mat"),"results",'-mat');
 end
 
-%if the user 
 
 
 end

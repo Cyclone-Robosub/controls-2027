@@ -1,6 +1,8 @@
 function Constants = defConstants()
 %{
-Constants that do not depend on the robot's geometry or mass.
+Constants that do not depend on the robot's geometry or mass. Also loads
+lookup data, like the voltage, thrusts, and PWMS for the Blue Robotics 
+T200 thrusters.
 %}
 
 %max force delivered by a T200 thruster

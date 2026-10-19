@@ -5,7 +5,7 @@ Manny. Measurements are taken from the Onshape CAD or the robot.
 
 Linear dimensions are denoted l_<object>_<axis>, for example l_plate_x is
 the length of the plate in the x-direction. Axis directions are defined in
-the Onshape coordinate system. Radial dimensions are given as l_<object>.
+the Onshape coordinate system. Radial dimensions are given as r_<object>.
 All measurements are expressed in inches, then converted to meters.
 
 The position of an object is expressed as the position vector from the
@@ -13,8 +13,12 @@ Onshape origin to the geometric center of the shape.
 
 For simplicity, all objects are modeled as point masses, right circular
 cylinders, or right rectangular prisms. 
+
 %}
+
+%conversion factor
 in2m = 0.0254;
+Geometry.in2m = in2m;
 
 %main cylinder (right circular cylinder)
 Geometry.l_cyl_x = 19.295*in2m;
@@ -25,9 +29,10 @@ Geometry.Ro_cyl = [0;0;4.375]*in2m;
 A_plate = 282.296*in2m;
 l_plate_x_max = 24.8*in2m;
 l_plate_y_max = 20.8*in2m;
+
 %model as a rectangular plate with the same aspect ratio as the max dim
-Geometry.l_plate_x = A_plate/l_plate_y_max;
-Geometry.l_plate_y = A_plate/l_plate_x_max;
+Geometry.l_plate_x = A_plate/l_plate_y_max*in2m;
+Geometry.l_plate_y = A_plate/l_plate_x_max*in2m;
 Geometry.l_plate_z = 0.250*in2m;
 Geometry.Ro_plate = [0;0;0.125]*in2m;
 
