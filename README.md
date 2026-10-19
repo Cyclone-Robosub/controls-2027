@@ -4,7 +4,7 @@ of software for controls, sensor fusion, computer vision, and software-core. The
 contains many variants of the same Simulink models meant to test different parts of the
 project under different conditions and subsystem readiness. 
 
-The primary deliverable from the controls team one or more ROS2 Nodes. At minimum, this includes
+The primary deliverable from the controls team is one or more ROS2 Nodes. At minimum, this includes
 the `Matlab Node`, which contains the control loop and DVL/IMU sensor fusion. It remains to
 be determined how much of the vision system lives in the `Matlab Node` or external ROS2 nodes. 
 
