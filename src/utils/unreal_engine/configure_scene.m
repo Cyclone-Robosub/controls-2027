@@ -1,15 +1,4 @@
 function configure_scene(model_name, scene_config, delete_data_flag, executables_path, save_data_path)
-    
-    %uncomment the unreal_cosim subystem (in case of disableUnrealCosim)
-    %Finds the unreal_cosim subsystem reference
-    blocks = find_system('Dynamics', 'RegExp','on', ...
-        'BlockType','SubSystem', ...
-        'ReferencedSubsystem','^unreal_cosim');  % prefix match, so extension doesn't matter
-
-    for k = 1:numel(blocks)
-        set_param(blocks{k}, 'Commented', 'off');
-    end
-
     %create save paths and exe path
     exe_path = fullfile(executables_path, scene_config.scene_states.executable_version + "\Windows\EllingtonPoolSim2.exe");
     

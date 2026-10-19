@@ -36,7 +36,7 @@ existing or planned models as well as a description of their purpose.
 ## Dynamics_SIM
 Open loop system dynamics for validation and debugging. Input force an be set using
 either `S.FT_list_inject` or `S.pwm_list_inject` depending on the state of the
-`S.FT_list_inject` and `S.PWM_list_inject` flags.
+`S.overwrite_FT_list_flag and `S.overwrite_pwms_flag flags.
 
 ### Requirements
 ROS - No\

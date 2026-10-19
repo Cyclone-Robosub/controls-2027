@@ -48,18 +48,50 @@ I = createInits();
 S = createSim();
 % saveSim(S);
 
+% Bus Setup
+run('setup_cmd_bus.m');
+run('setup_FF_maneuvers_bus.m');
+run('setup_state_bus.m');
+run('setup_sensor_bus.m');
+run('setup_RSFF_maneuvers_bus.m');
+run('setup_imu_bus.m');
+run('setup_dvl_bus.m');
 
-model_name = "Dynamics_UCS";
+%{
+Note, if you receive an error from the ROS blocks saying something about a
+different model that is not the one you have selected not being loaded this
+is a limitation from using ros blocks in subsystem references. The fix for
+this is running`bdclose('all')` then resetting your model.
+%}
 
+%overrides for common settings
+S.tspan = 6;
+S.FT_list_inject = FF_maneuvers.yawRight;
+
+model_name = "Dynamics_SIM";
+
+%mission file import
+mission_file_name = "mission_file.txt"; 
+max_commands_in_mission = 64; 
+mission_file_path = fullfile(prj_path_list.inits_path,mission_file_name);
+mission = importMission(mission_file_path, max_commands_in_mission);
+
+%% Data
 %if true, data is deleted from file system but saved in the workspace for post processing
-delete_data_flag = false; 
+delete_data_flag = true; 
 prj_path_list.prior_run_path = configureToFileBlocks(model_name, prj_path_list.data_path); 
 
-%Unreal setup (handled separately w/ XML format)
-do_unreal_flag = false; %if false, the unreal_cosim subsystem is commented out
-if(~do_unreal_flag)
-    disableUnrealCosim(model_name); %comment out the whole unreal subsystem to prevent compilation errors
-else
+
+%% Unreal Setup
+do_unreal_cosim_flag = detectUnrealBlocks(model_name);
+
+%camera stream displays
+%TODO - we might want to disable showing some camera streams to save time
+
+%video saving
+%TODO - we might want to disable saving some camera streams to save time
+
+if(do_unreal_cosim_flag)
     % Load UCS Scene Configuration and Variables
     scene_config_name = "example_scene_config.xml";
     scene_config = readstruct(scene_config_name);
@@ -75,44 +107,25 @@ else
 end
 
 
-run('setup_cmd_bus.m');
-run('setup_FF_maneuvers_bus.m');
-run('setup_state_bus.m');
-run('setup_sensor_bus.m');
-run('setup_RSFF_maneuvers_bus.m');
-run('setup_imu_bus.m');
-run('setup_dvl_bus.m');
 
-%overrides for common settings
-S.tspan = 6;
-S.FT_list_test = FF_maneuvers.yawRight;
-
-%{
-Note, if you receive an error from the ROS blocks saying something about a
-different model that is not the one you have selected not being loaded this
-is a limitation from using ros blocks in subsystem references. The fix for
-this is running`bdclose('all')` then resetting your model.
-%}
-%% Run the Sim
-mission_file_name = "mission_file.txt"; 
-
-%setup for bus objects (necessary to use structures in Simulink)
-max_commands_in_mission = 64; 
-%import the mission text file as an array of cmd objects
-mission_file_path = fullfile(prj_path_list.inits_path,mission_file_name);
-mission = importMission(mission_file_path, max_commands_in_mission);
-
+%% SIM
 %setup the sim
 simIn = Simulink.SimulationInput(model_name);
+
 %set the parameter `mission` containing all the cmd structures
 mission = Simulink.Parameter(mission);
 simIn = simIn.setVariable('mission', mission);
+
 %run the sim
 results = sim(simIn);
+
+%repackage all the data into a single results obj, flattening structures
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
 
 %reset all Unreal values to default (TODO - move to model save callback)
-deconfigure_scene(model_name);
+if(do_unreal_cosim_flag)
+    deconfigure_scene(model_name);
+end
 
 clear mission_file_path mission_file_name max_commands_in_mission scene_config_name
 
@@ -120,17 +133,14 @@ clear mission_file_path mission_file_name max_commands_in_mission scene_config_n
 close all
 
 if(~exist('plots_setup_flag','var')) 
-    "here"
     run('setup_plots.m')
 end
 
 % Enter the names of all the plots as a comma separated cell array
-% Refer to setup_plots.m to see the valid plot names
-plot_names = {"X"};
+plot_names = {"X"}; % Refer to setup_plots.m to see the valid plot names
 plotAllOutputs(plots,results,plot_names);
-% 
-% % saveStateGif(results,prj_path_list.prior_run_data_path,'test')
-% 
-% 
-% fprintf("\nDone.\n\n")
+
+
+% saveStateGif(results,prj_path_list.prior_run_data_path,'test')
+
 toc
