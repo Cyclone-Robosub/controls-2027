@@ -14,7 +14,6 @@ clc
 clear results 
 
 
-
 %refreshes the file path in case clear all was called
 if(~exist('prj_path_list','var')) 
     prj_path_list = getProjectPaths();
@@ -61,7 +60,7 @@ this is running`bdclose('all')` then resetting your model.
 %overrides for common settings
 S.tspan = 6;
 
-model_name = "Matlab_Controller_SIM";
+model_name = "Dynamics_SIM";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
