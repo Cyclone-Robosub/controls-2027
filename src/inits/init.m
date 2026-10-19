@@ -27,17 +27,6 @@ if(~exist('prj_path_list','var'))
 end
 
 %% Parameters, Tuning, Initial Conditions, Settings
-%{
-Load an existing parameter structure P or create a new one. Same pattern is
-also used for tuning structures T, initial condition structures I, and
-simulation settings S.
-
-To save your current configuration for future re-use, run saveParameters() 
-in the Command Window or by uncommenting the call below. 
-Optionally specifying a name for the test case. Parameters are saved to 
-prj_path_list.lookups_path.
-
-%}
 
 %Parameters
 % P = loadParameters();
@@ -60,7 +49,7 @@ S = createSim();
 % saveSim(S);
 
 
-model_name = "Dynamics";
+model_name = "Dynamics_UCS";
 
 %if true, data is deleted from file system but saved in the workspace for post processing
 delete_data_flag = false; 
