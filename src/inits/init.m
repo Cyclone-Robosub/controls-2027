@@ -6,13 +6,7 @@ simulations.
 If you need to make significant modifications to this file, create a copy
 instead and give it an extension such as init_<varient> and place it in init
 folder.
-
-To use this codebase successfully, make sure project_startup.m has been
-added to the project settings and ran and that the project is open (i.e.
-the Project tab is visible at the top of the screen).
-
 %}
-
 
 %% Housekeeping and Path Management
 tic
@@ -66,9 +60,8 @@ this is running`bdclose('all')` then resetting your model.
 
 %overrides for common settings
 S.tspan = 6;
-S.FT_list_inject = FF_maneuvers.yawRight;
 
-model_name = "Dynamics_SIM";
+model_name = "Matlab_Controller_SIM";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 

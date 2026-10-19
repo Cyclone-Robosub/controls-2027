@@ -11,7 +11,7 @@ T.Ri_e_tol = 0.5; %only leave this large for testing sliding maneuvers
 T.Eul_e_tol = 10*pi/180; %If I make this too small the controller bounces a lot on edges. As low as 10 works
 
 %Controller gains for position --> velocity
-T.Rb_PID.Kp = [0.5;0.5;1]; Rb_PID.Ki = [0;0;0]; Rb_PID.Kd = [0;0;0];
+T.Rb_PID.Kp = [0.5;0.5;1]; T.Rb_PID.Ki = [0;0;0]; T.Rb_PID.Kd = [0;0;0];
 T.Rb_PID.N = 100; %filter coefficient for the derivative term
 T.Rb_PID.output_sat = 1; %PID saturation point for velocity output
 T.Rb_PID.int_sat = 1; %integral term saturation limit
