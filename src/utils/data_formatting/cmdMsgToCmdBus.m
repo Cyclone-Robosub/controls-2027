@@ -22,7 +22,7 @@ And the sizes with
 
 Input:
 cmd_msg [SL_Bus_custom_interfaces_Goal structure]
-    .command_id [16x1 uint8]
+    .command [16x1 uint8]
     .waypoint [1x1 SL_Bus_custom_interfaces_Pose6D]
         .x [1x1 double]
         .y [1x1 double]
@@ -63,24 +63,24 @@ cmd [cmd_bus structure]
     .exec_timeout [1x1 double]
 %}
 
-% command_id: uint8 -> int8 (double check dimension)
-cmd.cmd_id = int8(cmd_msg.command_id)';
+% command: uint8 -> int8 (double check dimension)
+cmd.cmd_id = cmdEnumToChar16(cmd_msg.command);
 
 % waypoint: Pose6D -> 6x1 double
-cmd.wp = [cmd_msg.waypoint.x;
-          cmd_msg.waypoint.y;
-          cmd_msg.waypoint.z;
-          cmd_msg.waypoint.roll;
-          cmd_msg.waypoint.pitch;
-          cmd_msg.waypoint.yaw];
+cmd.wp = [cmd_msg.position.x;
+          cmd_msg.position.y;
+          cmd_msg.position.z;
+          cmd_msg.position.roll;
+          cmd_msg.position.pitch;
+          cmd_msg.position.yaw];
 
 % waypoint_mask: WaypointMask -> 6x1 double
-cmd.wp_mask = double([cmd_msg.waypoint_mask.x;
-                      cmd_msg.waypoint_mask.y;
-                      cmd_msg.waypoint_mask.z;
-                      cmd_msg.waypoint_mask.roll;
-                      cmd_msg.waypoint_mask.pitch;
-                      cmd_msg.waypoint_mask.yaw]);
+cmd.wp_mask = double([cmd_msg.position_mask.x;
+                      cmd_msg.position_mask.y;
+                      cmd_msg.position_mask.z;
+                      cmd_msg.position_mask.roll;
+                      cmd_msg.position_mask.pitch;
+                      cmd_msg.position_mask.yaw]);
 
 % tolerance: Pose6D -> 6x1 double
 cmd.wp_tol = [cmd_msg.tolerance.x;
@@ -94,20 +94,20 @@ cmd.wp_tol = [cmd_msg.tolerance.x;
 cmd.hold_time = cmd_msg.hold_time;
 
 % object: uint8 -> int8
-cmd.obj_id = int8(cmd_msg.object)';
+cmd.obj_id = int8(cmd_msg.object_id)';
 
 % confidence: double passthrough
-cmd.conf = cmd_msg.confidence;
+cmd.conf = cmd_msg.confidence_required;
 
 % trick: uint8 -> int8
-cmd.trick_id = int8(cmd_msg.trick)';
+cmd.trick_id = int8(cmd_msg.trick_id)';
 
 % duration: double passthrough
-cmd.exec_timeout = cmd_msg.duration;
+cmd.exec_timeout = cmd_msg.trick_duration;
 
 %special case for tricks that need to use duration instead of command
 if(isequal(cmd.cmd_id,int8('duration_trick__')))
-    cmd.hold_time = cmd_msg.duration;
+    cmd.hold_time = cmd_msg.trick_duration;
 end
 end
 
