@@ -1,4 +1,4 @@
-function [qib_int_u, Rb_error, action_id_out, driving_yaw_target, Rb_u,debug] = guidanceLaw(X, Xu, Ri_e_tol, Eul_e_tol, cmd, overwrite_state_error_flag, Rb_error_inject, overwrite_state_setpoint_flag, Rb_sp_inject)
+function [qib_int_u, Rb_error, action_id_out, driving_yaw_target, Rb_u,debug] = guidanceLaw(X, X_u, Ri_e_tol, Eul_e_tol, cmd, overwrite_state_error_flag, Rb_error_inject, overwrite_state_setpoint_flag, Rb_sp_inject)
 %{
 This function breaks down the state X and target state Xu into body-centric
 commands. An inertial position and attitude error is manipulated so that
@@ -6,18 +6,17 @@ the controller 1) points the vehicle toward the target, 2) drives towards
 the target, and 3) aligns at the commanded attitude once at the target.
 
 Inputs:
-X - state vector in the form [Ri; qib, dRi, wb] where qib is expressed in
+X - state vector of type X_bus where qib is expressed in
 the [vector; scalar] convention. 
-Xu - the target state vector, overwrite_state_sp_flag, Rb_sp_inject
+Xu - target state vector of type X_bus, overwrite_state_sp_flag, Rb_sp_inject
 
 Outputs:
 qib_int_u - an intermediate target quaternion to point the vehicle at the
 target if Ri - Ri_u is large. If the position error is small, qib_int_u
 returns qib_u.
-dRbx_u - a velocity command in the forward forward/backward of the vehicle
-dRbz_u - a velocity command in the up/down direction of the vehicle
 action_id - what the controller is currently trying to do (1 = point to wp, 2 =
 drive to wp)
+
 %}
 debug = 0;
 
@@ -47,9 +46,9 @@ end
 
 %unpack the required inputs (wb_u and dRi_u are assumed zero)
 Ri = X.Ri;
-Ri_u = Xu(1:3);
+Ri_u = X_u.Ri;
 qib = X.qib; %[vector, scalar]
-qib_u = Xu(4:7);
+qib_u = X_u.qib;
 
 
 if(~isequal(prior_Ri_u, Ri_u))
@@ -91,13 +90,6 @@ else
     % persistant_yaw_target = yaw_u;
     qib_int_u = qib_u;
 end
-%{
-Eul_u is not switching backward for some reason when the vehicle passes
-waypoint.
-%}
-
-
-
 
 %calculate the quaternion error between the current and target attitudes
 qib_e = quatError(qib, qib_int_u); %expected in the form [vector; scalar]
@@ -123,7 +115,7 @@ if(max(abs(Eul_e)) > Eul_e_tol) %TURNING
     Rb_u = Cbi*Ri_u;
     Rb = Cbi*Ri;
     Rb_error = Rb_u - Rb;
-    Rb_error = [0;0;Rb_error(3)]; %overwrite (comment out if you want to allow position control during rotation)
+    Rb_error = [0;0;Rb_error(3)]; %overwrite (comment out if you want to allow full position control during rotation)
     action_id = 1;
     
 
@@ -138,7 +130,7 @@ elseif(norm(Ri_xy_e) >= Ri_e_tol) %DRIVING
     Rb = Cbi*Ri;
 
     Rb_error = Rb_u - Rb;
-    % Rb_error = [norm(Ri_xy_e); 0; Ri_u(3) - Ri(3)];
+    % Rb_error = [norm(Ri_xy_e); 0; Ri_u(3) - Ri(3)]; %test this more
     action_id = 2;
     
 
@@ -163,7 +155,6 @@ end
 if(overwrite_state_error_flag)
     Rb_error = Rb_error_inject;
 end
-
 
 
 action_id_out = action_id;

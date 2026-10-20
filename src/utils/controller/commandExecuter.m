@@ -16,8 +16,8 @@ vector in the form [Ri; qvector; qscalar... ; dRi, wb]
 
 Outputs: cmd_status (4x1 int8) - 4 character status cast to an int8. Valid
 options are "SUCC", "FAIL", and "RUNN" for success, failure, and running.
-X_u (13x1 double) - the target waypoint in the form [Ri_u, qvector_u;
-qscalar_u; zeros(3,1), zeros(3,1)**]
+X_u - the target state in X_bus format with fields Ri_u, Rb_u, Eul_u,
+qib_u, Cib_u, Cbi_u, dRi_u, dRb_u, wb_u, wi_u, ddRi_u, and ddRb_u.
     
 Commands are structures with the following fields: cmd.cmd_id cmd.wp
 cmd.wp_mask cmd.hold_time cmd.obj_id cmd.conf cmd.trick_id cmd.exec_timeout
@@ -31,12 +31,11 @@ set velocity downstream to drive to waypoints.
 %}
 debug = 0;
 
-%unpack current states from X (class X_bus)
+%unpack current states from X (type X_bus)
 Eul = X.Eul;
 yaw = Eul(3);
 Ri = X.Ri;
-dRi = X.dRi;
-wb = X.dRb;
+
 
 
 %initialize the persistent variables
@@ -105,7 +104,7 @@ end
 %pass to next timestep
 prior_action_id = action_id;
 
-%Reset the persistant variables used to execute commands if new_cmd_reset
+%Reset the persistent variables used to execute commands if new_cmd_reset
 if(new_cmd_reset)
     hold_timer_start_time = t;
     prior_action_id = 0;
@@ -141,16 +140,39 @@ switch char(cmd.cmd_id) %case must match exactly with importMission.m
         
     case 'idle____________'
         %if we are not in a known command or are idle, just use idle_wp
-        X_u = [idle_wp(1:3); eulToQuat(idle_wp(4:6)); zeros(3,1);...
-            zeros(3,1)];
+        %pack up state bus
+        X_u.Ri = idle_wp(1:3);
+        X_u.Rb = X.Cbi*idle_wp(1:3); %target waypoint in body frame at CURRENT attitude
+        X_u.Eul = idle_wp(4:6);
+        X_u.qib = eulToQuat(idle_wp(4:6));
+        X_u.Cib = eulToRotm(idle_wp(4:6));
+        X_u.Cbi = X_u.Cib';
+        X_u.dRi = zeros(3,1);
+        X_u.dRb = zeros(3,1);
+        X_u.wb = zeros(3,1);
+        X_u.wi = zeros(3,1);
+        X_u.ddRi = zeros(3,1);
+        X_u.ddRb = zeros(3,1);
+
         hold_timer_start_time = t; 
         hold_timer = 0;
         cmd_status = int8('RUNN');
         mission_is_started_flag = false;
     otherwise
         %if we are not in a known command or are idle, just use idle_wp
-        X_u = [idle_wp(1:3); eulToQuat(idle_wp(4:6)); zeros(3,1);...
-            zeros(3,1)];
+        X_u.Ri = idle_wp(1:3);
+        X_u.Rb = X.Cbi*idle_wp(1:3); %target waypoint in body frame at CURRENT attitude
+        X_u.Eul = idle_wp(4:6);
+        X_u.qib = eulToQuat(idle_wp(4:6));
+        X_u.Cib = eulToRotm(idle_wp(4:6));
+        X_u.Cbi = X_u.Cib';
+        X_u.dRi = zeros(3,1);
+        X_u.dRb = zeros(3,1);
+        X_u.wb = zeros(3,1);
+        X_u.wi = zeros(3,1);
+        X_u.ddRi = zeros(3,1);
+        X_u.ddRb = zeros(3,1);
+        
         hold_timer_start_time = t; 
         hold_timer = 0;
         cmd_status = int8('RUNN');

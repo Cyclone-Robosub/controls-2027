@@ -14,8 +14,19 @@ function [cmd_status, hold_timer, X_u, hold_timer_start_time] = ...
     Ri_u = idle_wp(1:3).*(~cmd.wp_mask(1:3)) +...
         cmd.wp(1:3).*(cmd.wp_mask(1:3));
     
-    %pack up state
-    X_u = [Ri_u; qib_u; zeros(3,1); zeros(3,1)];
+    %pack up state bus
+    X_u.Ri = Ri_u;
+    X_u.Rb = X.Cbi*Ri_u; %target waypoint in body frame at CURRENT attitude
+    X_u.Eul = quatToEul(qib_u);
+    X_u.qib = qib_u; 
+    X_u.Cib = quatToRotm(qib_u);
+    X_u.Cbi = X_u.Cib';
+    X_u.dRi = zeros(3,1);
+    X_u.dRb = zeros(3,1);
+    X_u.wb = zeros(3,1);
+    X_u.wi = zeros(3,1);
+    X_u.ddRi = zeros(3,1);
+    X_u.ddRb = zeros(3,1);
 
     %update the hold timer if we are at our waypoint
     if(withinWPTol(X,X_u, cmd))

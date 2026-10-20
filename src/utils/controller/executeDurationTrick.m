@@ -11,6 +11,20 @@ duration trick command with a FF trick is active.
 
 %% Trick Switch
 
+%default
+X_u.Ri = zeros(3,1);
+X_u.Rb = zeros(3,1); %target waypoint in body frame at CURRENT attitude
+X_u.Eul = zeros(3,1);
+X_u.qib = zeros(4,1); 
+X_u.Cib = eye(3);
+X_u.Cbi = eye(3);
+X_u.dRi = zeros(3,1);
+X_u.dRb = zeros(3,1);
+X_u.wb = zeros(3,1);
+X_u.wi = zeros(3,1);
+X_u.ddRi = zeros(3,1);
+X_u.ddRb = zeros(3,1);
+
 switch char(cmd.trick_id)
     case {'ff_forward______', 'ff_backward_____', 'ff_up___________',...
             'ff_down_________', 'ff_right________', 'ff_left_________',...
@@ -18,7 +32,6 @@ switch char(cmd.trick_id)
             'ff_yawLeft______', 'ff_rollRight____', 'ff_rollLeft_____',...
             'ff_stop_________','dropper_________'}
 
-        X_u = zeros(13,1); %dummy value, will not be used
         [cmd_status, hold_timer, hold_timer_start_time] =FFTimer(cmd, hold_timer_start_time, t); 
         
         cmd_specific_wp = idle_wp; %dummy value, will not be used
@@ -29,7 +42,6 @@ switch char(cmd.trick_id)
             'rsff_yawLeft____', 'rsff_rollRight__', 'rsff_rollLeft___',...
             'rsff_stop_______'}
 
-        X_u = zeros(13,1); %dummy value
 
         [cmd_status, hold_timer, hold_timer_start_time] =FFTimer(cmd, hold_timer_start_time, t); 
         cmd_specific_wp = idle_wp; %dummy value, will not be used
@@ -50,7 +62,20 @@ switch char(cmd.trick_id)
             cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[1000;0;0];
         end
 
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)]; 
+        %pack up state bus
+        X_u.Ri = cmd_specific_wp(1:3);
+        X_u.Rb = X.Cbi*Ri_u; %target waypoint in body frame at CURRENT attitude
+        X_u.Eul = cmd_specific_wp(4:6);
+        X_u.qib = eulToQuat(cmd_specific_wp(4:6));
+        X_u.Cib = eulToRotm(cmd_specific_wp(4:6));
+        X_u.Cbi = X_u.Cib';
+        X_u.dRi = zeros(3,1);
+        X_u.dRb = zeros(3,1);
+        X_u.wb = zeros(3,1);
+        X_u.wi = zeros(3,1);
+        X_u.ddRi = zeros(3,1);
+        X_u.ddRb = zeros(3,1); 
+
         [cmd_status, hold_timer, hold_timer_start_time] =FFTimer(cmd, hold_timer_start_time, t); 
 
 
@@ -60,7 +85,6 @@ switch char(cmd.trick_id)
         hold_timer = 0;
         hold_timer_start_time = t; %reset the hold timer for the next command
         
-        X_u = zeros(13,1); %dummy value, will not be used
         cmd_specific_wp = idle_wp; %dummy value, will not be used
 
 end
@@ -100,7 +124,6 @@ switch char(cmd.trick_id)
             %only creates a far away position waypoint ONCE
             cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[1000;0;0];
         end
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)]; 
 
     case 'ssff_backward___'
         %{
@@ -112,7 +135,6 @@ switch char(cmd.trick_id)
             %only creates a far away position waypoint ONCE
             cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[-1000;0;0];
         end
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)]; 
 
     case 'ssff_right______'
         %{
@@ -124,7 +146,7 @@ switch char(cmd.trick_id)
             %only creates a far away position waypoint ONCE
             cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[0;1000;0];
         end
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)]; 
+
     case 'ssff_left_______'
         %{
         Right now the guidance law will just cause the robot to turn 90
@@ -135,64 +157,70 @@ switch char(cmd.trick_id)
             %only creates a far away position waypoint ONCE
             cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[0;-1000;0];
         end
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)];
+
     case 'ssff_up_________'
         if(new_cmd_reset)
             %only creates a far away position waypoint ONCE
             cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[0;0;-1000];
         end
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)]; 
+
     case 'ssff_down_______'
         if(new_cmd_reset)
             %only creates a far away position waypoint ONCE
             cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[0;0;1000];
         end
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)]; 
+
     case 'ssff_stop_______'
         %no modification, will just be the idle wp in practice
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)];
     case 'ssff_yawRight___'
         %for turns we actually do want to update just the angle portion of
         %the cmd_specific_wp every time step
         Eul = X.Eul;
         yaw = Eul(3);
         cmd_specific_wp(6) = yaw + pi/6;
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)];
 
     case 'ssff_yawLeft____'
         Eul = X.Eul;
         yaw = Eul(3);
         cmd_specific_wp(6) = yaw - pi/6;
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)];
     case 'ssff_rollRight__'
         Eul = X.Eul;
         roll = Eul(1);
         cmd_specific_wp(6) = roll + pi/6;
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)];
     case 'ssff_rollLeft___'
         Eul = X.Eul;
         roll = Eul(1);
         cmd_specific_wp(6) = roll - pi/6;
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)];
     case 'ssff_pitchUp____'
         Eul = X.Eul;
         pitch = Eul(2);
         cmd_specific_wp(6) = pitch + pi/6;
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)];
     case 'ssff_pitchDown__'
         Eul = X.Eul;
         pitch = Eul(2);
         cmd_specific_wp(6) = pitch - pi/6;
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)];
     otherwise
-        X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)];
+        %no modification
 end
+
+%pack up state bus
+X_u.Ri = cmd_specific_wp(1:3);
+X_u.Rb = X.Cbi*Ri_u; %target waypoint in body frame at CURRENT attitude
+X_u.Eul = cmd_specific_wp(4:6);
+X_u.qib = eulToQuat(cmd_specific_wp(4:6));
+X_u.Cib = eulToRotm(cmd_specific_wp(4:6));
+X_u.Cbi = X_u.Cib';
+X_u.dRi = zeros(3,1);
+X_u.dRb = zeros(3,1);
+X_u.wb = zeros(3,1);
+X_u.wi = zeros(3,1);
+X_u.ddRi = zeros(3,1);
+X_u.ddRb = zeros(3,1);
 
 %update the timer and return success when it elapses
 if(hold_timer >= cmd.hold_time)
     cmd_status = int8('SUCC');
     hold_timer_start_time = t;
-    X_u = [cmd_specific_wp(1:3); eulToQuat(cmd_specific_wp(4:6)); zeros(3,1); zeros(3,1)];
 else
     cmd_status = int8('RUNN');
 end

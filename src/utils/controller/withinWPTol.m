@@ -6,9 +6,12 @@ function tf = withinWPTol(X, X_u, cmd)
     %}
     Ri = X.Ri;
     qib = X.qib;
+
+    Ri_u = X_u.Ri;
+    qib_u = X_u.qib;
     
-    R_error = abs(Ri - X_u(1:3));
-    quat_error = quatError(qib, X_u(4:7));
+    R_error = abs(Ri - Ri_u);
+    quat_error = quatError(qib, qib_u);
     eul_error = abs(quatToEul(quat_error));
     
     
