@@ -61,9 +61,9 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 6;
+S.tspan = 10;
 
-model_name = "Full_Controller_SIM";
+model_name = "Matlab_Controller_SIM";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
@@ -132,7 +132,7 @@ if(~exist('plots_setup_flag','var'))
 end
 
 % Enter the names of all the plots as a comma separated cell array
-plot_names = {"X"}; % Refer to setup_plots.m to see the valid plot names
+plot_names = {"X", "state_control", "rate_control"}; % Refer to setup_plots.m to see the valid plot names
 plotAllOutputs(plots,results,plot_names);
 
 

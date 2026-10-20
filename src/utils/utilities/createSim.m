@@ -5,10 +5,10 @@ Defines the set of simulation settings and constants.
 
 %% Timing
 %simulation duration
-S.tspan = 360;
+S.tspan = 10;
 
 %timesteps for various simulation components
-S.dt_sim = 1/100; %sim timestep %change tag
+S.dt_sim = 1/1000; %sim timestep 
 S.dt_data = roundToSimTimestep(1/30, S.dt_sim); %data saving timestep
 S.dt_control = roundToSimTimestep(1/100, S.dt_sim); %controller timestep
 S.dt_dvl_drr = roundToSimTimestep(1/5, S.dt_sim);
