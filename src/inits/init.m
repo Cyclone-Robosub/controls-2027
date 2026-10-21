@@ -123,7 +123,7 @@ results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path)
 
 %reset all Unreal values to default (TODO - move to model save callback)
 if(do_unreal_cosim_flag)
-    deconfigure_scene(model_name);
+    deconfigure_scene(model_name); 
 end
 
 clear mission_file_path mission_file_name max_commands_in_mission scene_config_name
@@ -139,6 +139,7 @@ end
 plot_names = {"X", "state_control", "rate_control"}; % Refer to setup_plots.m to see the valid plot names
 plotAllOutputs(plots,results,plot_names);
 
+%% Gif
 
-% saveStateGif(results,prj_path_list.prior_run_data_path,'test')
+mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,View='iso') %valid views are iso, top, north, east, bottom
 
