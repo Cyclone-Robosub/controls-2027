@@ -136,7 +136,7 @@
             <Orientation>0</Orientation>
 
             <!--Condition on whether to open a display window for this camera-->
-            <display_flag>1</display_flag>
+            <display_flag>0</display_flag>
 
             <!--Condition on whether to save the camera feed-->
             <save_flag>1</save_flag>
@@ -168,7 +168,7 @@
             <Orientation>0</Orientation>
 
             <!--Condition on whether to open a display window for this camera-->
-            <display_flag>1</display_flag>
+            <display_flag>0</display_flag>
 
             <!--Condition on whether to save the camera feed-->
             <save_flag>1</save_flag>
@@ -200,10 +200,10 @@
             <Orientation>0</Orientation>
 
             <!--Condition on whether to open a display window for this camera-->
-            <display_flag>1</display_flag>
+            <display_flag>0</display_flag>
 
             <!--Condition on whether to save the camera feed-->
-            <save_flag>1</save_flag>
+            <save_flag>0</save_flag>
         </bottomCamera>
 
         <!--Observer camera-->
@@ -232,10 +232,10 @@
             <Orientation>0</Orientation>
 
             <!--Condition on whether to open a display window for this camera-->
-            <display_flag>1</display_flag>
+            <display_flag>0</display_flag>
 
             <!--Condition on whether to save the camera feed-->
-            <save_flag>1</save_flag>
+            <save_flag>0</save_flag>
         </observerCamera>
     </cameras>
     <scene_states>
