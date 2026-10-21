@@ -60,7 +60,7 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 10;
+S.tspan = 20;
 
 model_name = "Matlab_Controller_SIM";
 
@@ -113,10 +113,11 @@ simIn = simIn.setVariable('mission', mission);
 %run the sim (profiling optional)
 
 % set_param(model_name,'Profile','on')
+fprintf("Running the sim\n")
 results = sim(simIn);
 % profData = results.SimulationMetadata.TimingInfo.ProfilerData;
 % generateReport(profData, 'myModelProfile');      % writes myModelProfile.html
-
+fprintf("Processing data\n")
 
 %repackage all the data into a single results obj, flattening structures
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
@@ -136,10 +137,13 @@ if(~exist('plots_setup_flag','var'))
 end
 
 % Enter the names of all the plots as a comma separated cell array
-plot_names = {"X", "state_control", "rate_control"}; % Refer to setup_plots.m to see the valid plot names
+plot_names = {"X", "Eul_control", "Ri_control"}; % Refer to setup_plots.m to see the valid plot names
 plotAllOutputs(plots,results,plot_names);
 
 %% Gif
+make_gif = false;
+make_video = false;
+mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
+    View='iso', MakeGif=make_gif, MakeVideo=make_video) %valid views are iso, top, north, east, bottom
 
-mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,View='iso') %valid views are iso, top, north, east, bottom
-
+fprintf("Done.\n\n")

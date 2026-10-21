@@ -43,6 +43,11 @@ MakeGif = p.Results.MakeGif;
 MakeVideo = p.Results.MakeVideo;
 OpenFolder = p.Results.OpenFolder;
 
+if(~MakeGif && ~MakeVideo)
+    fprintf("No gif or video created because both flags are false.\n")
+    return
+end
+
 %view keyword handling
 if(strcmp(View,'top'))
     View = 2;
@@ -135,7 +140,9 @@ for k = 1:frameskip:length(t)
     %print progress to user every 10 frames
     if(mod(frame_index,10)==0)
         percent_complete = frame_index/nFrames*100;
-
+        if(percent_complete > 100)
+            percent_complete = 100;
+        end
         fprintf(repmat('\b',1,percent_text));
         percent_text = fprintf("Media is %.2f%% Complete\n",percent_complete);
     end
@@ -143,6 +150,9 @@ end
 
 close(f);
 
+if(~isfolder(filepath))
+    mkdir(filepath);
+end
 
 if(MakeVideo)
     video_path = fullfile(filepath,name + ".avi");
@@ -157,9 +167,7 @@ if(MakeVideo)
     close(v);
 end
 
-if(~isfolder(filepath))
-    mkdir(filepath);
-end
+
 
 if(MakeGif)
     %define the path for the gif
