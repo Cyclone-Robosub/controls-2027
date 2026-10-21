@@ -68,7 +68,7 @@ this is running`bdclose('all')` then resetting your model.
 S.tspan = 6;
 S.FT_list_inject = FF_maneuvers.yawRight;
 
-model_name = "Dynamics_SIM";
+model_name = "Dynamics_UCS";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
@@ -78,22 +78,16 @@ mission = importMission(mission_file_path, max_commands_in_mission);
 
 %% Data
 %if true, data is deleted from file system but saved in the workspace for post processing
-delete_data_flag = true; 
+delete_data_flag = false; 
 prj_path_list.prior_run_path = configureToFileBlocks(model_name, prj_path_list.data_path); 
 
 
 %% Unreal Setup
 do_unreal_cosim_flag = detectUnrealBlocks(model_name);
 
-%camera stream displays
-%TODO - we might want to disable showing some camera streams to save time
-
-%video saving
-%TODO - we might want to disable saving some camera streams to save time
-
 if(do_unreal_cosim_flag)
     % Load UCS Scene Configuration and Variables
-    scene_config_name = "example_scene_config.xml";
+    scene_config_name = "default_scene_config.xml"; 
     scene_config = readstruct(scene_config_name);
     dt_sample = scene_config.scene_states.dt_sample;
     
@@ -122,12 +116,12 @@ results = sim(simIn);
 %repackage all the data into a single results obj, flattening structures
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
 
-%reset all Unreal values to default (TODO - move to model save callback)
-if(do_unreal_cosim_flag)
-    deconfigure_scene(model_name);
+%Saves The scene configuration
+if(~delete_data_flag && do_unreal_cosim_flag)
+    writestruct(scene_config,fullfile(prj_path_list.prior_run_path,"scene_config.xml"));
 end
 
-clear mission_file_path mission_file_name max_commands_in_mission scene_config_name
+clear mission_file_path mission_file_name max_commands_in_mission scene_config_name dt_sample M_WorldToUCS M_UCSToWorld ground_Z waterLevel_Z
 
 %% Plotting
 close all
@@ -142,5 +136,3 @@ plotAllOutputs(plots,results,plot_names);
 
 
 % saveStateGif(results,prj_path_list.prior_run_data_path,'test')
-
-toc
