@@ -9,10 +9,9 @@ folder.
 %}
 
 %% Housekeeping and Path Management
-tic
+
 clc
 clear results 
-
 
 %refreshes the file path in case clear all was called
 if(~exist('prj_path_list','var')) 
@@ -111,8 +110,13 @@ simIn = Simulink.SimulationInput(model_name);
 mission = Simulink.Parameter(mission);
 simIn = simIn.setVariable('mission', mission);
 
-%run the sim
+%run the sim (profiling optional)
+
+% set_param(model_name,'Profile','on')
 results = sim(simIn);
+% profData = results.SimulationMetadata.TimingInfo.ProfilerData;
+% generateReport(profData, 'myModelProfile');      % writes myModelProfile.html
+
 
 %repackage all the data into a single results obj, flattening structures
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
@@ -138,4 +142,3 @@ plotAllOutputs(plots,results,plot_names);
 
 % saveStateGif(results,prj_path_list.prior_run_data_path,'test')
 
-toc

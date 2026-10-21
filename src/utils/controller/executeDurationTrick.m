@@ -64,11 +64,11 @@ switch char(cmd.trick_id)
 
         %pack up state bus
         X_u.Ri = cmd_specific_wp(1:3);
-        X_u.Rb = X.Cbi*Ri_u; %target waypoint in body frame at CURRENT attitude
+        X_u.Rb = X.Cbi*cmd_specific_wp(1:3); %target waypoint in body frame at CURRENT attitude
         X_u.Eul = cmd_specific_wp(4:6);
         X_u.qib = eulToQuat(cmd_specific_wp(4:6));
         X_u.Cib = eulToRotm(cmd_specific_wp(4:6));
-        X_u.Cbi = X_u.Cib';
+        X_u.Cbi = eulToRotm(cmd_specific_wp(4:6))';
         X_u.dRi = zeros(3,1);
         X_u.dRb = zeros(3,1);
         X_u.wb = zeros(3,1);
@@ -205,11 +205,11 @@ end
 
 %pack up state bus
 X_u.Ri = cmd_specific_wp(1:3);
-X_u.Rb = X.Cbi*Ri_u; %target waypoint in body frame at CURRENT attitude
+X_u.Rb = X.Cbi*cmd_specific_wp(1:3); %target waypoint in body frame at CURRENT attitude
 X_u.Eul = cmd_specific_wp(4:6);
 X_u.qib = eulToQuat(cmd_specific_wp(4:6));
 X_u.Cib = eulToRotm(cmd_specific_wp(4:6));
-X_u.Cbi = X_u.Cib';
+X_u.Cbi = eulToRotm(cmd_specific_wp(4:6))';
 X_u.dRi = zeros(3,1);
 X_u.dRb = zeros(3,1);
 X_u.wb = zeros(3,1);
