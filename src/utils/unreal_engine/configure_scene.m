@@ -7,12 +7,12 @@ function configure_scene(model_name, scene_config, delete_data_flag, executables
     end
     
     save_camera_feeds_path = fullfile(save_data_path, "camera_feeds");
-    if(~isfolder(save_camera_feeds_path))
+    if(~isfolder(save_camera_feeds_path)&& ~delete_data_flag)
         mkdir(save_camera_feeds_path);
     end
     
     save_scripts_path = fullfile(save_data_path, "scripts");
-    if(~isfolder(save_scripts_path))
+    if(~isfolder(save_scripts_path) && ~delete_data_flag)
         mkdir(save_scripts_path);
     end
 
@@ -72,15 +72,15 @@ function configure_scene(model_name, scene_config, delete_data_flag, executables
         end
     end
     
-    %Sets the save path or comments out depending on flags in config
+    %Sets the display windows to commented depending on flags in config
     for i = 1:numel(to_video_display_blocks)
         var_name  = get_param(to_video_display_blocks{i}, 'Name');
         camera_name = string(extractBefore(var_name, "_display"));
         if (scene_config.cameras.(camera_name).display_flag)
             set_param(to_video_display_blocks{i}, 'Commented', 'off');
+        else
+            set_param(to_video_display_blocks{i}, 'Commented', 'on');
         end
     end
     
-    %Saves The scene configuration
-    writestruct(scene_config,fullfile(save_data_path,"scene_config.xml"));
 end

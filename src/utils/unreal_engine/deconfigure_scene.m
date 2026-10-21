@@ -40,6 +40,14 @@ function deconfigure_scene(model_name)
         'IncludeCommented', 'on',...
         'FunctionName',      'svipwvo2');
     
+    %Finds all video display blocks
+    camera_blocks = find_system(model_name, ...
+        'LookUnderMasks', 'all', ...
+        'FollowLinks',    'on',  ...
+        'MatchFilter', @Simulink.match.allVariants,...
+        'IncludeCommented', 'on',...
+        'MaskType',      'Simulation 3D Camera');
+
     %Sets the save path or comments out depending on flags in config
     for i = 1:numel(to_multimedia_blocks)
         set_param(to_multimedia_blocks{i}, 'outputFilename', "default");
@@ -49,6 +57,17 @@ function deconfigure_scene(model_name)
     %Sets the save path or comments out depending on flags in config
     for i = 1:numel(to_video_display_blocks)
         set_param(to_video_display_blocks{i}, 'Commented', 'on');
+    end
+
+    %Sets identifiers to correct values
+    for i = 1:numel(camera_blocks)
+        set_param(camera_blocks{i}, 'Commented', 'on');
+        cameraID = string(extractAfter(get_param(camera_blocks{i}, 'Name'), ':'));
+        set_param(camera_blocks{i}, 'ID', cameraID);
+        set_param(camera_blocks{i}, 'sensorId', cameraID);
+    end
+    for i = 1:numel(camera_blocks)
+        set_param(camera_blocks{i}, 'Commented', 'off');
     end
 
 end
