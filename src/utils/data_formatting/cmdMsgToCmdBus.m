@@ -1,0 +1,114 @@
+function cmd = cmdMsgToCmdBus(cmd_msg)
+%{
+This function translates a custom_interfaces/Goal ROS2 message to a cmd_bus
+for use in the Low Level Controller Simulink model.
+
+As a helpful tip, you can inspect the fields of a bus created from a ROS2 
+message by using:
+
+dd = Simulink.data.dictionary.open('ros2lib.sldd');
+dds = dd.getSection('Design Data');
+entry = dds.getEntry('<my bus name here>');
+busObj = entry.getValue();
+
+Then get a list of field names using
+{busObj.Elements.Name}
+
+And a list of field types using
+{busObj.Elements.DataType}
+
+And the sizes with
+{busObj.Elements.Dimensions}
+
+Input:
+cmd_msg [SL_Bus_custom_interfaces_Goal structure]
+    .command [16x1 uint8]
+    .waypoint [1x1 SL_Bus_custom_interfaces_Pose6D]
+        .x [1x1 double]
+        .y [1x1 double]
+        .z [1x1 double]
+        .roll [1x1 double]
+        .pitch [1x1 double]
+        .yaw [1x1 double]
+    .waypoint_mask [1x1 SL_Bus_custom_interfaces_WaypointMask]
+        .x [1x1 bool]
+        .y [1x1 bool]
+        .z [1x1 bool]
+        .roll [1x1 bool]
+        .pitch [1x1 bool]
+        .yaw [1x1 bool]
+    .tolerance [1x1 SL_Bus_custom_interfaces_Pose6D]
+        .x [1x1 double]
+        .y [1x1 double]
+        .z [1x1 double]
+        .roll [1x1 double]
+        .pitch [1x1 double]
+        .yaw [1x1 double]
+    .hold_time [1x1 double]
+    .object [16x1 uint8]
+    .confidence [1x1 double]
+    .trick [16x1 uint8]
+    .duration [1x1 duration]
+
+Outputs:
+cmd [cmd_bus structure]
+    .cmd_id [1x16 int8]
+    .wp [6x1 double]
+    .wp_mask [6x1 double]
+    .wp_tol [6x1 double]
+    .hold_time [1x1 double]
+    .obj_id [1x16 int8]
+    .conf [1x1 double]
+    .trick_id [1x16 int8]
+    .exec_timeout [1x1 double]
+%}
+
+% command: uint8 -> int8 (double check dimension)
+cmd.cmd_id = cmdEnumToChar16(cmd_msg.command);
+
+% waypoint: Pose6D -> 6x1 double
+cmd.wp = [cmd_msg.position.x;
+          cmd_msg.position.y;
+          cmd_msg.position.z;
+          cmd_msg.position.roll;
+          cmd_msg.position.pitch;
+          cmd_msg.position.yaw];
+
+% waypoint_mask: WaypointMask -> 6x1 double
+cmd.wp_mask = double([cmd_msg.position_mask.x;
+                      cmd_msg.position_mask.y;
+                      cmd_msg.position_mask.z;
+                      cmd_msg.position_mask.roll;
+                      cmd_msg.position_mask.pitch;
+                      cmd_msg.position_mask.yaw]);
+
+% tolerance: Pose6D -> 6x1 double
+cmd.wp_tol = [cmd_msg.tolerance.x;
+              cmd_msg.tolerance.y;
+              cmd_msg.tolerance.z;
+              cmd_msg.tolerance.roll;
+              cmd_msg.tolerance.pitch;
+              cmd_msg.tolerance.yaw];
+
+% hold_time: double passthrough
+cmd.hold_time = cmd_msg.hold_time;
+
+% object: uint8 -> int8
+cmd.obj_id = int8(cmd_msg.object_id)';
+
+% confidence: double passthrough
+cmd.conf = cmd_msg.confidence_required;
+
+% trick: uint8 -> int8
+cmd.trick_id = int8(cmd_msg.trick_id)';
+
+% duration: double passthrough
+cmd.exec_timeout = cmd_msg.trick_duration;
+
+%special case for tricks that need to use duration instead of command
+if(isequal(cmd.cmd_id,int8('duration_trick__')))
+    cmd.hold_time = cmd_msg.trick_duration;
+end
+end
+
+
