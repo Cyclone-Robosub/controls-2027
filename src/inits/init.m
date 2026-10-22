@@ -87,7 +87,7 @@ do_unreal_cosim_flag = detectUnrealBlocks(model_name);
 
 if(do_unreal_cosim_flag)
     % Load UCS Scene Configuration and Variables
-    scene_config_name = "example_scene_config.xml";
+    scene_config_name = "default_scene_config.xml"; 
     scene_config = readstruct(scene_config_name);
     dt_sample = scene_config.scene_states.dt_sample;
     
@@ -122,12 +122,13 @@ fprintf("Processing data\n")
 %repackage all the data into a single results obj, flattening structures
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
 
+%Saves The scene configuration
 %reset all Unreal values to default (TODO - move to model save callback)
-if(do_unreal_cosim_flag)
-    deconfigure_scene(model_name); 
+if(~delete_data_flag && do_unreal_cosim_flag)
+    writestruct(scene_config,fullfile(prj_path_list.prior_run_path,"scene_config.xml"));
 end
 
-clear mission_file_path mission_file_name max_commands_in_mission scene_config_name
+clear mission_file_path mission_file_name max_commands_in_mission scene_config_name dt_sample M_WorldToUCS M_UCSToWorld ground_Z waterLevel_Z
 
 %% Plotting
 close all
