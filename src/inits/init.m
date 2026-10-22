@@ -62,7 +62,7 @@ this is running`bdclose('all')` then resetting your model.
 %overrides for common settings
 S.tspan = 10;
 
-model_name = "Matlab_Controller_UCS";
+model_name = "Dynamics_UCS";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
@@ -123,7 +123,6 @@ fprintf("Processing data\n")
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
 
 %Saves The scene configuration
-%reset all Unreal values to default (TODO - move to model save callback)
 if(~delete_data_flag && do_unreal_cosim_flag)
     writestruct(scene_config,fullfile(prj_path_list.prior_run_path,"scene_config.xml"));
 end
