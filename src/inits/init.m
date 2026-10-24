@@ -60,7 +60,7 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 60;
+S.tspan = 360;
 
 model_name = "Full_Controller_SIM";
 
@@ -119,6 +119,10 @@ results = sim(simIn);
 % generateReport(profData, 'myModelProfile');      % writes myModelProfile.html
 fprintf("Processing data\n")
 
+%% Repack
+if(~exist('results','var')) %guard for ctrl+c
+    results = Simulink.SimulationOutput;
+end
 %repackage all the data into a single results obj, flattening structures
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
 
@@ -131,7 +135,6 @@ clear mission_file_path mission_file_name max_commands_in_mission scene_config_n
 
 %% Plotting
 close all
-
 if(~exist('plots_setup_flag','var')) 
     run('setup_plots.m');
 end
