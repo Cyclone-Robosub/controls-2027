@@ -60,9 +60,9 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 360;
+S.tspan = 10;
 
-model_name = "Matlab_Controller_HIL";
+model_name = "Matlab_Controller_UCS";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
@@ -112,7 +112,7 @@ simIn = simIn.setVariable('mission', mission);
 
 %run the sim (profiling optional)
 
-% set_param(model_name,'Profile','on')
+set_param(model_name,'Profile','off')
 fprintf("Running the sim\n")
 results = sim(simIn);
 % profData = results.SimulationMetadata.TimingInfo.ProfilerData;

@@ -1,4 +1,4 @@
-function sensors  = sensorRosMsgToBus(IMU, new_imu_flag, VR, new_vr_flag, DRR, new_drr_flag);
+function sensors  = sensorRosMsgToBus(IMU, new_imu_flag, VR, new_vr_flag, DRR, new_drr_flag)
 
 %{
 This sensor takes the ROS2 messages for the IMU, DDR, and VR and packs the

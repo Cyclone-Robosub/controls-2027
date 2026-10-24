@@ -1,4 +1,4 @@
-function [X_u, cmd_status,hold_timer_out,cmd_hold_time, idle_wp_out, mission_is_started_flag, debug] = commandExecuter(t, cmd, X, action_id, driving_yaw_target,new_cmd_reset, mission_is_started_flag);
+function [X_u, cmd_status,hold_timer_out,cmd_hold_time, idle_wp_out, debug] = commandExecuter(t, cmd, X, action_id, driving_yaw_target,new_cmd_reset);
 %{
 This function handles a single command at a time from discountExecutive.
 
@@ -157,7 +157,6 @@ switch char(cmd.cmd_id) %case must match exactly with importMission.m
         hold_timer_start_time = t; 
         hold_timer = 0;
         cmd_status = int8('RUNN');
-        mission_is_started_flag = false;
     otherwise
         %if we are not in a known command or are idle, just use idle_wp
         X_u.Ri = idle_wp(1:3);
