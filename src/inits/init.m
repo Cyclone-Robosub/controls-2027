@@ -21,6 +21,7 @@ end
 
 %Run this once on a new computer, if if the message definitions change
 % ros2genmsg("<path to software repo>\Software-Cyclone-Core\core\src");
+%ros2genmsg("C:\Users\rubystanton\Documents\")
 
 %% Parameters, Tuning, Initial Conditions, Settings
 
@@ -62,8 +63,13 @@ this is running`bdclose('all')` then resetting your model.
 
 %overrides for common settings
 S.tspan = 10;
+%S.const_joy = [0;0;0;0;0;-1];
+%S.initial_joystick_mode_enabled_flag=true;
+%S.simple_joystick_flag = true;
 
-model_name = "Matlab_Controller_SIM";
+
+model_name = "Matlab_Controller_HIL";
+%model_name = "Full_Controller_SIM";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
@@ -136,6 +142,6 @@ plot_names = {"X", "state_control", "rate_control"}; % Refer to setup_plots.m to
 plotAllOutputs(plots,results,plot_names);
 
 
-% saveStateGif(results,prj_path_list.prior_run_data_path,'test')
-
+%saveStateGif(results,prj_path_list.prior_run_path,'test')
+%mannyGifTool(results,prj_path_list.prior_run_path,"test")
 toc

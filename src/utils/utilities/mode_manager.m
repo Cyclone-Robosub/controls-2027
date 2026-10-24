@@ -1,0 +1,73 @@
+%{
+The goal of the Mode Manager is to handle user inputs from the gamepad and
+switch the controller modes effecively.
+
+If we so wish to we can also add more functionality with the limit being
+the total number of mode inputs we have.
+%}
+
+%{
+Function ported from SimulinkPlant Kory-Work-Branch.
+Written by Kory Haydon on July 13 2026.
+%}
+
+function [do_joystick_flag_out,do_mission_file_flag_out] = mode_manager(mode_inputs, initial_joystick_mode_enabled_flag)
+%flag variables
+persistent joystick_flag;
+persistent prior_joystick_flag;
+
+persistent do_mission_file_flag;
+persistent prior_do_mission_file_flag;
+
+%Initialize cosntants
+if isempty(joystick_flag)
+    joystick_flag = initial_joystick_mode_enabled_flag;
+end
+
+if isempty(prior_joystick_flag)
+    prior_joystick_flag = initial_joystick_mode_enabled_flag;
+end
+
+if isempty(do_mission_file_flag)
+    do_mission_file_flag = ~initial_joystick_mode_enabled_flag;
+end
+
+if isempty(prior_do_mission_file_flag)
+    prior_do_mission_file_flag = ~initial_joystick_mode_enabled_flag;
+end
+
+%User Inputs
+cross_button = mode_inputs(1);
+circ_button = mode_inputs(4);
+
+%% Toggle Logic (Joystick, )
+if(circ_button == true && prior_joystick_flag == false)
+    joystick_flag = true;
+end
+
+if(circ_button == true && prior_joystick_flag == true)
+    joystick_flag = false;
+end
+
+%do nothing, keep prior
+if(circ_button == false)
+    prior_joystick_flag = joystick_flag;
+end
+
+if(cross_button == true && prior_do_mission_file_flag == false)
+    do_mission_file_flag = true;
+end
+
+if(circ_button == true && prior_do_mission_file_flag == true)
+    do_mission_file_flag = false;
+end
+
+if(circ_button == false)
+    prior_do_mission_file_flag = do_mission_file_flag;
+end
+
+do_joystick_flag_out = joystick_flag;
+
+do_mission_file_flag_out = do_mission_file_flag;
+
+end
