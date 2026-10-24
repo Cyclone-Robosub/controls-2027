@@ -20,7 +20,7 @@ S.dt_heartbeat = roundToSimTimestep(1/2, S.dt_sim);
 %% Configs
 %Simple_Joystick_SIM
 S.const_joy = [0 0 0 0 0 0]'; %[Y, X ,Rise,Sink,Yaw,Pitch]
-S.initial_joystick_mode_enabled_flag = false;
+S.initial_joystick_mode_enabled_flag = true;
 
 %flags are used to turn parts of the simulation on and off
 S.do_buoyancy_flag = 1;

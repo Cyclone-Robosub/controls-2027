@@ -11,18 +11,20 @@ pose_inputs = [input.x;
                input.yaw;
                input.pitch];
 
-mode_inputs = [input.cross_button;
-               input.square_button;
-               input.triangle_button;
-               input.circle_button;
-               input.dpad_down;
-               input.dpad_left;
-               input.dpad_up;
-               input.dpad_right;
-               input.bumper_left;
-               input.bumper_right;
-               input.start;
-               input.select;
-               input.joystick_press_left;
-               input.joystick_press_right];
+% mode_inputs = [input.cross_button;
+%                input.square_button;
+%                input.triangle_button;
+%                input.circle_button;
+%                input.dpad_down;
+%                input.dpad_left;
+%                input.dpad_up;
+%                input.dpad_right;
+%                input.bumper_left;
+%                input.bumper_right;
+%                input.start;
+%                input.select;
+%                input.joystick_press_left;
+%                input.joystick_press_right];
+
+mode_inputs = input.circle_button;
 end

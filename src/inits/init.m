@@ -60,7 +60,7 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 60;
+S.tspan = 360;
 
 model_name = "Matlab_Controller_HIL";
 

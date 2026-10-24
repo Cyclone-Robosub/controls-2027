@@ -1,4 +1,4 @@
-function [cmd, mission_idx_out, start_new_cmd_flag] = discountExecutive(t, cmd_status, mission, reset)
+function [cmd, mission_idx_out, start_new_cmd_flag, mission_started_out] = discountExecutive(t, cmd_status, mission, reset, mission_mode_flag)
 %{
 This function uses the mission information, the clock time, and the status
 reported by the low-level controller to determine which command to send to
@@ -28,6 +28,7 @@ cmd.wp_mask cmd.hold_time cmd.obj_id cmd.conf cmd.trick_id cmd.exec_timeout
 %variables that persist between controller timesteps
 persistent cmd_start_time
 persistent mission_idx
+persistent mission_started
 
 %initial states for persistent variables
 if isempty(cmd_start_time)
@@ -36,55 +37,88 @@ end
 if isempty(mission_idx)
     mission_idx = 1;
 end 
-
-if(reset)
-    cmd_start_time = t;
-    mission_idx = 1;
+if isempty(mission_started)
+    mission_started = false;
 end
 
+if(~mission_mode_flag)
+    cmd_start_time = t;
+    mission_idx = 1;
+    mission_started = false;
+end
 
-%check the status
-cmd_status = cmd_status(:)';
+if(reset && ~mission_mode_flag) 
+    cmd_start_time = t;
+    mission_idx = 1;
+    mission_started = false;
+end
 
-if(isequal(char(cmd_status), 'SUCC'))
-    % If success is indicated, advance to the next command
-    advanced = true;
-    [mission_idx, cmd_start_time] = advance_to_next(mission_idx,...
-        mission, t);
+if(reset && mission_mode_flag)
+    cmd_start_time = t;
+    mission_idx = 1;
+    mission_started = true;
+end
 
-elseif(isequal(cmd_status, int8('FAIL')))
-    % If failure is indicated, advance to the next command
-    advanced = true;
-    [mission_idx, cmd_start_time] = advance_to_next(mission_idx,...
-        mission, t);
-
-else
-    %otherwise, do not advance
-    advanced = false;
-end %if
-
-
-% if we did not advance due to success or failure, compare the time spent
-% on this command so far to the executive timeout
-if(~advanced)
-    %update the value of the timer
-    timer = t - cmd_start_time;
+if(mission_started)
+    %check the status
+    cmd_status = cmd_status(:)';
     
-    %advance to next if the exec_timeout has been reached
-    if((timer >= mission(mission_idx).exec_timeout))
+    if(isequal(char(cmd_status), 'SUCC'))
+        % If success is indicated, advance to the next command
+        advanced = true;
         [mission_idx, cmd_start_time] = advance_to_next(mission_idx,...
             mission, t);
+    
+    elseif(isequal(cmd_status, int8('FAIL')))
+        % If failure is indicated, advance to the next command
         advanced = true;
+        [mission_idx, cmd_start_time] = advance_to_next(mission_idx,...
+            mission, t);
+    
+    else
+        %otherwise, do not advance
+        advanced = false;
     end %if
-end %if
-
-%make sure the mission_idx remains in the valid range
-mission_idx = max(1, min(mission_idx, numel(mission)));
-%select the command
-cmd = mission(mission_idx);
-
-%output the mission_idx for debugging purposes
-mission_idx_out = mission_idx;
+    
+    
+    % if we did not advance due to success or failure, compare the time spent
+    % on this command so far to the executive timeout
+    if(~advanced)
+        %update the value of the timer
+        timer = t - cmd_start_time;
+        
+        %advance to next if the exec_timeout has been reached
+        if((timer >= mission(mission_idx).exec_timeout))
+            [mission_idx, cmd_start_time] = advance_to_next(mission_idx,...
+                mission, t);
+            advanced = true;
+        end %if
+    end %if
+    
+    %make sure the mission_idx remains in the valid range
+    mission_idx = max(1, min(mission_idx, numel(mission)));
+    %select the command
+    cmd = mission(mission_idx);
+    
+    %output the mission_idx for debugging purposes
+    mission_idx_out = mission_idx;
+else
+    %if the mission is not started, just output an idle command
+    %this will mean start_new_cmd_flag is always false, which should matter
+    %for idle commands (TODO - does it matter if we stationkeep for idle?)
+    mission_idx_out = mission_idx;
+    %form idle command
+    cmd.cmd_id = int8('idle____________');
+    cmd.wp = [0 0 0 0 0 0]';
+    cmd.wp_mask = [1 1 1 0 0 0]';
+    cmd.wp_tol = [0 0 0 0 0 0]';
+    cmd.hold_time = 99999;
+    cmd.obj_id = int8('________________');
+    cmd.conf = 0;
+    cmd.trick_id = int8('________________');
+    cmd.exec_timeout = 1;
+    advanced = true;
+end
 
 %check the conditions on start_new_cmd_flag
 if(advanced)
@@ -97,11 +131,13 @@ else
     start_new_cmd_flag = false;
 end
 
+mission_started_out = mission_started;
+
 %helper function advance_to_next
 function [mission_idx, cmd_start_time] = advance_to_next(mission_idx,...
         mission, t)
 
-        %incriment the index
+        %increment the index
         mission_idx = mission_idx + 1;
 
         %clamp to allowable range
@@ -111,5 +147,4 @@ function [mission_idx, cmd_start_time] = advance_to_next(mission_idx,...
         cmd_start_time = t;
    
 end %advance_to_next
-
 end %discountExecutive
