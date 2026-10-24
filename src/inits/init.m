@@ -60,9 +60,9 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 10;
+S.tspan = 60;
 
-model_name = "Matlab_Controller_UCS";
+model_name = "Full_Controller_SIM";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
