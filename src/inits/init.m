@@ -19,7 +19,8 @@ if(~exist('prj_path_list','var'))
 end
 
 %Run this once on a new computer, if if the message definitions change
-% ros2genmsg("<path to software repo>\Software-Cyclone-Core\core\src");
+%ros2genmsg("<path to software repo>\Software-Cyclone-Core\core\src");
+%ros2genmsg("C:\Users\rubystanton\Documents");
 
 %% Parameters, Tuning, Initial Conditions, Settings
 
@@ -60,9 +61,12 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 60;
+S.tspan = 10;
+S.initial_joystick_mode_enabled_flag = true;
+S.simple_joystick_flag = false; %true for simple, false for smart
+S.const_joy = [0,1,0,0,0,0];
 
-model_name = "Full_Controller_SIM";
+model_name = "Matlab_Controller_SIM";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 

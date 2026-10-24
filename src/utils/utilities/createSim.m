@@ -9,7 +9,7 @@ S.tspan = 10;
 
 %timesteps for various simulation components
 S.dt_sim = 1/1000; %sim timestep 
-S.dt_data = roundToSimTimestep(1/15, S.dt_sim); %data saving timestep
+S.dt_data = roundToSimTimestep(1/30, S.dt_sim); %data saving timestep
 S.dt_control = roundToSimTimestep(1/100, S.dt_sim); %controller timestep
 S.dt_dvl_drr = roundToSimTimestep(1/5, S.dt_sim);
 S.dt_dvl_vr = roundToSimTimestep(1/20, S.dt_sim);
@@ -20,7 +20,8 @@ S.dt_heartbeat = roundToSimTimestep(1/2, S.dt_sim);
 %% Configs
 %Simple_Joystick_SIM
 S.const_joy = [0 0 0 0 0 0]'; %[Y, X ,Rise,Sink,Yaw,Pitch]
-S.initial_joystick_mode_enabled_flag = true;
+S.initial_joystick_mode_enabled_flag = false;
+S.simple_joystick_flag = false; %switches from smart to simple joystick
 
 %flags are used to turn parts of the simulation on and off
 S.do_buoyancy_flag = 1;
