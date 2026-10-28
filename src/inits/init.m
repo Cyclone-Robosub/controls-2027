@@ -91,6 +91,10 @@ if(do_unreal_cosim_flag)
     scene_config = readstruct(scene_config_name);
     dt_sample = scene_config.scene_states.dt_sample;
     
+    %Override for display and save features on camera. 
+    %[left right bottom observer] order display then save. 1 means on.
+    scene_config = set_cam_display_save(scene_config, [0 1 0 1], [0 1 0 0]);
+    
     %other unreal stuff
     M_WorldToUCS = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 -1 0 0 0; 0 0 0 (180 / pi) 0 0; 0 0 0 0 (180 / pi) 0; 0 0 0 0 0 (180 / pi)];
     M_UCSToWorld = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 -1 0 0 0; 0 0 0 (pi / 180) 0 0; 0 0 0 0 (pi / 180) 0; 0 0 0 0 0 (pi / 180)];
