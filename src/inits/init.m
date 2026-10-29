@@ -62,7 +62,7 @@ this is running`bdclose('all')` then resetting your model.
 
 %overrides for common settings
 S.tspan = 10;
-S.initial_joystick_mode_enabled_flag = true;
+%S.initial_joystick_mode_enabled_flag = true;
 S.simple_joystick_flag = false; %true for simple, false for smart
 S.const_joy = [0,1,0,0,0,0];
 

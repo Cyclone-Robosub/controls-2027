@@ -1,5 +1,5 @@
 
-function [pose_inputs, mode_inputs] = gamepad_parser(input)
+function [pose_inputs, mode_inputs, trick_inputs] = gamepad_parser(input)
 %{
 Rearranges the order of the inputs to match downstream parsers.
 %}
@@ -27,4 +27,5 @@ pose_inputs = [input.x;
 %                input.joystick_press_right];
 
 mode_inputs = input.circle_button;
+trick_inputs = [input.cross_button;input.square_button;input.triangle_button];
 end
