@@ -47,6 +47,6 @@ T.P0_ekf = 0.1*eye(6);
 T.B0_ekf = zeros(3,1);
 
 % Joy stick input to error
-T.js_wb_e = [1 1 1; 1 1 1]; % positive and negative tuning values
-T.js_dRb_e = [1 1 1; 1 1 1];% idea was in case of harware depreciation 
+T.js_wb_scale = [1 1 1; 1 1 1]; % positive and negative tuning values
+T.js_dRb_scale = [1 1 1; 1 1 1];% idea was in case of hardware depreciation 
 end

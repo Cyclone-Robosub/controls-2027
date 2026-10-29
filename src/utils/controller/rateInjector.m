@@ -13,6 +13,8 @@ the reference rates stored in the maneuver.
 %rotate the imu measurement
 dX_meas = [X_est.dRb; X_est.wb];
 
+%
+
 if(isequal(char(cmd.cmd_id),'duration_trick__'))
     switch char(cmd.trick_id)
         case 'rsff_forward____'
@@ -74,7 +76,12 @@ if(isequal(char(cmd.cmd_id),'duration_trick__'))
     end
 end
 
+
+%delete this for the joystick version
 if(overwrite_rate_error_flag)
     wb_e = wb_error_inject;
     dRb_e = dRb_error_inject;
 end
+
+%same for position
+wb_e = wb_e*(~overwrite_rate_error_flag(4:6)) + wb_error_inject*overwrite_rate_error_flag(4:6);
