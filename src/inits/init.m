@@ -20,7 +20,6 @@ end
 
 %Run this once on a new computer, if if the message definitions change
 %ros2genmsg("<path to software repo>\Software-Cyclone-Core\core\src");
-%ros2genmsg("C:\Users\rubystanton\Documents");
 
 %% Parameters, Tuning, Initial Conditions, Settings
 
@@ -123,6 +122,10 @@ results = sim(simIn);
 % generateReport(profData, 'myModelProfile');      % writes myModelProfile.html
 fprintf("Processing data\n")
 
+%% Repack
+if(~exist('results','var')) %guard for ctrl+c
+    results = Simulink.SimulationOutput;
+end
 %repackage all the data into a single results obj, flattening structures
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
 
@@ -142,7 +145,7 @@ end
 
 % Enter the names of all the plots as a comma separated cell array
 plot_names = {"X", "Eul_control", "Ri_control"}; % Refer to setup_plots.m to see the valid plot names
-plotAllOutputs(plots,results,plot_names);
+% plotAllOutputs(plots,results,plot_names);
 
 %% Gif
 % make_gif = false;
