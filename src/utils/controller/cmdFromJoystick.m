@@ -1,4 +1,4 @@
-function [cmd, integrator_reset, Rb_error, qib_u, rate_injector_setpoints, rate_injector_flags] = cmdFromJoystick(joystick_input, X)
+function [cmd, integrator_reset, Rb_error, qib_u, rate_injector_setpoints, rate_injector_flags] = cmdFromJoystick(joystick_input, X, wb_tuning, dRb_tuning)
 %{
 This function reads the joystick and translates it to the expected commands
 and inputs.
