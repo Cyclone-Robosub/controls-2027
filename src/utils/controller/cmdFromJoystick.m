@@ -21,9 +21,9 @@ give unexpected results at large angles or over uneven terrain.
 
 %}
 
-x_joy = joystick_state.x;
-y_joy = joystick_state.y;
-rise = joystick_state.rise;
+x_joy = joystick_state.x; %double, range -1,1
+y_joy = joystick_state.y; %double, range -1,1
+rise = joystick_state.rise; %
 sink = joystick_state.sink;
 roll = 0; %not controlled by joystick, but needs placeholder for joystickRateInjector
 pitch = joystick_state.pitch;
