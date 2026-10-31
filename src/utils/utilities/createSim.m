@@ -19,8 +19,11 @@ S.dt_heartbeat = roundToSimTimestep(1/2, S.dt_sim);
 
 %% Configs
 %Simple_Joystick_SIM
-S.const_joy = [0 0 0 0 0 0]'; %[Y, X ,Rise,Sink,Yaw,Pitch]
-S.initial_joystick_mode_enabled_flag = false;
+const_joy = Simulink.Bus.createMATLABStruct('joystick_bus')
+S.const_joy = const_joy;
+
+
+S.initial_joystick_mode_enabled_flag = true;
 S.simple_joystick_flag = false; %switches from smart to simple joystick
 
 %flags are used to turn parts of the simulation on and off
@@ -31,7 +34,7 @@ S.do_thrusters_flag = 1;
 S.do_time_flag = 1;
 S.do_torque_flag = 1;
 S.do_force_flag = 1;
-S.use_true_state_flag = 0;
+S.use_true_state_flag = 1;
 S.allow_PID_resets_flag = 1;
 
 %controller tuning

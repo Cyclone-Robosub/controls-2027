@@ -22,6 +22,13 @@ end
 %ros2genmsg("<path to software repo>\Software-Cyclone-Core\core\src");
 
 %% Parameters, Tuning, Initial Conditions, Settings
+% Bus Setup
+run('setup_cmd_bus.m');
+run('setup_state_bus.m');
+run('setup_sensor_bus.m');
+run('setup_imu_bus.m');
+run('setup_dvl_bus.m');
+run('setup_joystick_bus.m');
 
 %Parameters
 % P = loadParameters();
@@ -43,14 +50,11 @@ I = createInits();
 S = createSim();
 % saveSim(S);
 
-% Bus Setup
-run('setup_cmd_bus.m');
+%buses that depend on settings
 run('setup_FF_maneuvers_bus.m');
-run('setup_state_bus.m');
-run('setup_sensor_bus.m');
 run('setup_RSFF_maneuvers_bus.m');
-run('setup_imu_bus.m');
-run('setup_dvl_bus.m');
+
+
 
 %{
 Note, if you receive an error from the ROS blocks saying something about a
@@ -61,9 +65,8 @@ this is running`bdclose('all')` then resetting your model.
 
 %overrides for common settings
 S.tspan = 10;
-%S.initial_joystick_mode_enabled_flag = true;
 S.simple_joystick_flag = false; %true for simple, false for smart
-S.const_joy = [0,1,0,0,0,0];
+S.const_joy.square_button = 1;
 
 model_name = "Matlab_Controller_SIM";
 
@@ -145,12 +148,12 @@ end
 
 % Enter the names of all the plots as a comma separated cell array
 plot_names = {"X", "Eul_control", "Ri_control"}; % Refer to setup_plots.m to see the valid plot names
-% plotAllOutputs(plots,results,plot_names);
+plotAllOutputs(plots,results,plot_names);
 
 %% Gif
-% make_gif = false;
+% make_gif = true;
 % make_video = false;
 % mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
 %     View='iso', MakeGif=make_gif, MakeVideo=make_video) %valid views are iso, top, north, east, bottom
-% 
-% fprintf("Done.\n\n")
+
+fprintf("Done.\n\n")

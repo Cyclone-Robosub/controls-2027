@@ -83,5 +83,3 @@ if(overwrite_rate_error_flag)
     dRb_e = dRb_error_inject;
 end
 
-%same for position
-wb_e = wb_e*(~overwrite_rate_error_flag(4:6)) + wb_error_inject*overwrite_rate_error_flag(4:6);
