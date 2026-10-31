@@ -1,29 +1,23 @@
-function [cmd, integrator_reset, Rb_error, qib_u, rate_injector_setpoints, rate_injector_flags] = cmdFromJoystick(joystick_input, X, wb_tuning, dRb_tuning)
+function [cmd, integrator_reset, Rb_error, qib_u, rate_injector_setpoints, rate_injector_flags] =...
+    cmdFromJoystick(joystick_state, X, wb_tuning, dRb_tuning)
 %{
 This function reads the joystick and translates it to the expected commands
-and inputs.
+and inputs. When the user is commanding body x, y, or z the xy inertial
+waypoint and altitude setpoint are continuously updated. When the user
+releases the sticks, these setpoints are made persistent. Altitude control
+may be unreliable if the robot is operated at large angles or over uneven
+surfaces. 
 
-=== qib_u ===
-yaw_u - Yaw target based on the robot's current yaw when the yaw signal
-drops to zero.
-pitch_u - Pitch target is always zero, may be ignored by injectors.
-roll_u - Roll target is always zero, may be ignored by injectors.
+When the user commands yaw, the yaw setpoint is continuously updated and
+made persistent upon release as well. When not being commanded, the roll
+and pitch setpoint default to zero. 
 
-=== Rb_error ===
-To Do - used for altitude control and setpoint
+The PID integrators are reset continuously whenever the user is commanding
+the robot.
 
-=== cmd ===
-Typically doesn't matter because the injectors are in use, sometimes
-changes to ff duration trick depending on button states.
-
-=== rate_injector_setpoints, rate_injector_flags ===
-dRb_x
-dRb_y
-dRb_z
-dwbx (roll)
-dwby (pitch)
-dwbz (yaw)
-
+qib_u and Rb_error are calculated based on the persistent yaw setpoint, xy
+setpoint, and altitude setpoint. The altitude to Rb_error conversion may
+give unexpected results at large angles or over uneven terrain. 
 
 %}
 
@@ -31,10 +25,17 @@ x_joy = joystick_state.x;
 y_joy = joystick_state.y;
 rise = joystick_state.rise;
 sink = joystick_state.sink;
-yaw = joystick_state.yaw;
+roll = 0; %not controlled by joystick, but needs placeholder for joystickRateInjector
 pitch = joystick_state.pitch;
+yaw = joystick_state.yaw;
 
-rate_injector_flags = logical([x_joy;y_joy;rise+sink;yaw;pitch]);
+
+%set the rate injector flag true, if the setpoint is nonzero
+rate_injector_flags = logical([x_joy;y_joy;rise+sink;roll;pitch;yaw]);
+
+%map joystick states to rates 
+wb_e_inject = [0;pitch;yaw]
+
 %{
 %sensitivities
 r_sensitivity = T.js_wb_e;
