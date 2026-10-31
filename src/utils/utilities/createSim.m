@@ -19,12 +19,12 @@ S.dt_heartbeat = roundToSimTimestep(1/2, S.dt_sim);
 
 %% Configs
 %Simple_Joystick_SIM
-const_joy = Simulink.Bus.createMATLABStruct('joystick_bus')
+const_joy = Simulink.Bus.createMATLABStruct('joystick_bus');
 S.const_joy = const_joy;
 
 
 S.initial_joystick_mode_enabled_flag = true;
-S.simple_joystick_flag = false; %switches from smart to simple joystick
+S.initial_simple_joystick_flag = false; %switches from smart to simple joystick
 
 %flags are used to turn parts of the simulation on and off
 S.do_buoyancy_flag = 1;

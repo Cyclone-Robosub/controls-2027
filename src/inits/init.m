@@ -65,10 +65,8 @@ this is running`bdclose('all')` then resetting your model.
 
 %overrides for common settings
 S.tspan = 10;
-S.simple_joystick_flag = false; %true for simple, false for smart
-S.const_joy.square_button = 1;
 
-model_name = "Matlab_Controller_SIM";
+model_name = "Full_Controller_HIL";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
@@ -78,7 +76,7 @@ mission = importMission(mission_file_path, max_commands_in_mission);
 
 %% Data
 %if true, data is deleted from file system but saved in the workspace for post processing
-delete_data_flag = false; 
+delete_data_flag = true; 
 prj_path_list.prior_run_path = configureToFileBlocks(model_name, prj_path_list.data_path); 
 
 
@@ -147,7 +145,7 @@ if(~exist('plots_setup_flag','var'))
 end
 
 % Enter the names of all the plots as a comma separated cell array
-plot_names = {"X", "Eul_control", "Ri_control"}; % Refer to setup_plots.m to see the valid plot names
+plot_names = {"X"}; % Refer to setup_plots.m to see the valid plot names
 plotAllOutputs(plots,results,plot_names);
 
 %% Gif

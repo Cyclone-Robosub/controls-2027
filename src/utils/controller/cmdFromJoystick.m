@@ -1,5 +1,5 @@
-function [cmd, integrator_reset, Rb_error, qib_u, rate_injector_setpoints, rate_injector_flags, debug] =...
-    cmdFromJoystick(joystick_state, X, wb_tuning, dRb_tuning,Sensors)
+function [cmd, integrator_reset, Rb_error, qib_u, rate_injector_setpoints, rate_injector_flags, simple_mode, debug] =...
+    cmdFromJoystick(joystick_state, X, wb_tuning, dRb_tuning, Sensors, initial_simple_mode_flag)
 %{
 This function reads the joystick and translates it to the expected commands
 and inputs. When the user is commanding body x, y, or z the xy inertial
@@ -33,6 +33,19 @@ end
 if(isempty(alt_u))
     alt_u = Sensors.dvl_alt;
 end
+
+%simple joystick mode
+persistent simple_mode_
+if(isempty(simple_mode_))
+    simple_mode_ = initial_simple_mode_flag;
+end
+
+%switch simple joystick mode if the triangle button is pressed
+if(joystick_state.triangle_button)
+    simple_mode_ = ~simple_mode_;
+end
+simple_mode = simple_mode_;
+
 
 x_joy = joystick_state.x; %double, range -1,1
 y_joy = joystick_state.y; %double, range -1,1
@@ -102,9 +115,9 @@ default_cmd.trick_id = int8('________________');
 default_cmd.exec_timeout = 0;
 
 %barrel roll
-if(logical(joystick_state.cross_button))
+if(logical(joystick_state.square_button))
     default_cmd.trick_id = int8('barrel_roll_____');
-elseif(logical(joystick_state.square_button))
+elseif(logical(joystick_state.triangle_button))
     default_cmd.trick_id = int8('somersault______');
 end
 
