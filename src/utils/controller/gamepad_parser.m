@@ -5,8 +5,8 @@ Rearranges the order of the inputs to match downstream parsers
 %}
 
 %Pack into the joystick_bus (setup_joystick_bus.m)
-joystick_state.x = double(input.x*(abs(input.x)>.1));
-joystick_state.y = double(input.y*(abs(input.y)>.1));
+joystick_state.x = double(input.y*(abs(input.y)>.1)); %switched in ros message
+joystick_state.y = double(input.x*(abs(input.x)>.1));
 joystick_state.rise = double(input.rise*(input.rise>.1));
 joystick_state.sink = double(input.sink*(input.sink>.1));
 joystick_state.yaw = double(input.yaw*(abs(input.yaw)>.1));

@@ -23,7 +23,7 @@ const_joy = Simulink.Bus.createMATLABStruct('joystick_bus');
 S.const_joy = const_joy;
 
 
-S.initial_joystick_mode_enabled_flag = true;
+S.initial_joystick_mode_enabled_flag = false;
 S.initial_simple_joystick_flag = false; %switches from smart to simple joystick
 
 %flags are used to turn parts of the simulation on and off

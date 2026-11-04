@@ -24,7 +24,8 @@ T.dRb_PID.int_sat = 100; %integral term saturation limit
 
 %Controller gains for quaternion --> angular velocity [roll, pitch, yaw,
 %scalar]
-T.qib_PID.Kp = [10;10;5;10]; T.qib_PID.Ki = [0;0;0;0]; T.qib_PID.Kd = [1;1;1;1];
+T.qib_PID.Kp = [10;10;5;10]; T.qib_PID.Ki = [0;0;0;0]; T.qib_PID.Kd = [0;0;0;0];
+T.qib_PID.Kp = [1;1;1;1];
 T.qib_PID.N = 100; %filter coefficient for the derivative term (unused)
 T.qib_PID.output_sat = 2*pi; %PID saturation point for velocity output
 T.qib_PID.int_sat = pi/3; %integral term saturation limit

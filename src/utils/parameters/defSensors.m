@@ -11,8 +11,8 @@ imu.Cimub = imu.Cbimu';
 %for running in sim
 imu.Cbimu_meas = eye(3); 
 imu.Cbimu_meas = [1 0 0;...
-    0 -0.0083 -1;...
-    0 1 -.0083];
+    0 -0.0151 -0.9999;...
+    0 0.9999 -.0151];
 
 imu.T = 25;
 imu.Bi = [ 27.5550,-2.4169,-16.0849];

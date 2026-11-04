@@ -122,5 +122,6 @@ elseif(logical(joystick_state.triangle_button))
 end
 
 cmd = default_cmd;
-debug = Rb_error;
+debug = Rb_error(3);
+
 end
