@@ -66,7 +66,7 @@ this is running`bdclose('all')` then resetting your model.
 %overrides for common settings
 S.tspan = 1;
 
-model_name = "Matlab_Controller_HIL";
+model_name = "Matlab_Controller_SIM";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
