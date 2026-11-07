@@ -1,4 +1,4 @@
-function [cmd, integrator_reset, Rb_error, qib_u, rate_injector_setpoints, rate_injector_flags, simple_mode, debug] =...
+function [cmd, integrator_reset, Rb_error, qib_u, rate_injector_setpoints, rate_injector_flags, simple_mode, Rb_pid_out, debug] =...
     cmdFromJoystick(joystick_state, X, wb_tuning, dRb_tuning, Sensors, initial_simple_mode_flag)
 %{
 This function reads the joystick and translates it to the expected commands
@@ -22,7 +22,7 @@ give unexpected results at large angles or over uneven terrain.
 %}
 
 %persistent vars
-persistent Ri_u Eul_u alt_u
+persistent Ri_u Eul_u alt_u pos_waypoint_latch eul_waypoint_latch
 if(isempty(Ri_u))
     Ri_u = X.Ri;
 end
@@ -32,6 +32,12 @@ if(isempty(Eul_u))
 end
 if(isempty(alt_u))
     alt_u = Sensors.dvl_alt;
+end
+if(isempty(pos_waypoint_latch))
+    pos_waypoint_latch = false;
+end
+if(isempty(eul_waypoint_latch))
+    eul_waypoint_latch = false;
 end
 
 %simple joystick mode
@@ -54,6 +60,8 @@ sink = joystick_state.sink;
 roll = 0; %not controlled by joystick, but needs placeholder for joystickRateInjector
 pitch = joystick_state.pitch;
 yaw = joystick_state.yaw;
+roll_left = joystick_state.bumper_left;
+roll_right = joystick_state.bumper_right;
 
 
 %set the rate injector flag true, if the setpoint is nonzero
@@ -69,7 +77,8 @@ z_joy = sink-rise; %resolve 2 button input
 dRb_e(3)=dRb_tuning(2-logical(1+sign(z_joy)),3)*z_joy;
 
 %rotation
-wb_e(1) = 0;
+roll_joy = roll_right - roll_left;
+wb_e(1) = wb_tuning(2-logical(1+sign(roll_joy)),1)*roll_joy;
 wb_e(2) = wb_tuning(2-logical(1+sign(pitch)),2)*pitch;
 wb_e(3) = wb_tuning(2-logical(1+sign(yaw)),3)*yaw;
 
@@ -79,24 +88,47 @@ rate_injector_setpoints = [dRb_e;wb_e];
 if(rate_injector_flags(6))
     yaw_u = X.Eul(3);
     Eul_u = [0;0;yaw_u];
+    eul_waypoint_latch = false;
+end
+%wait for the vehicle to stop before freezing the waypoint
+if(~eul_waypoint_latch && norm(X.wb(3)) > 0.05) %TODO - adjust this tol
+    yaw_u = X.Eul(3);
+    Eul_u = [0;0;yaw_u];
+    eul_waypoint_latch = false;
+end
+%once it gets slow enough, shut the latch to stop Ri_u from updating
+if(~eul_waypoint_latch && norm(X.wb(3)) < 0.05)
+    eul_waypoint_latch = true;
 end
 
 %if the vehicle is being commanded to translate, overwrite pos setpoint
 if(any(rate_injector_flags(1:3)))
     Ri_u = X.Ri;
+    pos_waypoint_latch = false;
+end
+%wait for the vehicle to stop before freezing the waypoint
+if(~pos_waypoint_latch && norm(X.dRb) > 0.1)
+    Ri_u = X.Ri;
+    pos_waypoint_latch = false;
+end
+%once it gets slow enough, shut the latch to stop Ri_u from updating
+if(~pos_waypoint_latch && norm(X.dRb) < 0.1)
+    pos_waypoint_latch = true;
 end
 if(rate_injector_flags(3))
     alt_u = Sensors.dvl_alt;
 end
+debug = norm(X.dRb);
 
 qib_u = eulToQuat(Eul_u);
 
 %Rb_error
 Rb_u = X.Cbi*Ri_u;
+Rb_pid_out = Rb_u;
 Rb_error = Rb_u - X.Rb;
 Rb_error(3) = Sensors.dvl_alt - alt_u;
 
-%if roll or pitch s large, DON'T overwrite Rb_error(3)
+%TODO if roll or pitch s large, DON'T overwrite Rb_error(3)
 
 if(any(rate_injector_flags))
     integrator_reset = true;
@@ -122,6 +154,5 @@ elseif(logical(joystick_state.triangle_button))
 end
 
 cmd = default_cmd;
-debug = Rb_error(3);
 
 end

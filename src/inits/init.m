@@ -54,7 +54,6 @@ run('setup_FF_maneuvers_bus.m');
 run('setup_RSFF_maneuvers_bus.m');
 
 
-
 %{
 Note, if you receive an error from the ROS blocks saying something about a
 different model that is not the one you have selected not being loaded this
@@ -148,10 +147,10 @@ plot_names = {"X","mission flags", "joystick flags", "Eul control", "Ri control"
 plotAllOutputs(plots,results,plot_names);
 
 %% Gif
-make_gif = true;
-make_video = false;
-mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
-    View='top', MakeGif=make_gif, MakeVideo=make_video,...
-    DynamicCameraMotion=false) %valid views are iso, top, north, east, bottom
+% make_gif = true;
+% make_video = false;
+% mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
+%     View='top', MakeGif=make_gif, MakeVideo=make_video,...
+%     DynamicCameraMotion=false) %valid views are iso, top, north, east, bottom
 
 fprintf("Done.\n\n")
