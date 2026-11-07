@@ -7,11 +7,11 @@ max_thruster_force_fmd = 40;
 T.ff_force_max = 2*sqrt(2)*max_thruster_force_fmd;
 
 %tolerance for mode switching in the guidance law
-T.Ri_e_tol = 0.5; %only leave this large for testing sliding maneuvers
-T.Eul_e_tol = 10*pi/180; %If I make this too small the controller bounces a lot on edges. As low as 10 works
+T.Ri_e_tol = 0.1; %only leave this large for testing sliding maneuvers
+T.Eul_e_tol = 5*pi/180; %If I make this too small the controller bounces a lot on edges. As low as 10 works
 
 %Controller gains for position --> velocity
-T.Rb_PID.Kp = [0.5;0.5;1]; T.Rb_PID.Ki = [0;0;0]; T.Rb_PID.Kd = [0;0;0];
+T.Rb_PID.Kp = [0.5;0.5;1]; T.Rb_PID.Ki = [0.1;0.1;0.1]; T.Rb_PID.Kd = [0;0;0];
 T.Rb_PID.N = 100; %filter coefficient for the derivative term
 T.Rb_PID.output_sat = 1; %PID saturation point for velocity output
 T.Rb_PID.int_sat = 1; %integral term saturation limit

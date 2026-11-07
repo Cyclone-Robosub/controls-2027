@@ -18,9 +18,16 @@ Code by Kory Haydon
 %}
 
 %parse optional kwargs
-Ri = enforceTallSkinny(squeeze(results.X_ctrl_Ri.Data))';
-q = enforceTallSkinny(squeeze(results.X_ctrl_qib.Data))';
-t = results.X_ctrl_Ri.Time;
+%try to use true states first, but use estimates if unavailable
+try
+    Ri = enforceTallSkinny(squeeze(results.X_Ri.Data))';
+    q = enforceTallSkinny(squeeze(results.X_qib.Data))';
+    t = results.X_Ri.Time;
+catch
+    Ri = enforceTallSkinny(squeeze(results.X_ctrl_Ri.Data))';
+    q = enforceTallSkinny(squeeze(results.X_ctrl_qib.Data))';
+    t = results.X_ctrl_Ri.Time;
+end
 
 p = inputParser;
 
@@ -79,7 +86,7 @@ end
 f = figure('Visible','off','Position',[400 2400 1200 800]);
 ax = axes('Parent',f);
 axis(ax,'manual')
-axis(ax,Margin.*[-1 1 -1 1 -1 1])
+axis(ax,[min(Ri(1,:))-Margin max(Ri(1,:))+Margin min(Ri(2,:))-Margin max(Ri(2,:))+Margin min(Ri(3,:))-Margin max(Ri(3,:))+Margin])
 view(ax,View)
 hold on
 xlabel("x")

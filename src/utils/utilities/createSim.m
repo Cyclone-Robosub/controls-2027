@@ -7,7 +7,7 @@ Defines the set of simulation settings and constants.
 %simulation duration
 S.tspan = 10;
 
-%timesteps for various simulation components
+%timestep for various simulation components
 S.dt_sim = 1/1000; %sim timestep 
 S.dt_data = roundToSimTimestep(1/30, S.dt_sim); %data saving timestep
 S.dt_control = roundToSimTimestep(1/100, S.dt_sim); %controller timestep
@@ -34,7 +34,7 @@ S.do_thrusters_flag = 1;
 S.do_time_flag = 1;
 S.do_torque_flag = 1;
 S.do_force_flag = 1;
-S.use_true_state_flag = 1;
+S.use_true_state_flag = 0;
 S.allow_PID_resets_flag = 1;
 
 %controller tuning

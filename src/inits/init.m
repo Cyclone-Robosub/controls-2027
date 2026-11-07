@@ -9,9 +9,8 @@ folder.
 %}
 
 %% Housekeeping and Path Management
-
 clc
-clear results 
+clear results
 
 %refreshes the file path in case clear all was called
 if(~exist('prj_path_list','var')) 
@@ -64,7 +63,7 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 1;
+S.tspan = 30;
 
 model_name = "Matlab_Controller_SIM";
 
@@ -145,13 +144,14 @@ if(~exist('plots_setup_flag','var'))
 end
 
 % Enter the names of all the plots as a comma separated cell array
-plot_names = {"X"}; % Refer to setup_plots.m to see the valid plot names
+plot_names = {"X","mission flags", "joystick flags", "Eul control", "Ri control", "dRb control", "wb control"}; % Refer to setup_plots.m to see the valid plot names
 plotAllOutputs(plots,results,plot_names);
 
 %% Gif
 make_gif = true;
 make_video = false;
 mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
-    View='iso', MakeGif=make_gif, MakeVideo=make_video) %valid views are iso, top, north, east, bottom
+    View='top', MakeGif=make_gif, MakeVideo=make_video,...
+    DynamicCameraMotion=false) %valid views are iso, top, north, east, bottom
 
 fprintf("Done.\n\n")
