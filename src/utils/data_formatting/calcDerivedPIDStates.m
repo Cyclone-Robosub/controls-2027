@@ -16,5 +16,6 @@ X_pid.wb = wb_pid;
 X_pid.wi = Cib*wb_pid;
 X_pid.ddRi = zeros(3,1);
 X_pid.ddRb = zeros(3,1);
+X_pid.alt = 0; %TODO (should this be zero)
 
 end

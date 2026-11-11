@@ -1,4 +1,4 @@
-function X = packStateIntoBus(Ri, qib, dRi, wb, ddRi)
+function X = packStateIntoBus(Ri, qib, dRi, wb, ddRi, alt)
 Eul = quatToEul(qib);
 Cib = quatToRotm(qib);
 Cbi = Cib';
@@ -15,5 +15,6 @@ X.wb = wb;
 X.wi = Cib*wb;
 X.ddRi = ddRi;
 X.ddRb = Cbi*ddRi;
+X.alt = alt;
 
 end

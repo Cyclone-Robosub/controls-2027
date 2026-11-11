@@ -90,8 +90,13 @@ ddRb.Name = 'ddRb';
 ddRb.DataType = 'double';
 ddRb.Dimensions = [3,1];
 
+alt = Simulink.BusElement;
+alt.Name = 'alt';
+alt.DataType = 'double';
+alt.Dimensions = [1,1];
+
 X_bus = Simulink.Bus;
 
-X_bus.Elements = [Ri, Rb, Eul, qib, Cib, Cbi, dRi, dRb, wb, wi, ddRi, ddRb];
+X_bus.Elements = [Ri, Rb, Eul, qib, Cib, Cbi, dRi, dRb, wb, wi, ddRi, ddRb, alt];
 
 clear Ri Rb Eul qib Cib Cbi dRi dRb wb wi ddRi ddRb

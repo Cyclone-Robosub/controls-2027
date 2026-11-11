@@ -24,6 +24,7 @@ X_u.wb = zeros(3,1);
 X_u.wi = zeros(3,1);
 X_u.ddRi = zeros(3,1);
 X_u.ddRb = zeros(3,1);
+X_u.alt = 0; %TODO (fix this if used in fb control ever)
 
 switch char(cmd.trick_id)
     case {'ff_forward______', 'ff_backward_____', 'ff_up___________',...
@@ -75,6 +76,7 @@ switch char(cmd.trick_id)
         X_u.wi = zeros(3,1);
         X_u.ddRi = zeros(3,1);
         X_u.ddRb = zeros(3,1); 
+        X_u.alt = 0; %TODO (fix this if used in fb control ever)
 
         [cmd_status, hold_timer, hold_timer_start_time] =FFTimer(cmd, hold_timer_start_time, t); 
 
@@ -216,6 +218,7 @@ X_u.wb = zeros(3,1);
 X_u.wi = zeros(3,1);
 X_u.ddRi = zeros(3,1);
 X_u.ddRb = zeros(3,1);
+X_u.alt = 0; %TODO (fix this if used in fb control ever)
 
 %update the timer and return success when it elapses
 if(hold_timer >= cmd.hold_time)

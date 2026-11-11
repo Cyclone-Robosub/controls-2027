@@ -65,7 +65,7 @@ this is running`bdclose('all')` then resetting your model.
 S.tspan = 10;
 
 
-model_name = "Dynamics_UCS";
+model_name = "Matlab_Controller_SIM";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 

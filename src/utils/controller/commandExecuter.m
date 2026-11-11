@@ -153,6 +153,7 @@ switch char(cmd.cmd_id) %case must match exactly with importMission.m
         X_u.wi = zeros(3,1);
         X_u.ddRi = zeros(3,1);
         X_u.ddRb = zeros(3,1);
+        X_u.alt = 0; %TODO (fix this if used in fb control ever)
 
         hold_timer_start_time = t; 
         hold_timer = 0;
@@ -171,7 +172,8 @@ switch char(cmd.cmd_id) %case must match exactly with importMission.m
         X_u.wi = zeros(3,1);
         X_u.ddRi = zeros(3,1);
         X_u.ddRb = zeros(3,1);
-        
+        X_u.alt = 0; %TODO (fix this if used in fb control ever)
+
         hold_timer_start_time = t; 
         hold_timer = 0;
         cmd_status = int8('RUNN');

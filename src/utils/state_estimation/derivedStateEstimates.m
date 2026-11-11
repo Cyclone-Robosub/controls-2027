@@ -1,4 +1,4 @@
-function X_est = derivedStateEstimates(qib_est, wb_meas, Rb_est, dRb_est, ddRb_meas)
+function X_est = derivedStateEstimates(qib_est, wb_meas, Rb_est, dRb_est, ddRb_meas, alt)
 
 %attitude representations
 Cib = quatToRotm(qib_est);
@@ -25,3 +25,4 @@ X_est.wb = wb_meas;
 X_est.wi = wi;
 X_est.ddRi = ddRi;
 X_est.ddRb = ddRb_meas;
+X_est.alt = alt;
