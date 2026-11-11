@@ -92,7 +92,7 @@ if(do_unreal_cosim_flag)
     dt_sample = scene_config.scene_states.dt_sample;
     
     %Override for display and save features on camera. 
-    %[left right bottom observer] order display then save. 1 means on.
+    %[left right bottom observer] order display then save.
     scene_config = set_cam_display_save(scene_config, [0 1 0 0], [0 0 0 0]);
     
     %other unreal stuff
