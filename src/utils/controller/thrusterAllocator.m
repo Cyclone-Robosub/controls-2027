@@ -3,8 +3,8 @@ function FT_cmd_list = thrusterAllocator(FT_moment_list, FT_force_list, max_thru
 Weighted thruster allocation.
 %}
 
-% FT_moment_list = max(-max_thruster_force, min(FT_moment_list, max_thruster_force));
-% FT_force_list = max(-max_thruster_force, min(FT_force_list, max_thruster_force));
+FT_moment_list = max(-max_thruster_force, min(FT_moment_list, max_thruster_force));
+FT_force_list = max(-max_thruster_force, min(FT_force_list, max_thruster_force));
 % 
 % [val1, ~] = max(abs(FT_moment_list));
 % [val2,~] = max(abs(FT_force_list));
@@ -15,7 +15,7 @@ Weighted thruster allocation.
 % 
 % FT_cmd_list = FT_moment_list.*alpha1 + FT_force_list.*alpha2;
 
-FT_cmd_list = FT_moment_list + FT_force_list;
+FT_cmd_list = 0.5*FT_moment_list + 0.5*FT_force_list;
 
 
 end

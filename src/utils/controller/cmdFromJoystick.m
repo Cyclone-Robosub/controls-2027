@@ -57,7 +57,6 @@ x_joy = joystick_state.x; %double, range -1,1
 y_joy = joystick_state.y; %double, range -1,1
 rise = joystick_state.rise; %
 sink = joystick_state.sink;
-roll = 0; %not controlled by joystick, but needs placeholder for joystickRateInjector
 pitch = joystick_state.pitch;
 yaw = joystick_state.yaw;
 roll_left = joystick_state.bumper_left;
@@ -65,7 +64,7 @@ roll_right = joystick_state.bumper_right;
 
 
 %set the rate injector flag true, if the setpoint is nonzero
-rate_injector_flags = logical([x_joy;y_joy;rise+sink;roll;pitch;yaw]);
+rate_injector_flags = logical([x_joy;y_joy;rise+sink;roll_left+roll_right;pitch;yaw]);
 
 wb_e = [0 0 0]';
 dRb_e = [0 0 0]';
@@ -91,15 +90,16 @@ if(rate_injector_flags(6))
     eul_waypoint_latch = false;
 end
 %wait for the vehicle to stop before freezing the waypoint
-if(~eul_waypoint_latch && norm(X.wb(3)) > 0.05) %TODO - adjust this tol
-    yaw_u = X.Eul(3);
-    Eul_u = [0;0;yaw_u];
-    eul_waypoint_latch = false;
-end
-%once it gets slow enough, shut the latch to stop Ri_u from updating
-if(~eul_waypoint_latch && norm(X.wb(3)) < 0.05)
-    eul_waypoint_latch = true;
-end
+% if(~eul_waypoint_latch && norm(X.wb(3)) > 0.5) %TODO - adjust this tol
+%     yaw_u = X.Eul(3);
+%     Eul_u = [0;0;yaw_u];
+%     eul_waypoint_latch = false;
+% end
+%once it get
+%  s slow enough, shut the latch to stop Ri_u from updating
+% if(~eul_waypoint_latch && norm(X.wb(3)) < 0.5)
+%     eul_waypoint_latch = true;
+% end
 
 %if the vehicle is being commanded to translate, overwrite pos setpoint
 if(any(rate_injector_flags(1:3)))
@@ -149,8 +149,6 @@ default_cmd.exec_timeout = 0;
 %barrel roll
 if(logical(joystick_state.square_button))
     default_cmd.trick_id = int8('barrel_roll_____');
-elseif(logical(joystick_state.triangle_button))
-    default_cmd.trick_id = int8('somersault______');
 end
 
 cmd = default_cmd;
