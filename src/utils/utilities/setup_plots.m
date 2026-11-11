@@ -8,8 +8,6 @@ plots_setup_flag = true; %clear all watchdog
 
 clear plots %need to clear here to prevent end+1 from causing problems
 
-
-
 %Plot details defined here.
 plots{1} = TimePlot("pwm_cmd","pwm_cmd",[4,2],{1,2,3,4,5,6,7,8},["pwm (us)","pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)"],"Time (s)", ["Thruster 0","Thruster 1", "Thruster 2", "Thruster 3", "Thruster 4", "Thruster 5", "Thruster 6", "Thruster 7"],"Commanded Thruster PWM",{"","","","","","","",""});
 
@@ -17,7 +15,11 @@ plots{end+1} = TimePlot("pwm_ctrl","pwm_ctrl",[4,2],{1,2,3,4,5,6,7,8},["pwm (us)
 
 plots{end+1} = TimePlot("pwms","pwms",[4,2],{1,2,3,4,5,6,7,8},["pwm (us)","pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)", "pwm (us)"],"Time (s)", ["Thruster 0","Thruster 1", "Thruster 2", "Thruster 3", "Thruster 4", "Thruster 5", "Thruster 6", "Thruster 7"],"Commanded Thruster PWM",{"","","","","","","",""});
 
+%FT_list (delivered by cascaded controller)
 plots{end+1} = TimePlot("FT_cmd_list","FT_cmd_list",[4,2],{1,2,3,4,5,6,7,8},["Force (N)","Force (N)", "Force (N)", "Force (N)", "Force (N)", "Force (N)", "Force (N)", "Force (N)"],"Time (s)", ["Thruster 0","Thruster 1", "Thruster 2", "Thruster 3", "Thruster 4", "Thruster 5", "Thruster 6", "Thruster 7"],"Commanded Thruster Force",{"","","","","","","",""});
+
+%FT_list (from plant)
+plots{end+1} = TimePlot("FT_list","FT_list",[4,2],{1,2,3,4,5,6,7,8},["Force (N)","Force (N)", "Force (N)", "Force (N)", "Force (N)", "Force (N)", "Force (N)", "Force (N)"],"Time (s)", ["Thruster 0","Thruster 1", "Thruster 2", "Thruster 3", "Thruster 4", "Thruster 5", "Thruster 6", "Thruster 7"],"Simulated Thruster Force",{"","","","","","","",""});
 
 plots{end+1} = TimePlot("Ri, dRi, ddRi",["X_Ri","X_dRi","X_ddRi"],[3,1],{[1,2,3],[4,5,6],[7,8,9]},["Position (m)", "Velocity (m/s)", "Acceleration (m/s2)"],"Time (s)",["Inertial Position","Inertial Velocity","Inertial Acceleration"],"",{["Rix", "Riy", "Riz"],["dRix", "dRiy", "dRiz"],["ddRix","ddRiy","ddRiz"]});
 
@@ -28,8 +30,6 @@ plots{end+1} = TimePlot("Fb, Mb",["Fb","Mb"],[2,1],{[1,2,3],[4,5,6]},["Force (N)
 plots{end+1} = TimePlot("drag",["Fb_drag", "Mb_drag"],[2,1],{[1,2,3],[4,5,6]},["Force (N)", "Moment (Nm)"], "Time (s)", ["Body Drag Force","Body Drag Moment"],"",{["Fbx","Fby","Fbz"],["Mbx","Mby","Mbz"]});
 
 plots{end+1} = TimePlot("Fi, Mi",["Fi","Mi"],[2,1],{[1,2,3],[4,5,6]},["Force (N)", "Moment (Nm)"], "Time (s)", ["Inertial Force","Inertial Moment"],"",{["Fix","Fiy","Fiz"],["Mix","Miy","Miz"]});
-
-plots{end+1} = TimePlot("FT_list","FT_list",[4,2],{1,2,3,4,5,6,7,8},["F (N)","F (N)", "F (N)", "F (N)", "F (N)", "F (N)", "F (N)", "F (N)"],"T (s)", ["Thruster 0","Thruster 1", "Thruster 2", "Thruster 3", "Thruster 4", "Thruster 5", "Thruster 6", "Thruster 7"],"Thruster Forces",{"","","","","","","",""});
 
 plots{end+1} = TimePlot("Eul","X_Eul",[1,1],{[1,2,3]},"Angle (rad)","Time (s)","","Euler Angles",{["roll","pitch","yaw"]});
 

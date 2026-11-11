@@ -62,9 +62,10 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 360;
+S.tspan = 10;
 
-model_name = "Full_Controller_HIL";
+
+model_name = "Dynamics_UCS";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
@@ -74,7 +75,7 @@ mission = importMission(mission_file_path, max_commands_in_mission);
 
 %% Data
 %if true, data is deleted from file system but saved in the workspace for post processing
-delete_data_flag = false; 
+delete_data_flag = true; 
 prj_path_list.prior_run_path = configureToFileBlocks(model_name, prj_path_list.data_path); 
 
 
@@ -91,7 +92,7 @@ if(do_unreal_cosim_flag)
     % Load UCS Scene Configuration and Variables
     scene_config_name = "default_scene_config.xml"; 
     scene_config = readstruct(scene_config_name);
-    dt_sample = scene_config.scene_states.dt_sample;
+    S.dt_sample = scene_config.scene_states.dt_sample;
     
     %other unreal stuff
     M_WorldToUCS = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 -1 0 0 0; 0 0 0 (180 / pi) 0 0; 0 0 0 0 (180 / pi) 0; 0 0 0 0 0 (180 / pi)];
@@ -143,14 +144,14 @@ if(~exist('plots_setup_flag','var'))
 end
 
 % Enter the names of all the plots as a comma separated cell array
-plot_names = {"X","mission flags", "joystick flags", "Eul control", "Ri control", "dRb control", "wb control", "pwm_ctrl"}; % Refer to setup_plots.m to see the valid plot names
+plot_names = {"X","mission flags", "joystick flags", "Eul control", "Ri control", "dRb control", "wb control", "pwm_ctrl", "FT_list"}; % Refer to setup_plots.m to see the valid plot names
 plotAllOutputs(plots,results,plot_names);
 
 %% Gif
 % make_gif = true;
 % make_video = false;
 % mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
-%     View='top', MakeGif=make_gif, MakeVideo=make_video,...
+%     View='iso', MakeGif=make_gif, MakeVideo=make_video,...
 %     DynamicCameraMotion=false) %valid views are iso, top, north, east, bottom
 
 fprintf("Done.\n\n")

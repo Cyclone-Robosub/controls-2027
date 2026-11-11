@@ -95,6 +95,7 @@ zlabel("z")
 title(name)
 set(gca,'Zdir','reverse')
 set(gca,'Ydir','reverse')
+daspect([1,1,1])
 
 %load the patch data for Manny from where it is stored in the file system
 %will be already on path if using project structure correctly
