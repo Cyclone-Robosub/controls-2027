@@ -144,7 +144,8 @@ if(~exist('plots_setup_flag','var'))
 end
 
 % Enter the names of all the plots as a comma separated cell array
-plot_names = {"X","mission flags", "joystick flags", "Eul control", "Ri control", "dRb control", "wb control", "pwm_ctrl", "FT_list"}; % Refer to setup_plots.m to see the valid plot names
+plot_names = {"X","mission flags", "joystick flags", "Eul control", "Ri control",...
+    "dRb control", "wb control", "pwm_ctrl", "FT_list", "FT_list cmds","force_moment_cmd"}; % Refer to setup_plots.m to see the valid plot names
 plotAllOutputs(plots,results,plot_names);
 
 %% Gif

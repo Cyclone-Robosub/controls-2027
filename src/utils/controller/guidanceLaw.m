@@ -112,6 +112,7 @@ if(max(abs(Eul_e)) > Eul_e_tol) %TURNING
     %idle waypoint)
     Cib = quatToRotm(qib);
     Cbi = Cib';
+    Ri_u = [Ri(1);Ri(2);Ri_u(3)]; %only use z-error while turning
     Rb_u = Cbi*Ri_u;
     Rb = Cbi*Ri;
     Rb_error = Rb_u - Rb;
@@ -144,6 +145,18 @@ else %SETTLING
 
     action_id = 3;
     
+end
+
+%allow sliding for specific cases
+if((cmd.cmd_id)==int8('duration_trick__'))
+    Cib = quatToRotm(qib);
+    Cbi = Cib';
+    Rb_u = Cbi*Ri_u;
+    Rb = Cbi*Ri;
+    Rb_error = Rb_u - Rb;
+    qib_int_u = qib_u;
+    persistant_yaw_target = X_u.Eul(3);
+    action_id = 4;
 end
 
 if(overwrite_state_setpoint_flag)

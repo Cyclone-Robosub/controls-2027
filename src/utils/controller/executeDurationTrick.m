@@ -122,21 +122,17 @@ end
 switch char(cmd.trick_id)
     case 'ssff_forward____'
         %set the position on the waypoint 1m in the body x-direction
-        if(new_cmd_reset)
-            %only creates a far away position waypoint ONCE
-            cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[1000;0;0];
-        end
+        % if(new_cmd_reset)
+        %put the waypoint in front of the vehicle
+        cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[1;0;0];
+        % end
+
 
     case 'ssff_backward___'
-        %{
-        Right now the guidance law will just cause the robot to turn 180
-        then drive forward. Not sure the best way to fix this but low
-        priority.
-        %}
-        if(new_cmd_reset)
-            %only creates a far away position waypoint ONCE
-            cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[-1000;0;0];
-        end
+        % if(new_cmd_reset)
+        %put the waypoint behind the vehicle, this has t
+        cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[-1;0;0];
+        % end
 
     case 'ssff_right______'
         %{

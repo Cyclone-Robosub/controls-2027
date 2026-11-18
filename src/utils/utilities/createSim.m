@@ -33,7 +33,7 @@ S.do_thrusters_flag = 1;
 S.do_time_flag = 1;
 S.do_torque_flag = 1;
 S.do_force_flag = 1;
-S.use_true_state_flag = 0;
+S.use_true_state_flag = 1;
 S.allow_PID_resets_flag = 1;
 
 %controller tuning

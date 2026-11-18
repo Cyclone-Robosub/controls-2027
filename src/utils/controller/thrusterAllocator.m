@@ -15,7 +15,8 @@ FT_force_list = max(-max_thruster_force, min(FT_force_list, max_thruster_force))
 % 
 % FT_cmd_list = FT_moment_list.*alpha1 + FT_force_list.*alpha2;
 
-FT_cmd_list = 0.5*FT_moment_list + 0.5*FT_force_list;
-
+% FT_cmd_list = 0.5*FT_moment_list + 0.5*FT_force_list;
+FT_cmd_list = FT_moment_list + FT_force_list;
+FT_cmd_list = max(-max_thruster_force, min(FT_cmd_list, max_thruster_force));
 
 end
