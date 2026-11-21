@@ -60,9 +60,9 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 10;
+S.tspan = 25;
 
-model_name = "Dynamics_UCS";
+model_name = "Matlab_Controller_SIM";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
@@ -72,7 +72,7 @@ mission = importMission(mission_file_path, max_commands_in_mission);
 
 %% Data
 %if true, data is deleted from file system but saved in the workspace for post processing
-delete_data_flag = false; 
+delete_data_flag = true; 
 prj_path_list.prior_run_path = configureToFileBlocks(model_name, prj_path_list.data_path); 
 
 
@@ -141,9 +141,11 @@ plot_names = {"X", "Eul_control", "Ri_control"}; % Refer to setup_plots.m to see
 plotAllOutputs(plots,results,plot_names);
 
 %% Gif
+%{
 make_gif = false;
 make_video = true;
 mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
     View='iso', MakeGif=make_gif, MakeVideo=make_video) %valid views are iso, top, north, east, bottom
 
 fprintf("Done.\n\n")
+%}

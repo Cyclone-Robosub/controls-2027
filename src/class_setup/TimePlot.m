@@ -36,29 +36,86 @@ classdef TimePlot
         end
 
         function obj = loadData(obj,results)
-            try
+            %disp("loadData")
+            %try
+                counters = [0;0;0;0]; %1-missing field counter, 2-signal counter, 3-pattern count, 4-pattern prediction
                 for k = 1:length(obj.fields) %unpack the timeseries from the results structure
                     if(ismember(obj.fields(k),results.who))
                         obj.timeseries{end+1} = results.(obj.fields(k));
+                        %disp(obj.fields(k))
+                        %disp(k)
+                    else
+                        warning("Field %s failed to load.", obj.fields(k))
+                        %obj.timeseries{end+1} = "missing_field";
+                        if(~exist("missed_field_index")&&~exist("cont_misf"))
+                            missed_field_index=0;
+                        end
+                        counters(1) = counters(1) +1;
+                        missed_field_index(counters(1)) = k;
                     end
                 end
-
+                
                 for k = 1:length(obj.timeseries) %unpack the time and signals from the timeseries
                     signals_k = squeeze(obj.timeseries{k}.Data);
                     signals_k = enforceTallSkinny(signals_k);
                     t_k = obj.timeseries{k}.Time;
-    
                     [~,cols] = size(signals_k);
                     for j = 1:cols 
+                        counters(2) = counters(2) +1;
+                        s_from_f(counters(2)) =  k;
                         obj.signals(:,end+1) = signals_k(:,j); 
                         obj.t(:,end+1) = t_k; %add t for each signal
                     end
                 end
-            catch
+                %disp(s_from_f)
+
+                if exist("missed_field_index")
+                    signal_map_size = 0;
+                    for i = 1:length(obj.signal_map)
+                        signal_map_size = signal_map_size + length(obj.signal_map{i});
+                        for j = 1:length(obj.signal_map{i}) - 1
+                            counters(3) = counters(3) + 1;
+                            pattern(counters(3)) = -obj.signal_map{i}(j)+obj.signal_map{i}(j+1);
+                        end
+                    end
+
+                    for i = length(obj.signal_map)
+                        signal_map_size = signal_map_size + length(obj.signal_map{i});
+                        for j = 1:length(obj.signal_map{i})-1
+                            pattern(i+j-1) = -obj.signal_map{i}(j)+obj.signal_map{i}(j+1);
+                        end
+                    end
+                    %disp(pattern)
+                    pattern = mode(pattern);
+                    num_missing_signals = signal_map_size - length(obj.signals);
+                    predicted_signal_map = zeros(signal_map_size,1);
+                    for i = 1:length(obj.signal_map)
+                        for j = i:length(obj.signal_map{i})+i-1
+                            counters(4) = counters(4) +1;
+                            predicted_signal_map(counters(4)) = i+(j-1)*pattern;
+                        end
+                    end
+                    disp(pattern)
+                    disp(length(obj.signal_map))
+                    disp(predicted_signal_map)
+                    for i = 1:num_missing_signals
+                        %pattern will determine where we need to take
+                        %incidies out of signal_map
+                        %missing_field_index 
+                        %find the number of signals the missing field was
+                        %excected to have
+
+                        obj.signal_map
+                    end
+
+                    % compare entry # signals to signal map
+                    % find pattern in signal map X
+                end
+            %catch
                 % warning("Plot named %s failed to load data. Some signals may be missing.\nDo they all have to-workspace blocks?",obj.name)
                 % %stop plotting in any error occurs in data loading
                 % obj.is_plottable = false;
-            end %try
+            %end %try
         end %loadData
     
         function plot(obj, results)

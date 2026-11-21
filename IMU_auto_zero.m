@@ -6,7 +6,7 @@ test_data = 1;
 %% Test Data
 if test_data
 num_points = 10000;
-test_rotation = [110*pi/180,15*pi/180,-10*pi/180]';
+test_rotation = [110*pi/180,1*pi/180,-1*pi/180]';
 Cis = eulToRotm(test_rotation); %rotation for inertial to sensor frame
 Cis_mess = zeros(3,3,num_points);
 for i = 1:num_points
@@ -25,7 +25,7 @@ plot(squeeze(imu_accl_meas(3,:,:)))
 end
 %% Preprocessing
 sensor_read = zeros(3,1);
-itter = 5;
+itter = 2;
 guess = zeros([3,1,itter]);
 guess(:,:,1) = [0*pi/180;0*pi/180;0*pi/180];
 
@@ -39,7 +39,7 @@ end
 options = optimoptions("fsolve",...
     Display="none",FunctionTolerance=1e-10);
 %% Fsolve - doubt that iteration is useful
-for i = 1:itter
+for i = 1:itter-1
     fun = @(x)rotation(x,gi_ideal,sensor_read);
     guess(:,:,(i+1))=fsolve(fun,guess(:,:,i),options);
 end
@@ -56,7 +56,7 @@ plot(1:length(guess(2,:,:)),squeeze(guess(2,:,:)))
 figure 
 plot(1:length(guess(3,:,:)),squeeze(guess(3,:,:)))
 norm_error = zeros(length(sensor_recreation),3);
-for i = 1:length(guess)
+for i = 1:itter
     C = eulToRotm(guess(:,:,i));
     norm_error(i,:) = (sensor_read)-(C*gi_ideal);
 end
