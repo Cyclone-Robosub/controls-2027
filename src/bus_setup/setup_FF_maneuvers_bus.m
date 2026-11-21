@@ -3,59 +3,68 @@ max_force_default = 200;
 %% Maneuver Class Instances (Tune Maneuvers Here)
 FT_wrench = P.Wrench.FT_wrench;
 MT_wrench = P.Wrench.MT_wrench;
+invFT_wrench = P.Wrench.invFT_wrench;
+invMT_wrench = P.Wrench.invMT_wrench;
 
-manual = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"manual");
+manual = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"manual");
 manual = manual.setID(13);
 manual = manual.setForce([0 0 0 0 0 0]);
 
-forward = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"forward");
+forward = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"forward");
 forward = forward.setID(1);
 forward = forward.setForce(50.*[1 0 0 0 0 0]); 
 forward = forward.addForce(1.*[0 0 0 0 0 0]);
 
-backward = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"backward");
+backward = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"backward");
 backward = backward.setID(2);
 backward = backward.setForce(50.*[-1 0 0 0 0 0]);
 
-up = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"up");
+up = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"up");
 up = up.setID(3);
 up = up.setForce(5*[0 0 -1 0 0 0]); 
 
-down = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"down");
+down = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"down");
 down = down.setID(4);
 down = down.setForce(5*[0 0 1 0 0 0]);
 
-right = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"right");
+right = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"right");
 right = right.setID(5);
 right = right.setForce(5.*[0 1 0 0 0 0]);
+right = right.addForce([0.75 0 0 0 0 0]);
 
-left = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"left");
+left = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"left");
 left = left.setID(6);
-left = left.setForce(5.*[0 0 -1 0 0 0]); 
+left = left.setForce(5.*[0 -1 0 0 0 0]); 
+left = left.addForce([0.7 0 -0.8 0 0 0]);
 
-pitchUp = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"pitchUp");
+pitchUp = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"pitchUp");
 pitchUp = pitchUp.setID(7);
-pitchUp = pitchUp.setForce(120.*[0 0 0 0 1 0]); 
+pitchUp = pitchUp.setForce(30.*[0 0 0 0 1 0]); 
+pitchUp = pitchUp.addForce([0 0 -2.2 0 0 0]);
 
-pitchDown = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"pitchDown");
+pitchDown = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"pitchDown");
 pitchDown = pitchDown.setID(8);
-pitchDown = pitchDown.setForce(120.*[0 0 0 0 -1 0]); 
+pitchDown = pitchDown.setForce(30.*[0 0 0 0 -1 0]); 
+pitchDown = pitchDown.addForce([0 0 -2.2 0 0 0]);
 
-yawRight = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"yawRight");
+yawRight = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"yawRight");
 yawRight = yawRight.setID(9);
 yawRight = yawRight.setForce(10*[0 0 0 0 0 1]);
+%Unable to completely decouple translation and rotation here - investigate
 
-yawLeft = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"yawLeft");
+yawLeft = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"yawLeft");
 yawLeft = yawLeft.setID(10);
 yawLeft = yawLeft.setForce(10*[0 0 0 0 0 -1]); 
 
-rollRight = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"rollRight");
+rollRight = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"rollRight");
 rollRight = rollRight.setID(11);
-rollRight = rollRight.setForce(120*[0 0 0 1 0 0]); 
+rollRight = rollRight.setForce(20*[0 0 0 1 0 0]); 
+rollRight = rollRight.addForce([0 0 -1.6 0 0 0]);
 
-rollLeft = Maneuver(0,max_force_default,FT_wrench,MT_wrench,"rollLeft");
+rollLeft = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"rollLeft");
 rollLeft = rollLeft.setID(12);
-rollLeft = rollLeft.setForce(5.*[0 0 0 -1 0 0]); 
+rollLeft = rollLeft.setForce(20*[0 0 0 -1 0 0]); 
+rollLeft = rollLeft.addForce([0 0 -1.85 0 0 0]);
 
 
 %create the structure and bus to use the maneuver class values in Simulink
@@ -141,3 +150,5 @@ FF_maneuvers_bus.Elements = [manual, forward, backward, up, down, right,...
     
 clear forward backward left right up down pitchUp pitchDown yawLeft yawRight...
     rollLeft rollRight FT_wrench MT_wrench manual max_force_default 
+
+

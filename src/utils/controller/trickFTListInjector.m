@@ -13,9 +13,9 @@ if(isequal(char(cmd.cmd_id),'duration_trick__'))
         case 'ff_down_________'
             modified_FT_List = FF_maneuvers.down;
         case 'ff_right________'
-            modified_FT_List = FF_maneuvers.left;
-        case 'ff_left_________'
             modified_FT_List = FF_maneuvers.right;
+        case 'ff_left_________'
+            modified_FT_List = FF_maneuvers.left;
         case 'ff_pitchUp______'
             modified_FT_List = FF_maneuvers.pitchUp;
         case 'ff_pitchDown____'

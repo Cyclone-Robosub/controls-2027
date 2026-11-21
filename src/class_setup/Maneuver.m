@@ -29,7 +29,9 @@ versions of this class.
         FT_list = zeros(8,1);
         fm = zeros(6,1);
         FT_wrench = zeros(3,8);
+        invFT_wrench = zeros(8,3);
         MT_wrench = zeros(3,8);
+        invMT_wrench = zeros(8,3);
         wrench = zeros(6,8);
         maxManeuverForce = 200;
         intensity = 1;
@@ -39,13 +41,16 @@ versions of this class.
     end
 
     methods
-        function obj =  Maneuver(ID, maxManeuverForce, FT_wrench, MT_wrench, varargin)
+        function obj =  Maneuver(ID, maxManeuverForce, FT_wrench, MT_wrench, invFT_wrench, invMT_wrench, varargin)
             %Constructor
             obj.ID = ID;
             obj.maxManeuverForce = maxManeuverForce;
             obj.FT_wrench = FT_wrench;
             obj.MT_wrench = MT_wrench;
+            obj.invFT_wrench = invFT_wrench;
+            obj.invMT_wrench = invMT_wrench;
             obj.wrench = [FT_wrench;MT_wrench];
+            
 
             if(~isempty(varargin)) %set the name if user specified one
                 obj.name = varargin{1};
@@ -89,8 +94,8 @@ versions of this class.
             allowable bounds.
             %}
             fm = fm(:);
-           
-            FT_list = pinv(obj.wrench)*fm;
+            
+            FT_list = obj.invFT_wrench*fm(1:3) + obj.invMT_wrench*fm(4:6);
             obj.warnOutOfBoundFT_list(FT_list);
             obj.FT_list = obj.constrain(FT_list);
             
@@ -106,8 +111,9 @@ versions of this class.
             constrained FT_list. 
             %}
             fm_add = fm_add(:);
-            
-            FT_list = pinv(obj.wrench)*(obj.fm + fm_add);
+            FT_list_original = obj.invFT_wrench*obj.fm(1:3) + obj.invMT_wrench*obj.fm(4:6);
+            FT_list_add = obj.invFT_wrench*fm_add(1:3) + obj.invMT_wrench*fm_add(4:6);
+            FT_list = FT_list_original + FT_list_add;
             obj.warnOutOfBoundFT_list(FT_list);
             obj.FT_list = obj.constrain(FT_list);
 
