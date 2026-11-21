@@ -108,6 +108,13 @@
         <redSlalom_3>0</redSlalom_3>
         <redSlalom_3>0</redSlalom_3>
         <redSlalom_3>0</redSlalom_3>
+
+        <torpedoBoard_1>470</torpedoBoard_1>
+        <torpedoBoard_1>1390</torpedoBoard_1>
+        <torpedoBoard_1>20</torpedoBoard_1>
+        <torpedoBoard_1>0</torpedoBoard_1>
+        <torpedoBoard_1>0</torpedoBoard_1>
+        <torpedoBoard_1>0</torpedoBoard_1>
     </propPoses>
     <cameras>
         <!--Left forward facing camera-->
@@ -257,11 +264,11 @@
         <start_delay>0</start_delay> <!--Use this to specify how long to wait for unreal lighting to settle-->
 
         <!--Executable version Name-->
-        <executable_version>EllingtonPoolSim_2_beta</executable_version>
+        <executable_version>EllingtonPoolSim_2_v1_renderEpic</executable_version>
 
         <!--Level of the world used for this sim, typically Olympic_Pool_Course will be the only used one, though there is a level
         for keypoint collection and for camera calibration-->
-        <scene_level>Olympic_Pool_Course</scene_level>
+        <scene_level>Olympic_Pool</scene_level>
 
         <!--show editor view simulation window-->
         <editor_view>0</editor_view>
