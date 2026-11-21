@@ -136,7 +136,7 @@
             <Orientation>0</Orientation>
 
             <!--Condition on whether to open a display window for this camera-->
-            <display_flag>1</display_flag>
+            <display_flag>0</display_flag>
 
             <!--Condition on whether to save the camera feed-->
             <save_flag>0</save_flag>
@@ -232,7 +232,7 @@
             <Orientation>0</Orientation>
 
             <!--Condition on whether to open a display window for this camera-->
-            <display_flag>0</display_flag>
+            <display_flag>1</display_flag>
 
             <!--Condition on whether to save the camera feed-->
             <save_flag>0</save_flag>
@@ -253,7 +253,7 @@
         <!--For origin orientation, always put 0 0 0, this is just here to make the vector a 1x6-->
         
         <!--The following are sim time related variables-->
-        <dt_sample>0.03</dt_sample> <!--Sample time step of the unreal sim, one image will be gathered every dt_sample seconds in sim time-->
+        <dt_sample>0.2</dt_sample> <!--Sample time step of the unreal sim, one image will be gathered every dt_sample seconds in sim time-->
         <start_delay>0</start_delay> <!--Use this to specify how long to wait for unreal lighting to settle-->
 
         <!--Executable version Name-->

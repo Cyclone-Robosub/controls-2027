@@ -18,9 +18,16 @@ Code by Kory Haydon
 %}
 
 %parse optional kwargs
-Ri = enforceTallSkinny(squeeze(results.X_Ri.Data))';
-q = enforceTallSkinny(squeeze(results.X_qib.Data))';
-t = results.X_Ri.Time;
+%try to use true states first, but use estimates if unavailable
+try
+    Ri = enforceTallSkinny(squeeze(results.X_Ri.Data))';
+    q = enforceTallSkinny(squeeze(results.X_qib.Data))';
+    t = results.X_Ri.Time;
+catch
+    Ri = enforceTallSkinny(squeeze(results.X_ctrl_Ri.Data))';
+    q = enforceTallSkinny(squeeze(results.X_ctrl_qib.Data))';
+    t = results.X_ctrl_Ri.Time;
+end
 
 p = inputParser;
 
@@ -79,7 +86,7 @@ end
 f = figure('Visible','off','Position',[400 2400 1200 800]);
 ax = axes('Parent',f);
 axis(ax,'manual')
-axis(ax,Margin.*[-1 1 -1 1 -1 1])
+axis(ax,[min(Ri(1,:))-Margin max(Ri(1,:))+Margin min(Ri(2,:))-Margin max(Ri(2,:))+Margin min(Ri(3,:))-Margin max(Ri(3,:))+Margin])
 view(ax,View)
 hold on
 xlabel("x")
@@ -88,6 +95,7 @@ zlabel("z")
 title(name)
 set(gca,'Zdir','reverse')
 set(gca,'Ydir','reverse')
+daspect([1,1,1])
 
 %load the patch data for Manny from where it is stored in the file system
 %will be already on path if using project structure correctly
@@ -194,11 +202,21 @@ t1 = toc;
 fprintf("Time elapsed: %.2f seconds.\n",t1)
 
 %Open the file location of the gif if the user chooses
-if(OpenFolder)
+if(ispc)
     try
         winopen(filepath);
     catch
-        fprintf("Failed to open the media folder.\nThis feature only works on windows right now ):")
+        fprintf("Failed to open gif using winopen. It is located at " + filepath);
     end
-
+elseif(isunix)
+    try
+        cmd = sprintf('env -u LD_LIBRARY_PATH xdg-open "%s" >/dev/null 2>&1', filepath);
+        [status, ~] = system(cmd);
+        if status ~= 0
+            fprintf("Failed to open folder using xdg-open. It is located at %s\n", filepath);
+        end
+    catch
+        fprintf("Failed to open folder using xdg-open. It is located at %s\n", filepath);
+    end
 end
+

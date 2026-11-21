@@ -22,6 +22,13 @@ end
 % ros2genmsg("<path to software repo>\Software-Cyclone-Core\core\src");
 
 %% Parameters, Tuning, Initial Conditions, Settings
+% Bus Setup
+run('setup_cmd_bus.m');
+run('setup_state_bus.m');
+run('setup_sensor_bus.m');
+run('setup_imu_bus.m');
+run('setup_dvl_bus.m');
+run('setup_joystick_bus.m');
 
 %Parameters
 % P = loadParameters();
@@ -43,14 +50,10 @@ I = createInits();
 S = createSim();
 % saveSim(S);
 
-% Bus Setup
-run('setup_cmd_bus.m');
+%buses that depend on settings
 run('setup_FF_maneuvers_bus.m');
-run('setup_state_bus.m');
-run('setup_sensor_bus.m');
 run('setup_RSFF_maneuvers_bus.m');
-run('setup_imu_bus.m');
-run('setup_dvl_bus.m');
+
 
 %{
 Note, if you receive an error from the ROS blocks saying something about a
@@ -60,7 +63,8 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 25;
+S.tspan = 10;
+
 
 model_name = "Matlab_Controller_SIM";
 
@@ -89,7 +93,7 @@ if(do_unreal_cosim_flag)
     % Load UCS Scene Configuration and Variables
     scene_config_name = "default_scene_config.xml"; 
     scene_config = readstruct(scene_config_name);
-    dt_sample = scene_config.scene_states.dt_sample;
+    S.dt_sample = scene_config.scene_states.dt_sample;
     
     %other unreal stuff
     M_WorldToUCS = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 -1 0 0 0; 0 0 0 (180 / pi) 0 0; 0 0 0 0 (180 / pi) 0; 0 0 0 0 0 (180 / pi)];
@@ -112,13 +116,17 @@ simIn = simIn.setVariable('mission', mission);
 
 %run the sim (profiling optional)
 
-set_param(model_name,'Profile','on')
+set_param(model_name,'Profile','off')
 fprintf("Running the sim\n")
 results = sim(simIn);
-profData = results.SimulationMetadata.TimingInfo.ProfilerData;
-generateReport(profData, 'myModelProfile');      % writes myModelProfile.html
+% profData = results.SimulationMetadata.TimingInfo.ProfilerData;
+% generateReport(profData, 'myModelProfile');      % writes myModelProfile.html
 fprintf("Processing data\n")
 
+%% Repack
+if(~exist('results','var')) %guard for ctrl+c
+    results = Simulink.SimulationOutput;
+end
 %repackage all the data into a single results obj, flattening structures
 results = repackSimData(results, delete_data_flag, prj_path_list.prior_run_path);
 
@@ -141,11 +149,10 @@ plot_names = {"X", "Eul_control", "Ri_control"}; % Refer to setup_plots.m to see
 plotAllOutputs(plots,results,plot_names);
 
 %% Gif
-%{
-make_gif = false;
-make_video = true;
-mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
-    View='iso', MakeGif=make_gif, MakeVideo=make_video) %valid views are iso, top, north, east, bottom
+% make_gif = true;
+% make_video = false;
+% mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
+%     View='iso', MakeGif=make_gif, MakeVideo=make_video,...
+%     DynamicCameraMotion=false) %valid views are iso, top, north, east, bottom
 
 fprintf("Done.\n\n")
-%}

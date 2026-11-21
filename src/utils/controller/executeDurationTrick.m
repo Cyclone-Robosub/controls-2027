@@ -24,6 +24,7 @@ X_u.wb = zeros(3,1);
 X_u.wi = zeros(3,1);
 X_u.ddRi = zeros(3,1);
 X_u.ddRb = zeros(3,1);
+X_u.alt = 0; %TODO (fix this if used in fb control ever)
 
 switch char(cmd.trick_id)
     case {'ff_forward______', 'ff_backward_____', 'ff_up___________',...
@@ -75,6 +76,7 @@ switch char(cmd.trick_id)
         X_u.wi = zeros(3,1);
         X_u.ddRi = zeros(3,1);
         X_u.ddRb = zeros(3,1); 
+        X_u.alt = 0; %TODO (fix this if used in fb control ever)
 
         [cmd_status, hold_timer, hold_timer_start_time] =FFTimer(cmd, hold_timer_start_time, t); 
 
@@ -120,21 +122,17 @@ end
 switch char(cmd.trick_id)
     case 'ssff_forward____'
         %set the position on the waypoint 1m in the body x-direction
-        if(new_cmd_reset)
-            %only creates a far away position waypoint ONCE
-            cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[1000;0;0];
-        end
+        % if(new_cmd_reset)
+        %put the waypoint in front of the vehicle
+        cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[1;0;0];
+        % end
+
 
     case 'ssff_backward___'
-        %{
-        Right now the guidance law will just cause the robot to turn 180
-        then drive forward. Not sure the best way to fix this but low
-        priority.
-        %}
-        if(new_cmd_reset)
-            %only creates a far away position waypoint ONCE
-            cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[-1000;0;0];
-        end
+        % if(new_cmd_reset)
+        %put the waypoint behind the vehicle, this has t
+        cmd_specific_wp(1:3) = X.Ri + (X.Cib)*[-1;0;0];
+        % end
 
     case 'ssff_right______'
         %{
@@ -216,6 +214,7 @@ X_u.wb = zeros(3,1);
 X_u.wi = zeros(3,1);
 X_u.ddRi = zeros(3,1);
 X_u.ddRb = zeros(3,1);
+X_u.alt = 0; %TODO (fix this if used in fb control ever)
 
 %update the timer and return success when it elapses
 if(hold_timer >= cmd.hold_time)

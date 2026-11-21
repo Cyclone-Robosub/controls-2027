@@ -44,6 +44,7 @@ X_u.wb = zeros(3,1);
 X_u.wi = zeros(3,1);
 X_u.ddRi = zeros(3,1);
 X_u.ddRb = zeros(3,1);
+X_u.alt = 0; %TODO (fix this if used in fb control ever)
 
 %update the hold timer if we are at our waypoint
 if(withinWPTol(X,X_u, cmd))

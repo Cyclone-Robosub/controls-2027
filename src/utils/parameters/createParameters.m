@@ -16,4 +16,5 @@ P.Hydro = calcHydroData(P.Geometry, P.Constants); %added mass and inertia, drag 
 P.Mass = calcMassData(P.Geometry, P.Hydro); %center of mass, inertia, etc
 P.Wrench = calcWrenchData(P.Geometry, P.Mass); %force and moment wrench due to thrusters about CoM
 P.Sensors = defSensors(); %constants related to sensor modeling
+P.Floor = defFloor(); %water depth as a function of inertial position
 end
