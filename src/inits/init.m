@@ -61,7 +61,7 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 5;
+S.tspan = 40;
 
 model_name = "Matlab_Controller_SIM";
 

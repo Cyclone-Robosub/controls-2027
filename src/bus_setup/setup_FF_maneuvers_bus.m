@@ -12,7 +12,7 @@ manual = manual.setForce([0 0 0 0 0 0]);
 
 forward = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"forward");
 forward = forward.setID(1);
-forward = forward.setForce(50.*[1 0 0 0 0 0]); 
+forward = forward.setForce(50.*[1 0 0 0 0 0]);
 forward = forward.addForce(1.*[0 0 0 0 0 0]);
 
 backward = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"backward");
@@ -21,7 +21,7 @@ backward = backward.setForce(50.*[-1 0 0 0 0 0]);
 
 up = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"up");
 up = up.setID(3);
-up = up.setForce(5*[0 0 -1 0 0 0]); 
+up = up.setForce(5*[0 0 -1 0 0 0]);
 
 down = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"down");
 down = down.setID(4);
@@ -34,17 +34,17 @@ right = right.addForce([0.75 0 0 0 0 0]);
 
 left = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"left");
 left = left.setID(6);
-left = left.setForce(5.*[0 -1 0 0 0 0]); 
+left = left.setForce(5.*[0 -1 0 0 0 0]);
 left = left.addForce([0.7 0 -0.8 0 0 0]);
 
 pitchUp = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"pitchUp");
 pitchUp = pitchUp.setID(7);
-pitchUp = pitchUp.setForce(30.*[0 0 0 0 1 0]); 
+pitchUp = pitchUp.setForce(30.*[0 0 0 0 1 0]);
 pitchUp = pitchUp.addForce([0 0 -2.2 0 0 0]);
 
 pitchDown = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"pitchDown");
 pitchDown = pitchDown.setID(8);
-pitchDown = pitchDown.setForce(30.*[0 0 0 0 -1 0]); 
+pitchDown = pitchDown.setForce(30.*[0 0 0 0 -1 0]);
 pitchDown = pitchDown.addForce([0 0 -2.2 0 0 0]);
 
 yawRight = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"yawRight");
@@ -54,18 +54,17 @@ yawRight = yawRight.setForce(10*[0 0 0 0 0 1]);
 
 yawLeft = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"yawLeft");
 yawLeft = yawLeft.setID(10);
-yawLeft = yawLeft.setForce(10*[0 0 0 0 0 -1]); 
+yawLeft = yawLeft.setForce(10*[0 0 0 0 0 -1]);
 
 rollRight = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"rollRight");
 rollRight = rollRight.setID(11);
-rollRight = rollRight.setForce(20*[0 0 0 1 0 0]); 
+rollRight = rollRight.setForce(20*[0 0 0 1 0 0]);
 rollRight = rollRight.addForce([0 0 -1.6 0 0 0]);
 
 rollLeft = Maneuver(0,max_force_default,FT_wrench,MT_wrench,invFT_wrench,invMT_wrench,"rollLeft");
 rollLeft = rollLeft.setID(12);
-rollLeft = rollLeft.setForce(20*[0 0 0 -1 0 0]); 
+rollLeft = rollLeft.setForce(20*[0 0 0 -1 0 0]);
 rollLeft = rollLeft.addForce([0 0 -1.85 0 0 0]);
-
 
 %create the structure and bus to use the maneuver class values in Simulink
 %each element of the structure 

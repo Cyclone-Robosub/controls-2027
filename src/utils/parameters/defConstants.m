@@ -6,7 +6,7 @@ T200 thrusters.
 %}
 
 %max force delivered by a T200 thruster
-Constants.max_thruster_force = 40;
+Constants.max_thruster_force = 30; 
 
 %density of water
 Constants.rho = 998; %[kg/m3] at 20 C

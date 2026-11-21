@@ -14,16 +14,16 @@ bypass the position PID controller but use the velocity PID controller.
 
 %rate command in the form [dRb_u; wb_u]
 rsff_stop      = [ 0; 0; 0; 0; 0; 0];
-rsff_forward   = [ .5; 0; 0; 0; 0; 0];
-rsff_backward  = [-.5; 0; 0; 0; 0; 0];
+rsff_forward   = [ 1; 0; 0; 0; 0; 0];
+rsff_backward  = [-1; 0; 0; 0; 0; 0];
 rsff_right     = [ 0; 1; 0; 0; 0; 0];
 rsff_left      = [ 0;-1; 0; 0; 0; 0];
 rsff_up        = [ 0; 0;-1; 0; 0; 0];
 rsff_down      = [ 0; 0; 1; 0; 0; 0];
-rsff_rollRight = [ 0; 0; 0; 1; 0; 0];
-rsff_rollLeft  = [ 0; 0; 0;-1; 0; 0];
-rsff_pitchUp   = [ 0; 0; 0; 0; 1; 0];
-rsff_pitchDown = [ 0; 0; 0; 0;-1; 0];
+rsff_rollRight = [ 0; 0; 0; 1.5; 0; 0];
+rsff_rollLeft  = [ 0; 0; 0;-1.5; 0; 0];
+rsff_pitchUp   = [ 0; 0; 0; 0; 1.5; 0];
+rsff_pitchDown = [ 0; 0; 0; 0;-1.5; 0];
 rsff_yawRight  = [ 0; 0; 0; 0; 0; 1];
 rsff_yawLeft   = [ 0; 0; 0; 0; 0;-1];
 
