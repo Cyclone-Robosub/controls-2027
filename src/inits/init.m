@@ -61,9 +61,9 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 40;
+S.tspan = 360;
 
-model_name = "Matlab_Controller_SIM";
+model_name = "Full_Controller_HIL";
 
 %mission file import
 mission_file_name = "mission_file.txt"; 
@@ -73,7 +73,7 @@ mission = importMission(mission_file_path, max_commands_in_mission);
 
 %% Data
 %if true, data is deleted from file system but saved in the workspace for post processing
-delete_data_flag = true; 
+delete_data_flag = false; 
 prj_path_list.prior_run_path = configureToFileBlocks(model_name, prj_path_list.data_path); 
 
 
@@ -140,18 +140,18 @@ if(~exist('plots_setup_flag','var'))
     run('setup_plots.m');
 end
 
-% Enter the names of all the plots as a comma separated cell array
-plot_names = {"X","mission flags", "joystick flags", "Eul control", "Ri control",...
-    "dRb control", "wb control", "pwm_ctrl", "FT_list", "FT_list cmds",...
-    "force_moment_cmd","thrusters"}; % Refer to setup_plots.m to see the valid plot names
-plotAllOutputs(plots,results,plot_names);
+% % Enter the names of all the plots as a comma separated cell array
+% plot_names = {"X","mission flags", "joystick flags", "Eul control", "Ri control",...
+%     "dRb control", "wb control", "pwm_ctrl", "FT_list", "FT_list cmds",...
+%     "force_moment_cmd","thrusters"}; % Refer to setup_plots.m to see the valid plot names
+% plotAllOutputs(plots,results,plot_names);
 
 %% Gif
-make_gif = true;
-make_video = false;
-mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
-    View='iso', MakeGif=make_gif, MakeVideo=make_video,...
-    DynamicCameraMotion=false) %valid views are iso, top, north, east, bottom
+% make_gif = true;
+% make_video = false;
+% mannyGifTool(results,prj_path_list.prior_run_path,'test',Margin=1,...
+%     View='iso', MakeGif=make_gif, MakeVideo=make_video,...
+%     DynamicCameraMotion=false) %valid views are iso, top, north, east, bottom
 
 fprintf("Done.\n\n")
 

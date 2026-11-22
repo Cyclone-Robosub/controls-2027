@@ -9,10 +9,12 @@ imu.Cbimu = eulToRotm(Eul_bimu); %Rotation matrix from the sensor frame to body 
 imu.Cimub = imu.Cbimu';
 
 %for running in sim
-imu.Cbimu_meas = eye(3); 
-% imu.Cbimu_meas = [0.9985 0.0122 0.0541;...
-%      0.0539 0.0181 -0.9984;...
-%      -0.0132 0.9998 0.0174];
+% imu.Cbimu_meas = eye(3); 
+imu.Cbimu_meas = [0.9999 0 -0.016;...
+     0.016 0.0309 0.9994;...
+     0.0005 -0.9995 0.0309]';
+
+
 
 imu.T = 25;
 imu.Bi = [ 27.5550,-2.4169,-16.0849];

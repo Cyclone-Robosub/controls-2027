@@ -107,7 +107,6 @@ end
 
 %if any of the angle errors are large, don't command forward or up
 if(max(abs(Eul_e)) > Eul_e_tol) %TURNING
-
     %allow for x, y, and z body commands (these should be small due to the
     %idle waypoint)
     Cib = quatToRotm(qib);
@@ -129,7 +128,6 @@ elseif(norm(Ri_xy_e) >= Ri_e_tol) %DRIVING
     Cbi = Cib';
     Rb_u = Cbi*Ri_u;
     Rb = Cbi*Ri;
-
     Rb_error = Rb_u - Rb;
     % Rb_error = [norm(Ri_xy_e); 0; Ri_u(3) - Ri(3)]; %test this more
     action_id = 2;
@@ -142,7 +140,6 @@ else %SETTLING
     Rb_u = Cbi*Ri_u;
     Rb = Cbi*Ri;
     Rb_error = Rb_u - Rb;
-
     action_id = 3;
     
 end
@@ -173,4 +170,6 @@ end
 action_id_out = action_id;
 driving_yaw_target = persistant_yaw_target;
 prior_action_id = action_id;
+
+debug = cmd.cmd_id;
 end

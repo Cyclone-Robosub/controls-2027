@@ -70,7 +70,7 @@ if(isequal(char(cmd.cmd_id),'duration_trick__'))
                         dRb_e = dX_e(1:3);
                         wb_e = dX_e(4:6);
         otherwise
-            %no need to modify the velocity if not in an rsff trick.
+             %no need to modify the velocity if not in an rsff trick.
              dRb_e = dRb_e;
              wb_e = wb_e;
     end
