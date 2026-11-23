@@ -111,10 +111,17 @@
 
         <torpedoBoard_1>470</torpedoBoard_1>
         <torpedoBoard_1>1390</torpedoBoard_1>
-        <torpedoBoard_1>20</torpedoBoard_1>
+        <torpedoBoard_1>-20</torpedoBoard_1>
         <torpedoBoard_1>0</torpedoBoard_1>
         <torpedoBoard_1>0</torpedoBoard_1>
         <torpedoBoard_1>0</torpedoBoard_1>
+
+        <octagon_1>270</octagon_1>
+        <octagon_1>1060</octagon_1>
+        <octagon_1>-160</octagon_1>
+        <octagon_1>0</octagon_1>
+        <octagon_1>0</octagon_1>
+        <octagon_1>0</octagon_1>
     </propPoses>
     <cameras>
         <!--Left forward facing camera-->

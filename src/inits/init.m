@@ -65,7 +65,7 @@ this is running`bdclose('all')` then resetting your model.
 %}
 
 %overrides for common settings
-S.tspan = 6;
+S.tspan = 10;
 S.FT_list_inject = FF_maneuvers.yawRight;
 
 model_name = "Dynamics_UCS";
@@ -93,7 +93,7 @@ if(do_unreal_cosim_flag)
     
     %Override for display and save features on camera. 
     %[left right bottom observer] order display then save.
-    scene_config = set_cam_display_save(scene_config, [1 1 0 0], [1 0 0 0]);
+    scene_config = set_cam_display_save(scene_config, [1 1 0 0], [0 0 0 0]);
     
     %other unreal stuff
     M_WorldToUCS = [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 -1 0 0 0; 0 0 0 (180 / pi) 0 0; 0 0 0 0 (180 / pi) 0; 0 0 0 0 0 (180 / pi)];
