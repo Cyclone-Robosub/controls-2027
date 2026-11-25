@@ -274,8 +274,18 @@
         <executable_version>EllingtonPoolSim_2_v1.1_renderEpic</executable_version>
 
         <!--Level of the world used for this sim, typically Olympic_Pool_Course will be the only used one, though there is a level
-        for keypoint collection and for camera calibration-->
-        <scene_level>Olympic_Pool</scene_level>
+        for keypoint collection and for camera calibration. See unreal_executables.txt in the unreal_executables folder
+        for description of each level-->
+        
+        <!--Unreal Levels:
+        Olympic_Pool
+        Olympic_Pool_LRB_Cams
+        Olympic_Pool_LR_Cams
+        Olympic_Pool_L_Cams
+        Olympic_Pool_O_Cams
+        Olympic_Pool_B_Cams
+        -->
+        <scene_level>Olympic_Pool_L_Cams</scene_level>
 
         <!--show editor view simulation window-->
         <editor_view>0</editor_view>
