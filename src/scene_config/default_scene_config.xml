@@ -141,7 +141,7 @@
             <TangentialDistortion>0</TangentialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
 
-            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in degrees left hand rule.-->
+            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in radians left hand rule.-->
             <Position>0.38</Position>
             <Position>-0.06</Position>
             <Position>0.14</Position>
@@ -173,7 +173,7 @@
             <TangentialDistortion>0</TangentialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
 
-            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in degrees left hand rule.-->
+            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in radians left hand rule.-->
             <Position>0.38</Position>
             <Position>0.06</Position>
             <Position>0.14</Position>
@@ -205,12 +205,12 @@
             <TangentialDistortion>0</TangentialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
 
-            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in degrees left hand rule.-->
+            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in radians left hand rule.-->
             <Position>0.23</Position>
             <Position>0</Position>
             <Position>-0.08</Position>
             <Orientation>0</Orientation>
-            <Orientation>-90</Orientation>
+            <Orientation>-1.57</Orientation>
             <Orientation>0</Orientation>
 
             <!--Condition on whether to open a display window for this camera-->
@@ -237,7 +237,7 @@
             <TangentialDistortion>0</TangentialDistortion>
             <TangentialDistortion>0</TangentialDistortion>
 
-            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in degrees left hand rule.-->
+            <!--Relative Position to Manatee. Position is in meters with Z axis pointing upwards. Orientation is in radians left hand rule.-->
             <Position>0</Position>
             <Position>0</Position>
             <Position>0</Position>
