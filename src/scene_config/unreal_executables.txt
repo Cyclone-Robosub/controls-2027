@@ -1,0 +1,28 @@
+Current Most Recent Executable Version: EllingtonPoolSim_2_v1.1_render<Render Setting>
+
+Render Settings: Epic, High, Medium, Low
+
+Upload the executables into this folder. Example filestructure:
+unreal_executables\EllingtonPoolSim_2_beta\Windows\...
+
+Make sure to drop all of the files from the packaged build, as the build needs all of them to correctly configure to your machine.
+Make sure to configure your scene_config to the apporopriate executable name.
+
+
+
+Current Levels in EllingtonPoolSim_2_v1.1
+
+  - Olympic_Pool: 
+    A scene containing fully decorated pool scene with all cameras. Observer camera is a third person view of Manatee. The viewing
+    direction is static relative to world frame, but the translation follows manatee. Left and Right cameras are attached to Manatee and simulate
+    the zed2i, however they likely need new distortion coefficients; their baseline, image size, focalength, and fps are all correct however.
+    Bottom camera is still modeled after the old cameras and points straight down, attached to Manatee.
+    
+    The following Levels have subsets of the Left(L) Right(R) Bottom(B) and Observer(O) cameras:
+    
+  - Olympic_Pool_LRB_Cams
+  - Olympic_Pool_LR_Cams
+  - Olympic_Pool_L_Cams
+  - Olympic_Pool_O_Cams
+  - Olympic_Pool_B_Cams
+
