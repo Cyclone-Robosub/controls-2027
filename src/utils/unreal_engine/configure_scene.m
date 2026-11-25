@@ -1,4 +1,11 @@
 function configure_scene(model_name, scene_config, delete_data_flag, executables_path, save_data_path)
+    
+    %Check if unreal_cosim subsystem is open, and if it is, then close and save it.
+    %There are problems if subsystem is open and run externally.
+    if (bdIsLoaded("unreal_cosim"))
+        close_system("unreal_cosim", 1);
+    end
+
     %create save paths and exe path
     exe_path = fullfile(executables_path, scene_config.scene_states.executable_version + "\Windows\EllingtonPoolSim2.exe");
     
@@ -15,7 +22,7 @@ function configure_scene(model_name, scene_config, delete_data_flag, executables
     if(~isfolder(save_scripts_path) && ~delete_data_flag)
         mkdir(save_scripts_path);
     end
-
+    
     %strip the .slx from the model name
     if(contains(model_name, ".slx"))
         model_name = extractBefore(model_name, ".slx");
@@ -31,14 +38,29 @@ function configure_scene(model_name, scene_config, delete_data_flag, executables
         'FollowLinks',    'on',  ...
         'MatchFilter', @Simulink.match.allVariants,...
         'MaskType',      'Simulation 3D Scene Configuration');
+
     
     %Sets the path to the executable and picks the correct level.
     for i = 1:numel(scene_configuration_blocks)
         set_param(scene_configuration_blocks{i}, "ProjectName", exe_path);
         set_param(scene_configuration_blocks{i}, "ScenePath", "/Game/" + scene_config.scene_states.scene_level);
         set_param(scene_configuration_blocks{i}, 'Commented', 'off');
+        if(scene_config.scene_states.editor_view)
+            set_param(scene_configuration_blocks{i}, 'EnableWindow', 'on');
+        else
+            set_param(scene_configuration_blocks{i}, 'EnableWindow', 'off');
+        end
     end
     
+    %Finds all camera blocks.
+    camera_blocks = find_system(model_name, ...
+        'LookUnderMasks', 'all', ...
+        'FollowLinks',    'on',  ...
+        'MatchFilter', @Simulink.match.allVariants,...
+        'IncludeCommented', 'on',...
+        'MaskType',      'Simulation 3D Camera');
+
+
     %Finds all video saving blocks.
     to_multimedia_blocks = find_system(model_name, ...
         'LookUnderMasks', 'all', ...
@@ -55,6 +77,22 @@ function configure_scene(model_name, scene_config, delete_data_flag, executables
         'IncludeCommented', 'on',...
         'FunctionName',      'svipwvo2');
     
+    %Checks the level if camera blocks need to be commented out. Some
+    %levels only contain a subset of cameras.
+    if(contains(scene_config.scene_states.scene_level, "_Cams"))
+        exeTokens = split(string(extractBefore(scene_config.scene_states.scene_level, "_Cams")), '_');
+        exTSize = size(exeTokens);
+        camToken = exeTokens(exTSize(1));
+        for i = 1:numel(camera_blocks)
+            var_name  = get_param(camera_blocks{i}, 'Name');
+            if (contains(camToken, var_name(1)))
+                set_param(camera_blocks{i}, 'Commented', 'off');
+            else
+                set_param(camera_blocks{i}, 'Commented', 'on');
+            end
+        end
+    end
+
     %Sets the save path or comments out depending on flags in config
     for i = 1:numel(to_multimedia_blocks)
         var_name  = get_param(to_multimedia_blocks{i}, 'Name');

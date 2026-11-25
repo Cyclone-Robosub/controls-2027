@@ -271,7 +271,7 @@
         <start_delay>0</start_delay> <!--Use this to specify how long to wait for unreal lighting to settle-->
 
         <!--Executable version Name-->
-        <executable_version>EllingtonPoolSim_2_v1_renderEpic</executable_version>
+        <executable_version>EllingtonPoolSim_2_v1.1_renderEpic</executable_version>
 
         <!--Level of the world used for this sim, typically Olympic_Pool_Course will be the only used one, though there is a level
         for keypoint collection and for camera calibration-->
