@@ -76,22 +76,6 @@ function configure_scene(model_name, scene_config, delete_data_flag, executables
         'MatchFilter', @Simulink.match.allVariants,...
         'IncludeCommented', 'on',...
         'FunctionName',      'svipwvo2');
-    
-    %Checks the level if camera blocks need to be commented out. Some
-    %levels only contain a subset of cameras.
-    if(contains(scene_config.scene_states.scene_level, "_Cams"))
-        exeTokens = split(string(extractBefore(scene_config.scene_states.scene_level, "_Cams")), '_');
-        exTSize = size(exeTokens);
-        camToken = exeTokens(exTSize(1));
-        for i = 1:numel(camera_blocks)
-            var_name  = get_param(camera_blocks{i}, 'Name');
-            if (contains(camToken, var_name(1)))
-                set_param(camera_blocks{i}, 'Commented', 'off');
-            else
-                set_param(camera_blocks{i}, 'Commented', 'on');
-            end
-        end
-    end
 
     %Sets the save path or comments out depending on flags in config
     for i = 1:numel(to_multimedia_blocks)
@@ -121,4 +105,35 @@ function configure_scene(model_name, scene_config, delete_data_flag, executables
         end
     end
     
+    %Checks the level if camera blocks need to be commented out. Some
+    %levels only contain a subset of cameras.
+    if(contains(scene_config.scene_states.scene_level, "_Cams"))
+        exeTokens = split(string(extractBefore(scene_config.scene_states.scene_level, "_Cams")), '_');
+        exTSize = size(exeTokens);
+        camToken = exeTokens(exTSize(1));
+        for i = 1:numel(camera_blocks)
+            var_name  = get_param(camera_blocks{i}, 'Name');
+            if (contains(camToken, var_name(1)))
+                set_param(camera_blocks{i}, 'Commented', 'off');
+                
+            else
+                set_param(camera_blocks{i}, 'Commented', 'on');
+            end
+        end
+        
+        %Retroactively go back and comment out display and saves.
+        for i = 1:numel(to_video_display_blocks)
+            var_name  = get_param(to_video_display_blocks{i}, 'Name');
+            if (~contains(camToken, var_name(1), IgnoreCase=true))
+                set_param(to_video_display_blocks{i}, 'Commented', 'on'); 
+            end
+        end
+        for i = 1:numel(to_multimedia_blocks)
+            var_name  = get_param(to_multimedia_blocks{i}, 'Name');
+            if (~contains(camToken, var_name(1), IgnoreCase=true))
+                set_param(to_multimedia_blocks{i}, 'Commented', 'on'); 
+            end
+        end
+    end
+
 end
